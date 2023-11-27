@@ -1,6 +1,9 @@
 package com.hust.backend_password_manager.entity.password_manager_entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -8,6 +11,9 @@ import java.util.Date;
 @Entity
 @Table(name = "account")
 @Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
 
     @Id
@@ -18,9 +24,9 @@ public class Account {
 
     private String password;
 
-    private String isActive;
+    private Boolean isActive;
 
-    private String isAdmin;
+    private Boolean isAdmin;
     private Date createDateTime;
 
     private Date lastUpdateDate;

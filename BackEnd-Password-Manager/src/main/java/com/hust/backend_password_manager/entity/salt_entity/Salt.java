@@ -10,5 +10,12 @@ public class Salt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long accId;
+
+    private String salt;
+
+    private String secretKey;
+
+
 
 }

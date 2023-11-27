@@ -6,7 +6,7 @@ import com.hust.backend_password_manager.repository.password_manager_entity.Acco
 import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
 import com.hust.backend_password_manager.service.EmailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +22,9 @@ public class TestController {
     final AccountRepository accountRepository;
 
     final SaltRepository saltRepository;
+
+    final RedisTemplate template;
+
 
 
     @GetMapping("/email")
@@ -49,10 +52,22 @@ public class TestController {
         return saltRepository.save(kk);
     }
 
-    @GetMapping("/get_all_salt")
+    @GetMapping("/get_all_saltxx")
     public Object getSalt() throws Exception{
         return saltRepository.findAll();
     }
+
+
+
+    @GetMapping("/get_all_salt")
+    public Object getlt() throws Exception{
+        template.opsForValue().set("loda","hello world");
+        System.out.println("Value of key loda: "+template.opsForValue().get("lodax"));
+
+
+        return saltRepository.findAll();
+    }
+
 
 
 
