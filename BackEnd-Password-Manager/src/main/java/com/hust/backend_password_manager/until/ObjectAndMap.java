@@ -14,7 +14,7 @@ public class ObjectAndMap {
 
         for (Field field: fields) {
             field.setAccessible(true);
-            map.put(field.getName(), field.get(object));
+            map.put(field.getName(),  field.get(object));
         }
 
         return map;

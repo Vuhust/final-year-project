@@ -7,10 +7,7 @@ import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
 import com.hust.backend_password_manager.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/test")
@@ -28,8 +25,8 @@ public class TestController {
 
 
     @GetMapping("/email")
-    public String testEmail() throws Exception{
-        emailService.sendSimpleMessage("phannhuvu2001@gmail.com", "heheh", "1111");
+    public String testEmail(@RequestParam String toEmail) throws Exception{
+        emailService.sendOtp(toEmail,  "1111");
         return "hehe";
     }
 

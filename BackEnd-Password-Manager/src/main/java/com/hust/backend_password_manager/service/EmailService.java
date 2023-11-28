@@ -16,7 +16,7 @@ public class EmailService {
             String to, String text) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("passwordmanager@.project.vuphan.vn");
+        message.setFrom("passwordmanager@gmail.com");
         message.setTo(to);
         message.setSubject("Mã OTP");
         message.setText(text);

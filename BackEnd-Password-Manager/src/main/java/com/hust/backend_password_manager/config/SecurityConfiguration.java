@@ -25,6 +25,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfiguration {
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
             "/v2/api-docs/**",
@@ -37,7 +38,13 @@ public class SecurityConfiguration {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/test/**"};
+            "/test/**",
+            "/guest/**",
+            "/account/register",
+            "/account/register/validate",
+            "/account/login"
+
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,11 +54,12 @@ public class SecurityConfiguration {
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/user/**").hasRole("USER")
-                                .requestMatchers("/guest/**").hasRole("GUEST")
+                                .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                                .requestMatchers("/account/**").hasAnyRole("USER","ADMIN")
+//                                .requestMatchers("/guest/**").hasRole("GUEST")
                                 .anyRequest()
                                 .authenticated()
-                )
+                ).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         ;
 
         return http.build();

@@ -1,9 +1,11 @@
 package com.hust.backend_password_manager.entity.salt_entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "salt")
+@Data
 public class Salt {
 
     @Id

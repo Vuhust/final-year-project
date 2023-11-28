@@ -41,17 +41,21 @@ public class JwtService {
 
     public RegisterFormVM getRegisterForm(String token){
         Claims claims = extractAllClaims(token);
-        return new RegisterFormVM( (String) claims.get("email") ,(String) claims.get("password"));
+        return new RegisterFormVM( (String) claims.get("email") ,(String) claims.get("password"), (String) claims.get("salt") );
 
     }
 
 
     public Collection<? extends GrantedAuthority> getAuthorities(String token){
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        Account account = accountRepository.findByEmail(extractEmail(token));
-        if(account == null) authorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
+        String email  = extractEmail(token);
+        if(email == null){
+            return null;
+        }
+        Account account = accountRepository.findOneByEmail(email);
+        if (account == null ) return authorities;
         if(account.getIsAdmin() && account.getIsActive()) authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        if(!account.getIsActive()) authorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
+        if(!account.getIsAdmin() && account.getIsActive() ) authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return authorities;
     }
 
