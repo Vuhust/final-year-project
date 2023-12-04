@@ -8,7 +8,7 @@
   },
   "content_scripts": [
     {
-      "js": ["scripts/content.js"],
+      "js": ["scripts/libs/jquery.js","scripts/libs/CryptoJS.js","scripts/content.js"],
       "matches": ["<all_urls>" ]
     }
   ]
