@@ -7,7 +7,7 @@ const HomeView = () => {
 
   return (
     <div className="home-view">
-      <h1>Welcome to the Home Page</h1>
+      <h1> Chào mừng các bạn đến với phần mềm quản lý mật khẩu </h1>
     </div>
   );
 };
