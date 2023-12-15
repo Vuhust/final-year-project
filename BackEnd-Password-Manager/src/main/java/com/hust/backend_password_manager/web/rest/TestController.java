@@ -4,9 +4,9 @@ import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.entity.salt_entity.Salt;
 import com.hust.backend_password_manager.repository.password_manager_entity.AccountRepository;
 import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
+import com.hust.backend_password_manager.service.CacheService;
 import com.hust.backend_password_manager.service.EmailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +20,7 @@ public class TestController {
 
     final SaltRepository saltRepository;
 
-    final RedisTemplate template;
+    final CacheService cacheService;
 
 
 
@@ -55,16 +55,16 @@ public class TestController {
     }
 
 
-
-    @GetMapping("/get_all_salt")
-    public Object getlt() throws Exception{
-        template.opsForValue().set("loda","hello world");
-        System.out.println("Value of key loda: "+template.opsForValue().get("lodax"));
-
-
-        return saltRepository.findAll();
+    @GetMapping("/setcache")
+    public String setcache(@RequestParam String cache, String value) throws Exception{
+        cacheService.putotp(cache,1111);
+        return "hehe";
     }
 
+    @GetMapping("/getcache")
+    public Integer getcache(@RequestParam String cache) throws Exception{
+        return cacheService.getOTP(cache);
+    }
 
 
 

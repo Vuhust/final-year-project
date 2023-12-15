@@ -56,7 +56,6 @@ public class SecurityConfiguration {
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
                                 .requestMatchers("/account/**").hasAnyRole("USER","ADMIN")
-//                                .requestMatchers("/guest/**").hasRole("GUEST")
                                 .anyRequest()
                                 .authenticated()
                 ).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

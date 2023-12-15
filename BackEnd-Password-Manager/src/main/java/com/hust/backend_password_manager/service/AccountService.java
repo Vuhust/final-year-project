@@ -9,12 +9,10 @@ import com.hust.backend_password_manager.web.rest.vm.LoginFormVM;
 import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Random;
@@ -25,23 +23,22 @@ import java.util.Random;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final SaltRepository saltRepository;
-
     private final JwtService jwtService;
-    private final RedisTemplate redisTemplate;
     private final EmailService emailService;
+    private final CacheService cacheService;
+    private final Random random;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String register(RegisterFormVM registerFormVM) throws Exception{
         String token;
         Account account = accountRepository.findOneByEmail(registerFormVM.getEmail());
         if(account == null){
-            Random random = new Random();
-            Integer OTP = random.nextInt(10000, 99999);
-            String message = "Mã OTP :" + String.valueOf(OTP);
+            Integer otp = random.nextInt(10000, 99999);
+            String message = "Mã OTP :" + otp;
             emailService.sendOtp(registerFormVM.getEmail(), message);
             Map<String,Object> claim = ObjectAndMap.objectToMap(registerFormVM);
             token =  jwtService.generateToken(claim);
-            redisTemplate.opsForValue().set(token, OTP);
+            cacheService.putotp(token, otp);
             return token;
         } else {
             throw new Exception("asda");
@@ -49,7 +46,7 @@ public class AccountService {
     }
 
     public void validateRegister(Integer otp, String token) throws Exception{
-        Integer otpServer = (Integer) redisTemplate.opsForValue().get(token);
+        Integer otpServer = (Integer) cacheService.getOTP(token);
         if(otp.equals(otpServer) ){
             Account account = new Account();
             RegisterFormVM registerFormVM = jwtService.getRegisterForm(token);
@@ -61,10 +58,8 @@ public class AccountService {
             Salt salt = new Salt();
             salt.setSalt(registerFormVM.getSalt());
             salt.setAccId(account.getId());
-            redisTemplate.delete(token);
-
+            cacheService.evictotp(token);
         } else {
-
             throw new Exception("dont know");
         }
 
@@ -78,12 +73,6 @@ public class AccountService {
         Account account = accountRepository.findOneByEmail(jwtService.extractEmail(token));
         return saltRepository.findSaltByAccId(account.getId()) ;
     }
-
-
-    public void saveAccount(String token) {
-        return;
-    }
-
 
 
 
