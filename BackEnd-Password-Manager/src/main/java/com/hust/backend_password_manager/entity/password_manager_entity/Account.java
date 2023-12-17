@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Date;
 
@@ -14,6 +16,8 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@RequestScope
+@Component
 public class Account {
 
     @Id
@@ -27,6 +31,7 @@ public class Account {
     private Boolean isActive;
 
     private Boolean isAdmin;
+
     private Date createDateTime;
 
     private Date lastUpdateDate;

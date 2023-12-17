@@ -4,7 +4,8 @@ import icecreamReducer from '../features/icecream/icecreamSlice'
 import userReducer from '../features/user/userSlice'
 import loginReducer from '../features/login/loginSlice'
 import appReducer from '../appSlice'
-import formReducer from '../features/form/formSlice'
+import formLogin from '../features/formLogin/formLoginSlice'
+import formRegister from '../features/formRegister/formRegisterSlice'
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     user: userReducer,
     login: loginReducer,
     app: appReducer,
-    form: formReducer,
+    formRegister: formRegister,
+    formLogin : formLogin
   }
 })
 

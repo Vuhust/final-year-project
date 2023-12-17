@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.web.rest.vm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,4 +18,6 @@ public class RegisterFormVM  implements Serializable {
     String password;
     @Schema(example = "dsafsdafawefasefasdfe")
     private String salt;
+    @JsonIgnore
+    private String secret;
 }

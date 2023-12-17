@@ -16,11 +16,7 @@ const icecreamSlice = createSlice({
       state.numOfIcecreams += action.payload
     }
   },
-  extraReducers: builder => {
-    builder.addCase(cakeOrdered, state => {
-      state.numOfIcecreams--
-    })
-  }
+
 })
 
 export default icecreamSlice.reducer

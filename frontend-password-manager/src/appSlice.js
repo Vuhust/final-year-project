@@ -1,11 +1,15 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {comopentShow} from "./features/common/common";
 
 
 const initialState = {
-  token: null,
-  page: 'HOME',
+  token: window.localStorage.getItem('token'),
+  page: window.localStorage.getItem('currentPage') ?  window.localStorage.getItem('currentPage') : comopentShow.LOGIN,
   currentUrl : "asdasdas",
-  masterKey: null
+  masterKey: null,
+  secret: "IVQZEIOUMEPRZTREA",
+  appName: 'PasswordManager',
+  email: 'abb@gmail.com'
 };
 
 
@@ -29,7 +33,7 @@ export const appSlice = createSlice({
     setPage:(state, action ) => {
       // Simulating a logout action - resetting loggedIn and user to initial state
       console.log(action.payload)
-      state.page = action.payload.page;
+      state.page = action.payload;
     },
 
 

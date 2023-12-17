@@ -5,6 +5,7 @@ import com.hust.backend_password_manager.service.ResponseService;
 import com.hust.backend_password_manager.service.TwoFactorAuth;
 import com.hust.backend_password_manager.web.rest.vm.LoginFormVM;
 import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
+import com.hust.backend_password_manager.web.rest.vm.ValidateLoginVM;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
@@ -37,12 +38,7 @@ public class AccountController {
     }
 
 
-    @GetMapping("/hahaaaa")
-    public ResponseEntity<Object> validateOTP(
-            @RequestParam String OTP
-    ) throws Exception{
-        return ResponseEntity.ok(twoFactorAuth.validateOTP(OTP));
-    }
+
 
     @Schema()
     @PostMapping("/register")
@@ -69,6 +65,15 @@ public class AccountController {
 //        return ResponseEntity.ok(ResponseService.genarateResponse(  accountService.login(loginFormVM),"JWT"));
     }
 
+
+    @PostMapping ("/validate-login")
+    public ResponseEntity<Object> validateLogin(
+            @RequestBody ValidateLoginVM validateLoginVM
+    ) throws Exception{
+        return ResponseEntity.ok(accountService.validateOtpLogin(validateLoginVM.getToken(), validateLoginVM.getOTP() ));
+    }
+
+
     @PostMapping("/get-salt")
     public ResponseEntity<Object> getSalt(
             HttpServletRequest request
@@ -78,6 +83,18 @@ public class AccountController {
         final String token = authHeader.substring(7);
 
         ResponseService.genarateResponse(  accountService.getSalt(token),"JWT");
+        return ResponseEntity.ok("validate success");
+    }
+
+
+    @PostMapping("/changePassowrd")
+    public ResponseEntity<Object> changePassword(
+            HttpServletRequest request,
+            @RequestParam String email,
+            @RequestParam String newPassword
+    ) throws Exception{
+
+        ResponseService.genarateResponse(  accountService.changePassword(email ,newPassword ),"JWT");
         return ResponseEntity.ok("validate success");
     }
 

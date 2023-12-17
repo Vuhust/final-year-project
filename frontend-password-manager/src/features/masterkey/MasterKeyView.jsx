@@ -27,7 +27,7 @@ const MasterKey = () => {
     return (
         <form className="input-wrapper">
             {/*<lable*/}
-            {/*     className="col-sm-3 col-form-lable">{app.masterKey ? "bạn đã nhập masterkey rồi, nhập lại để thay đổi " : " Mời bạn nhập masterkey"}</lable>*/}
+            {/*     className="col-sm-3 col-formLogin-lable">{app.masterKey ? "bạn đã nhập masterkey rồi, nhập lại để thay đổi " : " Mời bạn nhập masterkey"}</lable>*/}
             <input type="text" className="beautiful-input"
                    placeholder={app.masterKey ? "bạn đã nhập masterkey rồi, nhập lại để thay đổi " : " Mời bạn nhập masterkey"} value={inputValue.masterKey} onChange={handleInput}/>
 

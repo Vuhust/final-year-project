@@ -6,6 +6,7 @@ import com.hust.backend_password_manager.repository.password_manager_entity.Acco
 import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
 import com.hust.backend_password_manager.service.CacheService;
 import com.hust.backend_password_manager.service.EmailService;
+import com.hust.backend_password_manager.service.TwoFactorAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class TestController {
 
     final CacheService cacheService;
 
+    final TwoFactorAuth twoFactorAuth;
 
 
     @GetMapping("/email")
@@ -61,9 +63,9 @@ public class TestController {
         return "hehe";
     }
 
-    @GetMapping("/getcache")
-    public Integer getcache(@RequestParam String cache) throws Exception{
-        return cacheService.getOTP(cache);
+    @GetMapping("/get-secret")
+    public Object getcache(@RequestParam String cache) throws Exception{
+        return twoFactorAuth.generateRandomSecret();
     }
 
 

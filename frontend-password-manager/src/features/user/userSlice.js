@@ -30,6 +30,7 @@ const userSlice = createSlice({
       state.loading = false
       state.users = []
       state.error = action.error.message
+      console.log(1111)
     })
   }
 })
