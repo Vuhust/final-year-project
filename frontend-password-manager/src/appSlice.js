@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {comopentShow} from "./features/common/common";
+import store from "./app/store";
 
 
 const initialState = {
@@ -36,6 +37,14 @@ export const appSlice = createSlice({
       state.page = action.payload;
     },
 
+    setToken:(state, action ) => {
+      // Simulating a logout action - resetting loggedIn and user to initial state
+      console.log(action.payload)
+      state.token = action.payload;
+      state.page = comopentShow.HOME;
+    },
+
+
 
     setCurrentUrl:(state, action ) => {
       // Simulating a logout action - resetting loggedIn and user to initial state
@@ -50,11 +59,19 @@ export const appSlice = createSlice({
       state.masterKey = action.payload.masterKey;
       // state.masterKey = action.payload.masterKey;
     },
+
+    setRegister:(state, action ) => {
+      // Simulating a logout action - resetting loggedIn and user to initial state
+      console.log(action.payload,"1111")
+      state.token = action.payload.data.token;
+      console.log("hehe");
+    },
+
   },
 
 
 });
 
-export const { login, setPage ,setMasterKey,setCurrentUrl} = appSlice.actions;
+export const { login,setToken, setRegister,setPage ,setMasterKey,setCurrentUrl} = appSlice.actions;
 
 export default appSlice.reducer;

@@ -1,6 +1,5 @@
 package com.hust.backend_password_manager.config;
 
-import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     jwtService.extractEmail(token),
                     null,
-                    jwtService.getAuthoritiesAndSetAccountBean(token)
+                    jwtService.getAuthorities(token)
             );
             authToken.setDetails(
                     new WebAuthenticationDetailsSource().buildDetails(request)

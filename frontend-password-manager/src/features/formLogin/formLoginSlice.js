@@ -6,9 +6,10 @@ import data from "bootstrap/js/src/dom/data";
 import {ordered} from "../icecream/icecreamSlice";
 import {fetchUsers} from "../user/userSlice";
 import { toast } from 'react-toastify';
-import {comopentShow, status} from "../common/common";
-import {setPage} from "../../appSlice";
+import {comopentShow, getSalt, status} from "../common/common";
+import {setPage , setToken} from "../../appSlice";
 import store from "../../app/store";
+import {login} from "../common/fetchData";
 
 const initialState = {
     status :"",
@@ -16,45 +17,47 @@ const initialState = {
     isSubmitting : false
 }
 
-export const doLogin = createAsyncThunk('user/', (dispatch) => {
-    const requestBody = {
-        email : data.email,
-        password : data.password,
-        salt : '0000000'
-    }
-    console.log(requestBody)
-    return axios
-        .post(config.loginUrl, data)
-        .then(response  => response.data)
-})
 
-function loginSuccess() {
-    setPage(comopentShow.SUB_ACCOUNT);
+
+export const doLogin = (data) =>{
+  const requestBody = {
+    email : data.email,
+    password : data.password
+  }
+  let doPost = new Promise((resolve, reject) => {
+    login(resolve,reject,requestBody)
+  });
+  doPost
+    .then((response) => {
+      if(response.status === 400){
+        response.json().then((jsonData) => {
+          toast.error(jsonData["msg"]);
+        })
+      }
+      if(response.status === 202){
+        response.json().then((jsonData) => {
+          const token = jsonData.token;
+          window.localStorage.setItem("token", token);
+          store.dispatch(setToken(comopentShow.HOME));
+          console.log(jsonData); // Log the JSON data
+        })
+      }
+
+      if(response.status === 200){
+        response.json().then((jsonData) => {
+          console.log(jsonData); // Log the JSON data
+        })
+      }
+    }).catch((err) => {
+    console.log(err,"error");
+  });
 }
 
 
 const formLoginSlice = createSlice({
     name: 'form',
     initialState,
-    extraReducers: builder => {
-        builder.addCase(doLogin.pending, state => {
-            state.isSubmitting = true;
-                console.log(1)
-        })
-        builder.addCase(doLogin.fulfilled, (state, action) => {
-            state.isSubmitting = false;
-            window.location.reload();
 
-        })
-        builder.addCase(doLogin.rejected, (state, action) => {
-            console.log("login error")
-            state.isSubmitting = false;
-            toast.error(" Login error ")
-            state.status = status.HIDE;
-            formLoginSlice.caseReducers.setData(state, action);
-            store.dispatch(setPage(comopentShow.SUB_ACCOUNT));
-        })
-    }
 
 
 });

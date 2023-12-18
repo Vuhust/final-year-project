@@ -6,6 +6,7 @@ import loginReducer from '../features/login/loginSlice'
 import appReducer from '../appSlice'
 import formLogin from '../features/formLogin/formLoginSlice'
 import formRegister from '../features/formRegister/formRegisterSlice'
+import popupReducer from '../features/popup/popupSlice'
 
 const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
     login: loginReducer,
     app: appReducer,
     formRegister: formRegister,
-    formLogin : formLogin
+    formLogin : formLogin,
+    popup : popupReducer,
   }
 })
 

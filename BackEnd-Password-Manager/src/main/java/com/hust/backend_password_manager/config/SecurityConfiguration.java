@@ -42,12 +42,11 @@ public class SecurityConfiguration {
             "/swagger-ui.html",
             "/test/**",
             "/guest/**",
-            "/account/register",
+            "/account/register**",
             "/account/register/validate",
-            "/account/login",
+            "/account/login**",
             "/account/changePassowrd",
-            "/account/validate-login",
-//            "/**",
+
 
     };
 

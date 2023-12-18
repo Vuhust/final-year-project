@@ -30,12 +30,29 @@ public class Account {
 
     private Boolean isActive;
 
+    private Boolean enableTowFactoryAuth;
+
     private Boolean isAdmin;
+
 
     private Date createDateTime;
 
-    private Date lastUpdateDate;
+    private Date lastUpdateDateTime;
 
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createDateTime = new Date();
+        this.lastUpdateDateTime = new Date();
+        this.isActive = true;
+        this.enableTowFactoryAuth = false;
+        this.isAdmin = false;
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.lastUpdateDateTime = new Date();
+    }
 
 
 }

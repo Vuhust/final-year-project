@@ -7,9 +7,7 @@ import {comopentShow} from "../common/common"
 
 const FormRegister = () => {
     const dispatch = useDispatch();
-    const status = useSelector(state => state.formRegister.status)
-    const message = useSelector(state => state.formRegister.message)
-
+    const formRegister = useSelector(state => state.formRegister)
     const validate = (values) => {
         const errors = {};
 
@@ -18,7 +16,6 @@ const FormRegister = () => {
         } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
             errors.email = 'Email không hợp lệ';
         }
-
         if (!values.password) {
             errors.password = 'Required';
         } else if( !/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(values.password)  ){
@@ -27,25 +24,20 @@ const FormRegister = () => {
 
         return errors;
     };
-
-
-
     const handleSubmit = (values) => {
 
-        dispatch(doRegister(values));
+        doRegister(values);
     };
-
+    console.log("formRegister", formRegister)
     return (
         <div className="container mt-5 rounded border border-3  p-3 ">
             <h1> Đăng ký </h1>
-            <h2> {message} </h2>
 
             <Formik
                 initialValues={{email: 'a@gmail.com', password: '1231AcasaA21'}}
                 validate={validate}
                 onSubmit={handleSubmit}
             >
-                {({isSubmitting}) => (
                     <Form >
                         <div className="row mb-3">
                             <label htmlFor="email" className="col-auto col-form-label">Tài Khoản</label>
@@ -62,7 +54,7 @@ const FormRegister = () => {
                             </div>
                             <ErrorMessage name="password" component="div" className="text-danger"/>
                         </div>
-                        <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                        <button type="submit" disabled={formRegister.isSubmitting} className="btn btn-primary">
                             Submit
                         </button>
                         <div/>
@@ -71,7 +63,6 @@ const FormRegister = () => {
                             dispatch(setPage(comopentShow.LOGIN))
                         }}>Bạn Đã có tài khoản , đăng nhập ngay ? </a>
                     </Form>
-                )}
             </Formik>
         </div>
     );

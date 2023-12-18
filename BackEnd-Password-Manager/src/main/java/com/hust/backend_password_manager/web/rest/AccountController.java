@@ -6,8 +6,10 @@ import com.hust.backend_password_manager.service.TwoFactorAuth;
 import com.hust.backend_password_manager.web.rest.vm.LoginFormVM;
 import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
 import com.hust.backend_password_manager.web.rest.vm.ValidateLoginVM;
+import com.hust.backend_password_manager.web.rest.vm.ValidateRegister;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -40,20 +43,20 @@ public class AccountController {
 
 
 
-    @Schema()
+//    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<Object> register(
-            @RequestBody RegisterFormVM registerFormVM
+            @Valid @RequestBody RegisterFormVM registerFormVM
             ) throws Exception{
-        return ResponseEntity.ok(accountService.register(registerFormVM));
+        Map<String,Object> token = accountService.register(registerFormVM);
+        return ResponseEntity.ok(ResponseService.genarateResponse(  token,"JWT"));
     }
 
     @PostMapping("/register/validate")
     public ResponseEntity<Object> validateRegister(
-            @RequestParam String token,
-            @RequestParam Integer otp
+        @RequestBody ValidateRegister validateRegister
     ) throws Exception{
-        accountService.validateRegister(otp,token);
+        accountService.validateRegister(validateRegister.getOTP(),validateRegister.getToken());
         return ResponseEntity.ok("validate success");
     }
 
@@ -61,12 +64,11 @@ public class AccountController {
     public ResponseEntity<Object> login(
             @RequestBody LoginFormVM loginFormVM
             ) throws Exception{
-          return ResponseEntity.ok(accountService.login(loginFormVM));
-//        return ResponseEntity.ok(ResponseService.genarateResponse(  accountService.login(loginFormVM),"JWT"));
+        return ResponseEntity.ok(ResponseService.genarateResponse(  accountService.login(loginFormVM),"Thành công"));
     }
 
 
-    @PostMapping ("/validate-login")
+    @PostMapping ("/login/validate")
     public ResponseEntity<Object> validateLogin(
             @RequestBody ValidateLoginVM validateLoginVM
     ) throws Exception{
@@ -74,7 +76,7 @@ public class AccountController {
     }
 
 
-    @PostMapping("/get-salt")
+    @PostMapping("/getSalt")
     public ResponseEntity<Object> getSalt(
             HttpServletRequest request
             ) throws Exception{

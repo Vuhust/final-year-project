@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import "~hover.css/css/hover-min.css"; /* Adjust the path based on your project structure */
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import OtpPopUp from "./features/otp/otpPopupView";
+import OtpPopUp from "./features/popup/popupView";
 
 import { CakeView } from './features/cake/CakeView'
 import { IcecreamView } from './features/icecream/IcecreamView'
@@ -19,7 +19,7 @@ import MasterKey from "./features/masterkey/MasterKeyView";
 import Login from "./features/formLogin/FormloginView";
 import Register from "./features/formRegister/FormRegisterView";
 import {comopentShow} from "./features/common/common"
-import Qr from "./features/qr/qrView";
+import Popup from "./features/popup/popupView"
 
 function App() {
   const app = useSelector(state => state.app)
@@ -36,16 +36,17 @@ function App() {
         {app.page === comopentShow.REGISTER && <Register />}
         {app.page === comopentShow.LOGIN && <Login />}
 
-    <OtpPopUp/>
+    {/*<OtpPopUp/>*/}
       {/*  <IcecreamView />*/}
-      {/*/!*<UserView />*!/*/}
+      {/*<UserView />*/}
       {/*/!*<LoginView/>*!/*/}
 
 
       {/*{ (app.page === 'SUB_ACCOUNT' ||  app.page === "ALL_SUB_ACCOUNT" ) && <Form/> }*/}
 
-      {/*{ (app.page === 'SUB_ACCOUNT' ||  app.page === "ALL_SUB_ACCOUNT" ) && <ListView/> }*/}
-        <Qr/>
+      { (app.page === 'SUB_ACCOUNT' ||  app.page === "ALL_SUB_ACCOUNT" ) && <ListView/> }
+        <Popup/>
+        {/*<Otp/>*/}
     </div>
   )
 }

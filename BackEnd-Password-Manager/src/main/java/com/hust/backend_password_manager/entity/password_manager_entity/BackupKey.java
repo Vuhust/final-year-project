@@ -18,7 +18,17 @@ public class BackupKey {
 
     private Date createDateTime;
 
-    private Date lastUpdateDate;
+    private Date lastUpdateDateTime;
+    @PrePersist
+    protected void onCreate() {
+        this.createDateTime = new Date();
+        this.lastUpdateDateTime = new Date();
+
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.lastUpdateDateTime = new Date();
+    }
 
 
 }

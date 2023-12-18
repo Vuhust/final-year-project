@@ -19,8 +19,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.Subject;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -41,12 +39,6 @@ public class JwtService {
     @Value("${application.security.jwt.expirationRegister}")
     private long jwtExpirationRegister;
 
-    private Account account;
-
-    @Autowired
-    public void settAccount(Account account){
-        this.account = account;
-    }
 
     final private AccountRepository accountRepository;
 
@@ -62,7 +54,7 @@ public class JwtService {
     }
 
 
-    public Collection<? extends GrantedAuthority> getAuthoritiesAndSetAccountBean(String token){
+    public Collection<? extends GrantedAuthority> getAuthorities(String token){
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         String email  = extractEmail(token);
         if(email == null){

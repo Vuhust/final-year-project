@@ -6,24 +6,14 @@ import {setPage} from "../../appSlice";
 import {comopentShow} from "../common/common";
 import {toast} from "react-toastify";
 
-const MyForm = () => {
+const FormLogin = () => {
     const dispatch = useDispatch();
     const status = useSelector(state => state.formRegister.status)
     const message = useSelector(state => state.formRegister.message)
     // const [isSubmitting, setIsSubmitting] = React.useState(false)
     const isSubmitting = useSelector(state => state.formLogin.isSubmitting);
-    const handleSubmit= async (values) => {
-        try {
-            // Perform login action
-            const response = await dispatch(doLogin(values));
-            dispatch()
-            // Handle success (if needed)
-            console.log('Login successful:', response);
-        } catch (error) {
-            // Handle login failure
-            console.error('Login error:', error);
-            // Dispatch any other actions or handle errors
-        }
+    const handleSubmit=  (values) => {
+        doLogin(values);
     };
 
 
@@ -96,4 +86,4 @@ const MyForm = () => {
     );
 };
 
-export default MyForm;
+export default FormLogin;
