@@ -60,7 +60,7 @@ public class JwtService {
         if(email == null){
             return null;
         }
-        account = accountRepository.findOneByEmail(email);
+        Account account = accountRepository.findOneByEmail(email);
         if (account == null ) return authorities;
         if(account.getIsAdmin() && account.getIsActive()) authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(!account.getIsAdmin() && account.getIsActive() ) authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

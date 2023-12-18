@@ -28,7 +28,7 @@ public class TestController {
 
     @GetMapping("/email")
     public String testEmail(@RequestParam String toEmail) throws Exception{
-        emailService.sendOtp(toEmail,  "1111");
+        emailService.sendActiveUrl(toEmail,  "1111","1" );
         return "hehe";
     }
 

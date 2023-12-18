@@ -4,7 +4,6 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import {popUpType} from "../common/common";
 import QRCode from "react-qr-code";
 import {setShow} from "./popupSlice";
-import {setIsSubmitting} from "../formRegister/formRegisterSlice";
 // import { resetInputPopup } from './otpPopupSlice';
 
 const OtpPopUp = () => {
@@ -24,7 +23,6 @@ const OtpPopUp = () => {
         // Handle the value when the user confirms
         console.log('Input value:', inputValue);
         dispatch(setShow(false));
-      dispatch(setIsSubmitting(false));
     };
 
     const closePopup = () => {

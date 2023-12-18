@@ -49,15 +49,16 @@ public class AccountController {
             @Valid @RequestBody RegisterFormVM registerFormVM
             ) throws Exception{
         Map<String,Object> token = accountService.register(registerFormVM);
-        return ResponseEntity.ok(ResponseService.genarateResponse(  token,"JWT"));
+        return ResponseEntity.ok(ResponseService.genarateResponse(  token,"Kiểm tra email đẻ kích hoạt"));
     }
 
-    @PostMapping("/register/validate")
+    @GetMapping("/register/validate")
     public ResponseEntity<Object> validateRegister(
-        @RequestBody ValidateRegister validateRegister
+        @RequestParam Integer otp,
+        @RequestParam String token
     ) throws Exception{
-        accountService.validateRegister(validateRegister.getOTP(),validateRegister.getToken());
-        return ResponseEntity.ok("validate success");
+        accountService.validateRegister(otp,token);
+        return ResponseEntity.ok("Tao tài khoản master massword thành công");
     }
 
     @PostMapping ("/login")
@@ -99,5 +100,6 @@ public class AccountController {
         ResponseService.genarateResponse(  accountService.changePassword(email ,newPassword ),"JWT");
         return ResponseEntity.ok("validate success");
     }
+
 
 }

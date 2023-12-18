@@ -54,7 +54,7 @@ const FormRegister = () => {
                             </div>
                             <ErrorMessage name="password" component="div" className="text-danger"/>
                         </div>
-                        <button type="submit" disabled={formRegister.isSubmitting} className="btn btn-primary">
+                        <button type="submit" className="btn btn-primary">
                             Submit
                         </button>
                         <div/>

@@ -3,6 +3,8 @@ package com.hust.backend_password_manager.entity.salt_entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "salt")
 @Data
@@ -17,7 +19,5 @@ public class Salt {
     private String salt;
 
     private String secretKey;
-
-
 
 }

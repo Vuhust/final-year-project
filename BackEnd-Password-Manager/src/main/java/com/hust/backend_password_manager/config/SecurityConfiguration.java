@@ -41,10 +41,11 @@ public class SecurityConfiguration {
             "/webjars/**",
             "/swagger-ui.html",
             "/test/**",
-            "/guest/**",
+            "/user/**",
             "/account/register**",
             "/account/register/validate",
-            "/account/login**",
+            "/account/login/validate",
+            "/account/login",
             "/account/changePassowrd",
 
 

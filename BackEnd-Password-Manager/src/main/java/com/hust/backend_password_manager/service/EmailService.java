@@ -1,27 +1,33 @@
 package com.hust.backend_password_manager.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+
 @Service
+@Slf4j
 public class EmailService {
 
     @Autowired
     private JavaMailSender emailSender;
 
-    public void sendOtp(
-            String to, String text) {
-
+    public void sendActiveUrl(
+            String to, String token, String otp) {
+        String text = "http://localhost:8080/account/register/validate?token="+ URLEncoder.encode(token) +"&otp=" + URLEncoder.encode(otp);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("passwordmanager@gmail.com");
         message.setTo(to);
-        message.setSubject("Mã OTP");
+        message.setSubject("Xác nhận kích hoạt tài khoản");
         message.setText(text);
         emailSender.send(message);
+        log.info(text);
     }
+
 
     @Bean
     public SimpleMailMessage templateSimpleMessage() {

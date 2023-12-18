@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ LoginWithOutOtp.class})
     public ResponseEntity<Object> handleLogin(LoginWithOutOtp e) {
         log.info("vo handler");
-        Map<String,Object> response = Map.of("msg" , "Thành công" , "data" , Map.of("token", e.getToken()));
+        Map<String,Object> response = Map.of("msg" , "Thành công, Nhập otp" , "data" , Map.of("token", e.getToken()));
         return ResponseEntity.accepted().body(response);
     }
 

@@ -15,13 +15,16 @@ public class SubAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String accId;
+    private Long accId;
 
     private String url;
 
     @Column(name = "`desc`")
     private String desc;
+
     private String subUserName;
+
+
     private String subUserPwdEncrypt;
 
     private Date createDateTime;

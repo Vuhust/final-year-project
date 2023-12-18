@@ -18,7 +18,9 @@ export const comopentShow = {
     REGISTER: 'REGISTER',
     ALL_SUB_ACCOUNT : 'ALL_SUB_ACCOUNT',
     SUB_ACCOUNT : 'SUB_ACCOUNT',
-    HOME : "HOME"
+    HOME : "HOME",
+    OTP_FORM : "OTP_FORM",
+    EDIT_ACCOUNT : "EDIT_ACCOUNT"
 }
 
 

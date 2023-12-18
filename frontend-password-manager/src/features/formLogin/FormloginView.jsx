@@ -1,24 +1,18 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useDispatch, useSelector} from "react-redux";
-import  {doLogin} from "./formLoginSlice";
+import  {doLogin} from "./formLogin";
 import {setPage} from "../../appSlice";
 import {comopentShow} from "../common/common";
 import {toast} from "react-toastify";
 
 const FormLogin = () => {
     const dispatch = useDispatch();
-    const status = useSelector(state => state.formRegister.status)
-    const message = useSelector(state => state.formRegister.message)
-    // const [isSubmitting, setIsSubmitting] = React.useState(false)
-    const isSubmitting = useSelector(state => state.formLogin.isSubmitting);
+
     const handleSubmit=  (values) => {
         doLogin(values);
     };
 
-
-    console.log(isSubmitting)
-    // toast.error(" Login error ")
 
     const validate = (values) => {
         const errors = {};
@@ -29,26 +23,20 @@ const FormLogin = () => {
             errors.email = 'Email không hợp lệ';
         }
 
-        if (!values.password) {
-            errors.password = 'Required';
-        } else if( !/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(values.password)  ){
-            errors.password = 'Mật khẩu không hợp lệ, yêu cầu ít nhấ 8 ký tự trong đó có 1 ký tư hoa 1 số ';
-        }
+        // if (!values.password) {
+        //     errors.password = 'Required';
+        // } else if( !/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(values.password)  ){
+        //     errors.password = 'Mật khẩu không hợp lệ, yêu cầu ít nhấ 8 ký tự trong đó có 1 ký tư hoa 1 số ';
+        // }
 
         return errors;
     };
 
 
 
-    // const handleSubmit = (values) => {
-    //
-    //     dispatch(doLogin(values));
-    // };
-
     return (
         <div className="container mt-5 rounded border border-3  p-3 ">
             <h1> Đăng nhập </h1>
-            <h2> {message} </h2>
 
             <Formik
                 initialValues={{email: 'a@gmail.com', password: '1231AcasaA21'}}
@@ -71,7 +59,7 @@ const FormLogin = () => {
                             </div>
                             <ErrorMessage name="password" component="div" className="text-danger"/>
                         </div>
-                        <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                        <button type="submit"  className="btn btn-primary">
                             Submit
                         </button>
                         <div/>

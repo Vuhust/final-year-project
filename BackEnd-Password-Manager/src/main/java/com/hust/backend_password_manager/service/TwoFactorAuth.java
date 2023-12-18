@@ -25,8 +25,7 @@ public class TwoFactorAuth {
     @Autowired
     AccountRepository account;
 
-    @Autowired
-    Account accountBean;
+
 
     private final SaltRepository saltRepository;
 
@@ -38,20 +37,16 @@ public class TwoFactorAuth {
 
     public  String generateRandomSecret() {
         SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[16];
-        random.nextBytes(bytes);
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        // Encode the random bytes to Base32
-        return Base64.getEncoder().encodeToString(bytes)
-                .replaceAll("=", "")
-                .replaceAll("\\+", "")
-                .replaceAll("/", "")
-                .replaceAll("-", "")
-                .replaceAll("9", "")
-                .replaceAll("8", "")
-                .replaceAll("0", "")
-                .replaceAll("1", "")
-                .toUpperCase();
+        StringBuilder sb = new StringBuilder(16);
+
+        for (int i = 0; i < 16; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(randomIndex));
+        }
+
+        return sb.toString();
     }
 }
 

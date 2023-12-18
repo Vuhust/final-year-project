@@ -20,21 +20,26 @@ import Login from "./features/formLogin/FormloginView";
 import Register from "./features/formRegister/FormRegisterView";
 import {comopentShow} from "./features/common/common"
 import Popup from "./features/popup/popupView"
+import FormOtp from "./features/formOtp/jormOtp";
+import Qr from "./features/qr/qrView"
 
 function App() {
   const app = useSelector(state => state.app)
-  console.log(app.page)
+  console.log(app, "app")
 
   return (
     <div className='App'>
       <ToastContainer/>
       <Header />
+
+        <Qr/>
         <MasterKey/>
       {app.page === 'HOME' && <HomeView /> }
 
       {/*<MyForm />*/}
         {app.page === comopentShow.REGISTER && <Register />}
         {app.page === comopentShow.LOGIN && <Login />}
+        {app.page === comopentShow.OTP_FORM && <FormOtp/>}
 
     {/*<OtpPopUp/>*/}
       {/*  <IcecreamView />*/}

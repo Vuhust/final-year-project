@@ -9,16 +9,13 @@ import com.hust.backend_password_manager.web.rest.err.LoginWithOutOtp;
 import com.hust.backend_password_manager.web.rest.err.MyError;
 import com.hust.backend_password_manager.web.rest.vm.LoginFormVM;
 import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -41,16 +38,16 @@ public class AccountService {
         if(account == null){
             registerFormVM.setSecret("");
             Integer otp = random.nextInt(10000, 99999);
-            String message = "Mã OTP :" + otp;
-            Thread thread = new Thread(() -> {
-                emailService.sendOtp(registerFormVM.getEmail(), message);
-            });
-            thread.start();
-
             Map<String,Object> claim = ObjectAndMap.objectToMap(registerFormVM);
             token =  jwtService.generateToken(claim, jwtService.REGISTER);
             cacheService.putotp(token, otp);
-            return Map.of("token", token);
+            Thread thread = new Thread(() -> {
+                emailService.sendActiveUrl(registerFormVM.getEmail(), token, otp.toString());
+            });
+            thread.start();
+
+
+            return null;
         } else {
             throw new MyError("Tài khoản đã tôn tại");
         }
@@ -69,6 +66,7 @@ public class AccountService {
             accountRepository.save(account);
             Salt salt = new Salt();
             salt.setSalt(registerFormVM.getSalt());
+            salt.setSecretKey(twoFactorAuth.generateRandomSecret());
             salt.setAccId(account.getId());
             cacheService.evictotp(token);
         } else {
@@ -86,12 +84,12 @@ public class AccountService {
             throw new  MyError("Mật khẩu không đúng");
         }
         Map<String,Object> claim = Map.of("email", loginFormVM.getEmail());
-        if(Boolean.FALSE.equals(account.getEnableTowFactoryAuth())){
-            String token = jwtService.generateToken(claim,jwtService.TOKEN);
+        if(Boolean.TRUE.equals(account.getEnableTowFactoryAuth())){
+            String token = jwtService.generateToken(claim,jwtService.LOGIN);
             throw new LoginWithOutOtp(token);
 
         }
-        String token = jwtService.generateToken(claim,jwtService.LOGIN);
+        String token = jwtService.generateToken(claim,jwtService.TOKEN);
         return Map.of("token", token);
 
     }
