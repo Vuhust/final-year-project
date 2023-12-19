@@ -5,7 +5,7 @@ import userReducer from '../features/user/userSlice'
 import loginReducer from '../features/login/loginSlice'
 import appReducer from '../appSlice'
 import qrReducer from "../features/qr/qrSlice";
-
+import subAccountReducer from "../features/list/listSlice"
 import popupReducer from '../features/popup/popupSlice'
 
 const store = configureStore({
@@ -17,6 +17,7 @@ const store = configureStore({
     app: appReducer,
     popup : popupReducer,
     qr : qrReducer,
+    subAccount : subAccountReducer,
   }
 })
 

@@ -8,6 +8,12 @@ const config = {
   registerUrl : baseUrl + '/account/register',
   registerValidateUrl : baseUrl + '/account/register/validate',
   getQr : baseUrl + '/user/secretKey',
+  userInfoUrl : baseUrl + '/user/getUserInfo',
+  masterKeyUrl : baseUrl + '/user/masterKey',
+  checkMasterKeyUrl : baseUrl + '/user/checkMasterKey',
+  subAccountUrl : baseUrl + '/user/subAccount',
+  subAccountListUrl : baseUrl + '/user/subAccountList',
+
   page : "PAGE"
   // Other configurations...
 };

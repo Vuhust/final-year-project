@@ -1,7 +1,9 @@
 package com.hust.backend_password_manager.service;
 
+import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.entity.salt_entity.Salt;
+import com.hust.backend_password_manager.model.UserInfoModel;
 import com.hust.backend_password_manager.repository.password_manager_entity.AccountRepository;
 import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
 import com.hust.backend_password_manager.until.ObjectAndMap;
@@ -12,6 +14,7 @@ import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +34,7 @@ public class AccountService {
     private final Random random;
     private final PasswordEncoder passwordEncoder;
     private final TwoFactorAuth twoFactorAuth;
-
+    private final AccountBean accountBean;
     public Map<String,Object> register(RegisterFormVM registerFormVM) throws Exception{
         String token;
         Account account = accountRepository.findOneByEmail(registerFormVM.getEmail());
@@ -68,6 +71,7 @@ public class AccountService {
             salt.setSalt(registerFormVM.getSalt());
             salt.setSecretKey(twoFactorAuth.generateRandomSecret());
             salt.setAccId(account.getId());
+            saltRepository.save(salt);
             cacheService.evictotp(token);
         } else {
             throw new MyError("Otp không chính xac");
@@ -132,6 +136,55 @@ public class AccountService {
         accountRepository.save(account);
         return true;
     }
+    public Object getAccountInfo(){
+       Salt salt = saltRepository.findByAccId(accountBean.getId());
+       log.info(accountBean.toString());
+       if(salt == null){
+           salt = new Salt();
+           salt.setAccId(accountBean.getId());
+           saltRepository.save(salt);
+       }
+       UserInfoModel userInfoModel = new UserInfoModel();
+       userInfoModel.setSetupMasterKey(  salt.getMasterPasword() == null || salt.getMasterPasword().isEmpty());
+       userInfoModel.setEmail(accountBean.getEmail());
+       userInfoModel.setSalt(salt.getSalt());
+        return userInfoModel;
+    }
+
+    public void saveMasterKey(String masterKey){
+        if(accountBean == null){
+            throw  new MyError("tài khoản null");
+        }
+
+        Salt salt= saltRepository.findByAccId(accountBean.getId());
+        if(salt.getMasterPasword() == null || salt.getMasterPasword().isEmpty()){
+            salt.setMasterPasword(passwordEncoder.encode(masterKey));
+            saltRepository.save(salt);
+        } else {
+            throw  new MyError("Master key đã được lưu rồi");
+        }
+    }
+
+    public boolean checkMasterKey(String masterKey){
+        if(accountBean == null){
+            throw  new MyError("tài khoản null");
+        }
+
+        Salt salt= saltRepository.findByAccId(accountBean.getId());
+        if(salt.getMasterPasword() == null || salt.getMasterPasword().isEmpty()){
+            if(passwordEncoder.matches(masterKey,salt.getMasterPasword())){
+                return true;
+            }else {
+                throw new MyError("Master key chưa chính xác");
+            }
+        } else {
+            throw  new MyError("Chưa đặt master key");
+        }
+    }
+
+
+
+
 
 
 }

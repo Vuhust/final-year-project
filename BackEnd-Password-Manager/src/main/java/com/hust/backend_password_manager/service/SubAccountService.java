@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.service;
 
+import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.entity.password_manager_entity.SubAccount;
 import com.hust.backend_password_manager.entity.salt_entity.Salt;
@@ -23,16 +24,16 @@ import java.util.Map;
 public class SubAccountService {
     private final SubAccountRepository subAccountRepository;
     private final AccountService accountService;
+    private final AccountBean accountBean;
+
     private final AccountRepository accountRepository;
     private final JwtService jwtService;
     private final SaltRepository saltRepository;
 
 
-    public void addSubAccount(SubAccountVM subAccount,  HttpServletRequest request){
-        String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);;
-        String email = jwtService.extractEmail(token);
-        Account account = accountRepository.findOneByEmail(email);
+    public void addSubAccount(SubAccountVM subAccount){
+        Account account = new Account();
+        BeanUtils.copyProperties(accountBean,account);
         SubAccount subAcc = new SubAccount();
         BeanUtils.copyProperties(subAccount, subAcc ,"id");
         subAcc.setAccId(account.getId());
@@ -40,11 +41,9 @@ public class SubAccountService {
     }
 
 
-    public void editSubAccount(SubAccountVM subAccount, HttpServletRequest request){
-        String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);;
-        String email = jwtService.extractEmail(token);
-        Account account = accountRepository.findOneByEmail(email);
+    public void editSubAccount(SubAccountVM subAccount){
+        Account account = new Account();
+        BeanUtils.copyProperties(accountBean,account);
         SubAccount subAcc = subAccountRepository.findById(subAccount.getId()).orElse(null);
         if(subAcc == null){
             throw new MyError("Tài Khoản con Không tồn tại");
@@ -57,10 +56,8 @@ public class SubAccountService {
     }
 
     public void deleteSubAccount(Integer id , HttpServletRequest request){
-        String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);;
-        String email = jwtService.extractEmail(token);
-        Account account = accountRepository.findOneByEmail(email);
+        Account account = new Account();
+        BeanUtils.copyProperties(accountBean,account);
         SubAccount subAcc = subAccountRepository.findById((long) id).orElse(null);
         if(subAcc == null){
             throw new MyError("Tài Khoản con Không tồn tại");

@@ -1,6 +1,8 @@
 package com.hust.backend_password_manager.service;
 
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.repository.password_manager_entity.AccountRepository;
 import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
@@ -13,6 +15,7 @@ import java.util.function.Function;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,10 +27,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtService {
 
-    final public String LOGIN = "LOGIN";
-    final public String REGISTER = "REGISTER";
-    final public String TOKEN = "TOKEN";
+    public static final  String LOGIN = "LOGIN";
+    public static final  String REGISTER = "REGISTER";
+    public static final  String TOKEN = "TOKEN";
 
+    private final AccountBean accountBean ;
 
 
 
@@ -40,7 +44,7 @@ public class JwtService {
     private long jwtExpirationRegister;
 
 
-    final private AccountRepository accountRepository;
+    private final  AccountRepository accountRepository;
 
 
     public String extractEmail(String token) {
@@ -58,12 +62,15 @@ public class JwtService {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         String email  = extractEmail(token);
         if(email == null){
-            return null;
+            return authorities;
         }
         Account account = accountRepository.findOneByEmail(email);
         if (account == null ) return authorities;
         if(account.getIsAdmin() && account.getIsActive()) authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        if(!account.getIsAdmin() && account.getIsActive() ) authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        if(Boolean.FALSE.equals(account.getIsAdmin()) && Boolean.TRUE.equals(account.getIsActive()) ) authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        BeanUtils.copyProperties(account, accountBean);
+        log.info(accountBean.toString());
+
         return authorities;
     }
 
@@ -111,12 +118,6 @@ public class JwtService {
 
     }
 
-
-    public boolean validateOtpLoginToken(
-            String token , Integer otp
-    ) {
-        return (this.validateToken(token) && this.getSubject(token).equals(LOGIN) );
-    }
 
 
 //

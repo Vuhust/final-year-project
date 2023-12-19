@@ -1,6 +1,7 @@
 package com.hust.backend_password_manager.web.rest;
 
 import com.hust.backend_password_manager.service.AccountService;
+import com.hust.backend_password_manager.service.ResponseService;
 import com.hust.backend_password_manager.service.SubAccountService;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,34 +26,41 @@ public class UserController {
         return ResponseEntity.ok("validatedfgfgsdrf");
     }
 
-    @PostMapping("/addSubAccount")
+    @PostMapping("/subAccount")
     public ResponseEntity<Object> addSubAccount(
-        @NonNull HttpServletRequest request,
         @RequestBody SubAccountVM subAccountVM
         ) throws Exception{
-        subAccountService.addSubAccount(subAccountVM,request);
+        subAccountService.addSubAccount(subAccountVM);
+        subAccountService.addSubAccount(subAccountVM);
 
         return ResponseEntity.ok("Thêm thành công");
     }
 
 
-    @PostMapping("/editSubAccount")
+    @PutMapping("/subAccount")
     public ResponseEntity<Object> editSubAccount(
-        @RequestBody SubAccountVM subAccountVM,
-        HttpServletRequest request
+        @RequestBody SubAccountVM subAccountVM
     ) throws Exception{
-        subAccountService.editSubAccount(subAccountVM, request );
+        subAccountService.editSubAccount(subAccountVM );
         return ResponseEntity.ok("Sửa thành công");
     }
 
 
-    @PostMapping("/deleteSubAccount")
+    @DeleteMapping("/subAccount")
     public ResponseEntity<Object> deleteSubAccount(
         @RequestParam Integer id,
         HttpServletRequest request
     ) throws Exception{
         subAccountService.deleteSubAccount(id,request);
         return ResponseEntity.ok("Xóa thành công");
+    }
+
+
+    @GetMapping("/getUserInfo")
+    public ResponseEntity<Object> getUserInfor(
+    ) throws Exception{
+
+        return ResponseEntity.ok( accountService.getAccountInfo());
     }
 
     @GetMapping("/subAccountList")
@@ -62,8 +70,6 @@ public class UserController {
 
         return ResponseEntity.ok( subAccountService.getSubAccountList(request));
     }
-
-
     @GetMapping("/secretKey")
     public ResponseEntity<Object> getSecret(
             @NonNull HttpServletRequest request
@@ -71,4 +77,25 @@ public class UserController {
 
         return ResponseEntity.ok( subAccountService.getSecret(request));
     }
+    @PostMapping("/masterKey")
+    public ResponseEntity<Object> setMasterKey(
+        @RequestParam String masterKey
+    ) throws Exception{
+        accountService.saveMasterKey(masterKey);
+        return  ResponseEntity.ok().body("");
+    }
+
+    @GetMapping("/checkMasterKey")
+    public ResponseEntity<Object> checkMasterKey(
+        @RequestParam String masterKey
+
+    ) throws Exception{
+        accountService.checkMasterKey(masterKey);
+        return ResponseEntity.ok("");
+
+    }
+
+
+
+
 }

@@ -102,4 +102,16 @@ public class AccountController {
     }
 
 
+//    @PostMapping("/editAccount")
+//    public ResponseEntity<Object> editAccount(
+//
+//    ) throws Exception{
+//
+//        ResponseService.genarateResponse(  accountService.changePassword(email ,newPassword ),"JWT");
+//        return ResponseEntity.ok("validate success");
+//    }
+
+
+
+
 }

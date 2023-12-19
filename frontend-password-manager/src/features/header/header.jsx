@@ -46,4 +46,3 @@ function Header() {
 }
 
 export default Header;
-faQrcode

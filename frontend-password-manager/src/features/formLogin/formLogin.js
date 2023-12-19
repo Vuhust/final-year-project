@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../config/server";
 import { toast } from 'react-toastify';
 import {comopentShow, getSalt, status} from "../common/common";
-import {setPage , setToken} from "../../appSlice";
+import {doGetUserInfo, setPage, setToken} from "../../appSlice";
 import store from "../../app/store";
 
 
@@ -19,6 +19,7 @@ export const doLogin = async (data) => {
             toast("Đăng nhập thành công");
             store.dispatch(setPage(comopentShow.HOME));
             store.dispatch(setToken(respone.data.data.token))
+          doGetUserInfo();
         } else if (respone.status === 202) {
             toast("Nhập OTP");
             store.dispatch(setToken(respone.data.data.token))

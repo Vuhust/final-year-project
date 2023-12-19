@@ -20,7 +20,9 @@ export const comopentShow = {
     SUB_ACCOUNT : 'SUB_ACCOUNT',
     HOME : "HOME",
     OTP_FORM : "OTP_FORM",
-    EDIT_ACCOUNT : "EDIT_ACCOUNT"
+    EDIT_ACCOUNT : "EDIT_ACCOUNT",
+    FORM_MASTER_KEY : "MASTER_KEY"
+
 }
 
 
