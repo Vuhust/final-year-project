@@ -61,6 +61,23 @@ public class AccountController {
         return ResponseEntity.ok("Tao tài khoản master massword thành công");
     }
 
+    @PostMapping("/forgotPassword-----")
+    public ResponseEntity<Object> forgotPassword(
+            @Valid @RequestBody RegisterFormVM registerFormVM
+    ) throws Exception{
+        Map<String,Object> token = accountService.register(registerFormVM);
+        return ResponseEntity.ok(ResponseService.genarateResponse(  token,"Kiểm tra email đẻ kích hoạt"));
+    }
+
+    @PostMapping("/forgotPassword/validate-----")
+    public ResponseEntity<Object> forgotPasswordValidate(
+            @Valid @RequestBody RegisterFormVM registerFormVM
+    ) throws Exception{
+        Map<String,Object> token = accountService.register(registerFormVM);
+        return ResponseEntity.ok(ResponseService.genarateResponse(  token,"Kiểm tra email đẻ kích hoạt"));
+    }
+
+
     @PostMapping ("/login")
     public ResponseEntity<Object> login(
             @RequestBody LoginFormVM loginFormVM

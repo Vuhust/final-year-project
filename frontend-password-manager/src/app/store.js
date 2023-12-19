@@ -7,6 +7,7 @@ import appReducer from '../appSlice'
 import qrReducer from "../features/qr/qrSlice";
 import subAccountReducer from "../features/list/listSlice"
 import popupReducer from '../features/popup/popupSlice'
+import formSubAccReduce from "../features/formSubAcc/formSubAccSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     popup : popupReducer,
     qr : qrReducer,
     subAccount : subAccountReducer,
+    formSubAcc :formSubAccReduce
   }
 })
 

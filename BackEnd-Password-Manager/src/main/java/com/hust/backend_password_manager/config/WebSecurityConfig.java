@@ -12,9 +12,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("*") // Allow requests from all origins while allowing credentials
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
-                .maxAge(36000000);
+                .maxAge(3600);
     }
 }

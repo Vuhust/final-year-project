@@ -22,9 +22,12 @@ import FormOtp from "./features/formOtp/jormOtp";
 import Qr from "./features/qr/qrView"
 import formMasterKey from "./features/formSetMasterKey/FormMasterKeyView";
 import FormMasterKey from "./features/formSetMasterKey/FormMasterKeyView";
+import FormSubAcc from "./features/formSubAcc/formSubAcc"
 
 function App() {
   const app = useSelector(state => state.app)
+  const formSubAcc = useSelector(state => state.formSubAcc)
+
   console.log(app, "app")
 
   return (
@@ -35,6 +38,7 @@ function App() {
         <Qr/>
         <MasterKey/>
       {app.page === 'HOME' && <HomeView /> }
+      {formSubAcc.show && <FormSubAcc /> }
 
       {/*<MyForm />*/}
         {app.page === comopentShow.REGISTER && <Register />}

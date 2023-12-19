@@ -3,7 +3,9 @@ import DataTable from "react-data-table-component";
 import config from "../config/server";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchSubAccount} from "./listSlice";
+import {fetchSubAccount, fetchDeleteSubAccount} from "./listSlice";
+import data from "bootstrap/js/src/dom/data";
+import {setShow} from "../formSubAcc/formSubAccSlice";
 export const ListView = () =>
 {
   const columns= [
@@ -12,20 +14,20 @@ export const ListView = () =>
       selector:(row)=>row.id,
     },
     {
-      name:"Title",
-      selector:(row)=>row.title,
+      name:"Url",
+      selector:(row)=>row.url,
     },
     {
-      name:"Category",
-      selector:(row)=>row.category,
+      name:"Desc",
+      selector:(row)=>row.desc,
     },
     {
-      name:"Price",
-      selector:(row)=>row.price,
+      name:"User namee",
+      selector:(row)=>row.subUserName,
     },
     {
-      name:"Image",
-      selector:(row)=><img  height ={70} width={80} src={ row.image}/>,
+      name:"password",
+      selector:(row)=> "******",
     },
     {
       name:"Action",
@@ -40,34 +42,26 @@ export const ListView = () =>
   const dispatch = useDispatch();
   const [search, SetSearch]= useState('');
   const [filter, setFilter]= useState([]);
+  console.log(subAccount.data)
 
-  // const getSubAccount= async()=>{
-  //   try{
-  //     const req= await axios.get(config.subAccountListUrl, {
-  //
-  //     });
-  //     const res= await req.json();
-  //     setData(res);
-  //     setFilter(res);
-  //   } catch(error){
-  //     console.log(error);
-  //   }
-  // }
+
   useEffect(()=>{
     fetchSubAccount();
   }, []);
 
   useEffect(()=>{
     const result= subAccount.data.filter((item)=>{
-      return item.title.toLowerCase().match(search.toLocaleLowerCase());
+      const item1 = item.desc.toLowerCase().match(search.toLocaleLowerCase());
+      const item2 = item.url.toLowerCase().match(search.toLocaleLowerCase());
+      return item1 || item2 ;
     });
     setFilter(result);
-  },[search]);
+  },[search,subAccount.data]);
 
   const handleDelete=(val)=>{
-    window.alert(val)
-    const newdata= data.filter((item)=>item.id!==val);
-    setFilter(newdata);
+    fetchDeleteSubAccount(val)
+    // const newdata= data.filter((item)=>item.id!==val);
+    // setFilter(newdata);
   }
 
   const tableHeaderstyle={
@@ -87,9 +81,13 @@ export const ListView = () =>
 
   };
 
-  return(
-    <div className="container">
+  const addSubAcc = () => {
+    dispatch(setShow(true));
+  }
 
+  return(
+    <div className="container"> Tổng {subAccount.data.length}
+      <button onClick={addSubAcc}> Thêm</button>
       <DataTable
         onSelectedRowsChange={handleRowSelectedChange}
         customStyles={ tableHeaderstyle}
@@ -100,15 +98,15 @@ export const ListView = () =>
         fixedHeader
         selectableRowsHighlight
         highlightOnHover
-        actions={
-          <button className="btn btn-success">Export Pdf</button>
-        }
+        // actions={
+        //   <button className="btn btn-success">Export Pdf</button>
+        // }
         subHeader
         subHeaderComponent={
           <input type="text"
                  className="w-25 form-control"
-                 placeholder="Search..."
-                 value={ search}
+                 placeholder="Tìm kiếm"
+                 value={search}
                  onChange={(e)=>SetSearch(e.target.value)}
 
           />

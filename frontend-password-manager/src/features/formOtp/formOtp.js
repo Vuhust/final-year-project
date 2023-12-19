@@ -20,7 +20,7 @@ export const doFetchOtp = async (data) => {
         if (respone.status === 200) {
             toast("đăng nhập thành công");
             store.dispatch(setPage(comopentShow.HOME));
-            store.dispatch(setToken(respone.data.data.token))
+            store.dispatch(setToken(respone.data))
         }
     } catch (e) {
         if (e.response.status === 400) {

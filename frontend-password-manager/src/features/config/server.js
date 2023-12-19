@@ -13,7 +13,6 @@ const config = {
   checkMasterKeyUrl : baseUrl + '/user/checkMasterKey',
   subAccountUrl : baseUrl + '/user/subAccount',
   subAccountListUrl : baseUrl + '/user/subAccountList',
-
   page : "PAGE"
   // Other configurations...
 };
