@@ -40,3 +40,8 @@
 button {
   font-size: calc(10px + 2vmin);
 }
+
+.dataTables_length label {
+  content: "Number per page hehe";
+  /* Other CSS properties if needed */
+}
