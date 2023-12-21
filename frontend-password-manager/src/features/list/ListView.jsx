@@ -6,6 +6,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchSubAccount, fetchDeleteSubAccount} from "./listSlice";
 import data from "bootstrap/js/src/dom/data";
 import {setShow} from "../formSubAcc/formSubAccSlice";
+import {startConfirmation} from "../confirm/confirmSlice";
+import SweetAlert from "react-bootstrap-sweetalert";
 export const ListView = () =>
 {
   const columns= [
@@ -37,10 +39,13 @@ export const ListView = () =>
     }
 
   ];
+  const [deleteID, setDeleteID] = useState(null); // Initialize with null
+  const [deleteIDList, setDeleteIDList] = useState([]); // Initialize with null
 
   const subAccount = useSelector(state => state.subAccount)
   const dispatch = useDispatch();
   const [search, SetSearch]= useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm]= useState(false);
   const [filter, setFilter]= useState([]);
   console.log(subAccount.data)
 
@@ -59,10 +64,20 @@ export const ListView = () =>
   },[search,subAccount.data]);
 
   const handleDelete=(val)=>{
-    fetchDeleteSubAccount(val)
-    // const newdata= data.filter((item)=>item.id!==val);
-    // setFilter(newdata);
+    setDeleteID(val);
+    setShowDeleteConfirm(true)
+
   }
+
+  const confirmDelete=(val)=>{
+    fetchDeleteSubAccount(deleteID);
+    setShowDeleteConfirm(false);
+  }
+
+  const cancelDelete=(val)=>{
+    setShowDeleteConfirm(false)
+  }
+
 
   const tableHeaderstyle={
     headCells:{
@@ -76,9 +91,7 @@ export const ListView = () =>
   }
   const handleRowSelectedChange = (data) => {
     window.alert(1)
-    console.log(data.allSelected);
-    // console.log(selectedRows);
-
+    console.log(data.selectedRows.map(row=>row.id));
   };
 
   const addSubAcc = () => {
@@ -87,32 +100,58 @@ export const ListView = () =>
 
   return(
     <div className="container"> Tổng {subAccount.data.length}
-      <button onClick={addSubAcc}> Thêm</button>
+      <div className="row container">
+        <div className="col-md-8 row text-start">
+          <div className="col-md-8 row text-start">
+
+            <button className="btn col-md-3 btn-danger p-2">Xóa đã chọn</button>
+            {/*<div className="btn col-md-1  p-2"></div>*/}
+
+            <button className="btn col-md-3 btn-success p-2 mr-2">Thêm</button>
+          </div>
+
+        </div>
+        <div className="col-md-4 text-end">
+
+          <input type="text"
+                 className="p-2  form-control"
+                 placeholder="Tìm kiếm ..."
+                 value={search}
+                 onChange={(e) => SetSearch(e.target.value)}/>
+        </div>
+        {/*<div className="p-2">*/}
+        {/*</div>*/}
+
+      </div>
+      <br/>
+      <SweetAlert
+        show={showDeleteConfirm}
+        warning
+        showCancel
+        cancelBtnText="Để tôi xem xét "
+        cancelBtnBsStyle="light"
+        confirmBtnText="Chắc chắn rồi "
+        confirmBtnBsStyle="danger"
+        title="Bạn có chắc chắn muốn xóa?"
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+        focusCancelBtn
+      >
+        Sau khi xóa sẽ không thể hoàn tác
+      </SweetAlert>
       <DataTable
         onSelectedRowsChange={handleRowSelectedChange}
-        customStyles={ tableHeaderstyle}
+        customStyles={tableHeaderstyle}
         columns={columns}
         data={filter}
         pagination
         selectableRows
         fixedHeader
+        paginationComponentOptions={{rowsPerPageText: "Số tài khoản trên 1 trang"}}
+
         selectableRowsHighlight
         highlightOnHover
-        // actions={
-        //   <button className="btn btn-success">Export Pdf</button>
-        // }
-        subHeader
-        subHeaderComponent={
-          <input type="text"
-                 className="w-25 form-control"
-                 placeholder="Tìm kiếm"
-                 value={search}
-                 onChange={(e)=>SetSearch(e.target.value)}
-
-          />
-        }
-        subHeaderAlign="right"
-
+        paginationPerPage={10}
       />
 
 

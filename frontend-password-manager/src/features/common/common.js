@@ -24,6 +24,8 @@ export const comopentShow = {
     FORM_MASTER_KEY : "MASTER_KEY"
 
 }
+export const serializeFunction = (func) => func.toString();
+export const deserializeFunction = (str) => new Function(`return (${str})`)();
 
 
 export function getSalt(length){

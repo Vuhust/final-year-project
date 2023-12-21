@@ -23,6 +23,9 @@ import Qr from "./features/qr/qrView"
 import formMasterKey from "./features/formSetMasterKey/FormMasterKeyView";
 import FormMasterKey from "./features/formSetMasterKey/FormMasterKeyView";
 import FormSubAcc from "./features/formSubAcc/formSubAcc"
+import SweetAlert from "react-bootstrap-sweetalert";
+import QRCode from "react-qr-code";
+import ConfirmView from "./features/confirm/ConfirmView";
 
 function App() {
   const app = useSelector(state => state.app)
@@ -34,6 +37,7 @@ function App() {
     <div className='App'>
       <ToastContainer/>
       {app.page !== comopentShow.LOGIN && <Header/>}
+      <ConfirmView/>
 
         <Qr/>
         <MasterKey/>
