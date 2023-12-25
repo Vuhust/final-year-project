@@ -8,15 +8,19 @@ import {useDispatch} from "react-redux";
 import {setPage} from "../../appSlice";
 import {comopentShow} from "../common/common";
 import {fetchQr, setShow} from "../qr/qrSlice";
+import {fetchGetAccountSetting} from "../settingForm/settingformSlice";
 
 
 function Header() {
   // const dispatch= useDispatch();
   const dispatch = useDispatch()
+  const style = {
+    minWidth: '400px'
 
+  };
   return (
     <>
-      <Navbar bg="dark" variant="dark" >
+      <Navbar style={style} bg="dark" variant="dark" >
         <Container>
           <Navbar.Brand  onClick={(e) => dispatch(setPage({page: 'HOME'}))} > Giới thiệu  </Navbar.Brand>
           <Nav className="me-auto">
@@ -33,11 +37,15 @@ function Header() {
             }}>
               <IoLogOut/> Thoát
             </NavDropdown.Item>
-            <NavDropdown.Item onClick={(e) => dispatch(setPage(comopentShow.FORM_SETTING))}>
+            <NavDropdown.Item onClick={(e) => fetchGetAccountSetting()}>
               <CiEdit /> Cài đặt
             </NavDropdown.Item>
             <NavDropdown.Item onClick={(e) =>fetchQr()}>
               <IoQrCodeSharp/> Mã qr 2 FA
+            </NavDropdown.Item>
+
+            <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.FROM_CHANGE_MASTER_KEY))}>
+              Đổi  masterKey
             </NavDropdown.Item>
 
 

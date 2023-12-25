@@ -25,7 +25,8 @@ export const comopentShow = {
     OTP_FORM : "OTP_FORM",
     EDIT_ACCOUNT : "EDIT_ACCOUNT",
     FORM_SET_MASTER_KEY : "MASTER_KEY",
-    FORM_SETTING : "FROM_SETTING"
+    FORM_SETTING : "FROM_SETTING",
+    FROM_CHANGE_MASTER_KEY : "FROM_CHANGE_MASTER_KEY"
 
 }
 export const serializeFunction = (func) => func.toString();

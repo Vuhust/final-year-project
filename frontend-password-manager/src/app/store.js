@@ -9,6 +9,8 @@ import subAccountReducer from "../features/list/listSlice"
 import popupReducer from '../features/popup/popupSlice'
 import formSubAccReduce from "../features/formSubAcc/formSubAccSlice";
 import confirmReduce from "../features/confirm/confirmSlice";
+import checkMasterKeyReducer from "../features/checkMasterkey/masterKeySlice"
+import settingReducer from "../features/settingForm/settingformSlice"
 
 const store = configureStore({
   reducer: {
@@ -22,6 +24,8 @@ const store = configureStore({
     subAccount : subAccountReducer,
     formSubAcc :formSubAccReduce,
     confirm: confirmReduce,
+    checkMasterKey : checkMasterKeyReducer,
+    setting : settingReducer,
   }
 })
 

@@ -1,23 +1,94 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ordered as cakeOrdered } from '../cake/cakeSlice'
+import store from "../../app/store";
+import {comopentShow, encrypt} from "../common/common";
+import axios from "axios";
+import config from "../config/server";
+import {fetchSubAccount} from "../list/listSlice";
+import {setPage} from "../../appSlice";
 
 const initialState = {
-    numOfIcecreams: 10
+    enable2FA : false
 }
 
 const SettingFormSlice = createSlice({
     name: 'SettingForm',
     initialState,
     reducers: {
-        ordered: state => {
-            state.numOfIcecreams--
+        setEnable2FA: (state, action) => {
+            // Simulating a login action - setting loggedIn to true and storing the user data
+            state.enable2FA = action.payload;
         },
-        restocked: (state, action) => {
-            state.numOfIcecreams += action.payload
-        }
-    },
+    }
 
 })
 
+export const { setEnable2FA } = SettingFormSlice.actions
 export default SettingFormSlice.reducer
-export const { ordered, restocked } = SettingFormSlice.actions
+
+export const fetchSaveAccountSetting = async (data)=>{
+
+    const token = store.getState().app.token;
+    console.log(token);
+
+    try {
+        const authorization = "Bearer " + token;
+        const requestBody =
+            {
+                "enable2FA": data.enable2FA,
+                "receiveEmailNotification": false,
+                "allowRecoveryMasterKey": false,
+            }
+
+        console.log(requestBody);
+        // return
+        const respone = await axios.put(config.editAccountSetting ,{} ,
+            {
+                headers : {
+                    'Authorization': authorization ,
+                    'Content-Type': 'application/json'
+                    // Add more headers if required
+                },
+                params : requestBody
+            },
+        );
+        if (respone.status === 200) {
+            console.log(respone.data);
+            fetchGetAccountSetting()            // store.dispatch(setData(respone.data));
+        }
+    } catch (e) {
+        console.log("err",e.response.status)
+    }
+}
+
+
+
+export const fetchGetAccountSetting = async ()=>{
+
+    const token = store.getState().app.token;
+    console.log(token);
+
+    try {
+        const authorization = "Bearer " + token;
+
+        // return
+        const respone = await axios.get(config.getAccountSetting ,
+            {
+                headers : {
+                    'Authorization': authorization ,
+                    'Content-Type': 'application/json'
+                    // Add more headers if required
+                },
+            },
+        );
+        if (respone.status === 200) {
+            console.log(respone.data);
+            store.dispatch(setPage(comopentShow.FORM_SETTING));
+            store.dispatch(setEnable2FA(respone.data.enable2FA))
+            // store.dispatch()
+            // store.dispatch(setData(respone.data));
+        }
+    } catch (e) {
+        console.log("err",e)
+    }
+}

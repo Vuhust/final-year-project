@@ -20,7 +20,6 @@ export const loginSlice = createSlice({
   reducers: {
     login: (state, action) => {
       // Simulating a login action - setting loggedIn to true and storing the user data
-      window.alert(1);
       state.loggedIn = true;
       state.user = action.payload;
     },

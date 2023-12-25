@@ -39,7 +39,6 @@ const FormSetMasterKey = () => {
                             Submit
                         </button>
                         <a className="nav-link text-decoration-underline text-primary " onClick={() => {
-                            window.alert(1);
                             localStorage.clear();
                             dispatch(setPage(comopentShow.LOGIN))
                         }}> Thoát</a>

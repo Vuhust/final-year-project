@@ -11,9 +11,13 @@ const config = {
   userInfoUrl : baseUrl + '/user/getUserInfo',
   masterKeyUrl : baseUrl + '/user/masterKey',
   checkMasterKeyUrl : baseUrl + '/user/checkMasterKey',
+  changeMasterKey : baseUrl +'/user/changeMasterKey',
   subAccountUrl : baseUrl + '/user/subAccount',
   subAccountListUrl : baseUrl + '/user/subAccountList',
-  page : "PAGE"
+  page : "PAGE",
+  editAccountSetting  : baseUrl + '/account/editAccountSetting',
+  getAccountSetting : baseUrl + '/account/getAccountSetting'
+
   // Other configurations...
 };
 

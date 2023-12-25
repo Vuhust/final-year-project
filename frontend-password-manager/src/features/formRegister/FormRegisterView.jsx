@@ -59,7 +59,6 @@ const FormRegister = () => {
                         </button>
                         <div/>
                         <a className="nav-link text-decoration-underline text-primary " onClick={() => {
-                            window.alert(1);
                             dispatch(setPage(comopentShow.LOGIN))
                         }}>Bạn Đã có tài khoản , đăng nhập ngay ? </a>
                     </Form>

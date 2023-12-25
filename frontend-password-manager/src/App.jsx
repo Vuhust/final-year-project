@@ -29,6 +29,8 @@ import QRCode from "react-qr-code";
 import ConfirmView from "./features/confirm/ConfirmView";
 import SettingFormView from "./features/settingForm/SettingFormView";
 import {doGetUserInfo} from "./appSlice";
+import changeMasterKeyView from "./features/changeMasterKeyForm/ChangeMasterKeyView";
+import ChangeMasterKeyVieW from "./features/changeMasterKeyForm/ChangeMasterKeyView";
 function App() {
   const app = useSelector(state => state.app)
   const formSubAcc = useSelector(state => state.formSubAcc)
@@ -47,7 +49,7 @@ function App() {
       <ConfirmView/>
 
         {/*{app.page === comopentShow.FORM_SETTING && <SettingFormView/>}*/}
-        {1 && <SettingFormView/>}
+        {app.page=== comopentShow.FORM_SETTING && <SettingFormView/>}
         <Qr/>
         <CheckMasterKey/>
       {app.page === 'HOME' && <HomeView /> }
@@ -58,6 +60,7 @@ function App() {
         {app.page === comopentShow.LOGIN && <Login />}
         {app.page === comopentShow.OTP_FORM && <FormOtp/>}
         {app.page === comopentShow.FORM_SET_MASTER_KEY && <FormSetMasterKey/>}
+        {app.page === comopentShow.FROM_CHANGE_MASTER_KEY   && <ChangeMasterKeyVieW/>}
 
     {/*<OtpPopUp/>*/}
       {/*  <IcecreamView />*/}

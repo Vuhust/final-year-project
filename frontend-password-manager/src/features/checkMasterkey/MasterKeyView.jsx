@@ -21,7 +21,6 @@ const CheckMasterKey = () => {
 
     const closePopup = () => {
       dispatch(setShowCheckMasterKey(false))
-
     }
     return (
 

@@ -13,6 +13,7 @@ import { RiDeleteBin6Line, RiEdit2Line, RiEyeLine } from 'react-icons/ri';
 import {CiEdit} from "react-icons/ci";
 import {log} from "qrcode/lib/core/galois-field";
 import {decrypt} from "../common/common";
+import {setShowCheckMasterKey} from "../checkMasterkey/masterKeySlice";
 
 export const ListView = () =>
 {
@@ -51,6 +52,8 @@ export const ListView = () =>
   const [deleteID, setDeleteID] = useState(null); // Initialize with null
   const [deleteIDList, setDeleteIDList] = useState([]); // Initialize with null
   const subAccount = useSelector(state => state.subAccount)
+  const app = useSelector(state => state.app)
+
   const dispatch = useDispatch();
   const [search, SetSearch]= useState('');
   const [showDeleteConfirm, setShowDeleteConfirm]= useState(false);
@@ -69,6 +72,11 @@ export const ListView = () =>
   })
 
   const addSubAccountClick = () =>{
+    if(!app.masterKey){
+      dispatch(setShowCheckMasterKey(true));
+      return;
+    }
+
     setSubAccountInfo({
       add : true,
       id : '',
@@ -82,6 +90,11 @@ export const ListView = () =>
   }
 
   const editSubAccountClick = (id) =>{
+    if(!app.masterKey){
+      dispatch(setShowCheckMasterKey(true));
+      return;
+    }
+
     const data = subAccount.data.find((item) =>{
       if(item.id === id){
         return item;
@@ -152,7 +165,6 @@ export const ListView = () =>
     },
   }
   const handleRowSelectedChange = (data) => {
-    window.alert(1)
     console.log(data.selectedRows.map(row=>row.id));
   };
 
