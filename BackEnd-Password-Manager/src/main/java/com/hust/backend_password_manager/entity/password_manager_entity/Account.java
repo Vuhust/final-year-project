@@ -33,8 +33,9 @@ public class Account {
 
     private Boolean enableTowFactoryAuth;
 
-    private Boolean isAdmin;
+    private Boolean allowRestoreMasterKey;
 
+    private Boolean isAdmin;
 
     private Date createDateTime;
 

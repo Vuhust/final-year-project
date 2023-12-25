@@ -171,7 +171,7 @@ public class AccountService {
         }
 
         Salt salt= saltRepository.findByAccId(accountBean.getId());
-        if(salt.getMasterPasword() == null || salt.getMasterPasword().isEmpty()){
+        if(  !(salt.getMasterPasword() == null) && !salt.getMasterPasword().isEmpty()){
             if(passwordEncoder.matches(masterKey,salt.getMasterPasword())){
                 return true;
             }else {

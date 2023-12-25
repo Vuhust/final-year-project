@@ -6,6 +6,7 @@ import config from "./features/config/server";
 import {toast} from "react-toastify";
 import data from "bootstrap/js/src/dom/data";
 import {act} from "react-dom/cjs/react-dom-test-utils.production.min";
+import {useCheckboxState} from "pretty-checkbox-react";
 
 
 const initialState = {
@@ -17,8 +18,10 @@ const initialState = {
   appName: 'PasswordManager',
   email: 'abb@gmail.com',
   setupMasterKey: null,
+  twoFAState: false,
+  receiveNotificationEmail: false,
+  allowRecoveryMasterKey: false,
 };
-
 
 
 export const doGetUserInfo= async () => {

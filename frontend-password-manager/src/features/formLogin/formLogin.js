@@ -18,7 +18,8 @@ export const doLogin = async (data) => {
         if (respone.status === 200) {
             toast("Đăng nhập thành công");
             store.dispatch(setPage(comopentShow.HOME));
-            store.dispatch(setToken(respone.data.data.token))
+            store.dispatch(setToken(respone.data.data.token));
+            window.localStorage.setItem("token", respone.data.data.token)
           doGetUserInfo();
         } else if (respone.status === 202) {
             toast("Nhập OTP");

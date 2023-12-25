@@ -31,7 +31,6 @@ public class UserController {
         @RequestBody SubAccountVM subAccountVM
         ) throws Exception{
         subAccountService.addSubAccount(subAccountVM);
-        subAccountService.addSubAccount(subAccountVM);
 
         return ResponseEntity.ok("Thêm thành công");
     }

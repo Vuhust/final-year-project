@@ -27,14 +27,17 @@ function Header() {
         </Container>
         <Nav>
           <NavDropdown drop="start" title={<FontAwesomeIcon icon={faAddressCard}/>} id="collapsible-nav-dropdown">
-            <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.LOGIN))}>
-              <IoLogOut/>
+            <NavDropdown.Item  onClick={(e) => {
+              localStorage.clear();
+              dispatch(setPage(comopentShow.LOGIN))
+            }}>
+              <IoLogOut/> Thoát
             </NavDropdown.Item>
-            <NavDropdown.Item onClick={(e) => dispatch(setPage(comopentShow.EDIT_ACCOUNT))}>
-              <CiEdit />
+            <NavDropdown.Item onClick={(e) => dispatch(setPage(comopentShow.FORM_SETTING))}>
+              <CiEdit /> Cài đặt
             </NavDropdown.Item>
             <NavDropdown.Item onClick={(e) =>fetchQr()}>
-              <IoQrCodeSharp/>
+              <IoQrCodeSharp/> Mã qr 2 FA
             </NavDropdown.Item>
 
 

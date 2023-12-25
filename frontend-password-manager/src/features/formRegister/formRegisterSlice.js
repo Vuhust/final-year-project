@@ -1,23 +1,19 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {useSelector} from "react-redux";
+
 import axios from "axios";
 import config from "../config/server";
-import data from "bootstrap/js/src/dom/data";
-import {ordered} from "../icecream/icecreamSlice";
-import {fetchUsers} from "../user/userSlice";
+
 import {comopentShow, getSalt} from "../common/common"
-import {register} from "../common/fetchData";
 import {setPage , setRegister} from "../../appSlice";
 import store from "../../app/store";
 import {toast} from "react-toastify";
-import {setPopUpType, setShow as setShowOtp} from "../popup/popupSlice";
-import  {popUpType} from "../common/common"
+import CryptoJS from "crypto-js";
+
 
 export const doRegister = async (data) => {
     const requestBody = {
         email : data.email,
         password : data.password,
-        salt : getSalt(6),
+        salt : CryptoJS.lib.WordArray.random(128/8).toString(),
     }
     try {
         const respone = await axios.post(config.registerUrl, requestBody);

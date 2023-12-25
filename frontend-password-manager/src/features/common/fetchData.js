@@ -75,4 +75,3 @@ export const getOtp =  (resolve, reject, token) => {
 }
 
 
-

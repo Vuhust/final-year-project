@@ -2,6 +2,8 @@ import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import config from "../config/server";
 import store from "../../app/store";
+import {encrypt, decrypt} from '../common/common'
+
 import {loginSlice} from "../login/loginSlice";
 const initialState = {
   data: [],
@@ -67,6 +69,79 @@ export const fetchDeleteSubAccount = async (data)=>{
     console.log("err",e.response.status)
   }
 
+}
+
+export const fetchAddSubAccount = async (data)=>{
+
+  const token = store.getState().app.token;
+  console.log(token);
+
+  try {
+    const authorization = "Bearer " + token;
+    const requestBody =
+        {
+          "url": data.url,
+          "desc": data.desc,
+          "subUserName": data.username,
+          "subUserPwdEncrypt": encrypt(data.password)
+        };
+
+    console.log(requestBody);
+    // return
+    const respone = await axios.post(config.subAccountUrl ,requestBody ,
+        {
+          headers : {
+            'Authorization': authorization ,
+            'Content-Type': 'application/json'
+            // Add more headers if required
+          },
+        },
+    );
+    if (respone.status === 200) {
+      console.log(respone.data);
+      fetchSubAccount();
+      // store.dispatch(setData(respone.data));
+    }
+  } catch (e) {
+    console.log("err",e.response.status)
+  }
+}
+
+
+export const fetchEditSubAccount = async (data)=>{
+
+  const token = store.getState().app.token;
+  console.log(token);
+
+  try {
+    const authorization = "Bearer " + token;
+    const requestBody = {
+      "id" :data.id,
+      "url": data.url,
+      "desc": data.desc,
+      "subUserName": data.username,
+      "subUserPwdEncrypt":  encrypt(data.password)
+
+    };
+
+    const respone = await axios.put(config.subAccountUrl ,requestBody,
+        {
+          headers : {
+            'Authorization': authorization ,
+            'Content-Type': 'application/json'
+            // Add more headers if required
+          },
+
+        },
+    );
+    if (respone.status === 200) {
+      console.log(respone.data);
+      fetchSubAccount();
+      // store.dispatch(setData(respone.data));
+    }
+  } catch (e) {
+    console.log("err",e.response.status)
+  }
 }
 
 
