@@ -24,7 +24,7 @@ export const comopentShow = {
     HOME : "HOME",
     OTP_FORM : "OTP_FORM",
     EDIT_ACCOUNT : "EDIT_ACCOUNT",
-    FORM_MASTER_KEY : "MASTER_KEY",
+    FORM_SET_MASTER_KEY : "MASTER_KEY",
     FORM_SETTING : "FROM_SETTING"
 
 }
@@ -78,7 +78,7 @@ export function encrypt (msg) {
 
     const encrypted = CryptoJS.AES.encrypt(msg, key, {
         iv: iv,
-        padding: CryptoJS.pad.Pkcs7,
+        // padding: CryptoJS.pad.Pkcs7,
         mode: CryptoJS.mode.CTR,
     });
 
@@ -98,12 +98,13 @@ export function decrypt (transitmessage) {
     }
     const key = CryptoJS.PBKDF2(pass, salt, {
         keySize: keySize /32   ,
-        iterations: iterations
+        iterations: iterations,
+
     });
     console.log(key)
     const decrypted = CryptoJS.AES.decrypt(encrypted, key, {
         iv: iv,
-        padding: CryptoJS.pad.Pkcs7,
+        // padding: CryptoJS.pad.Pkcs7,
         mode: CryptoJS.mode.CTR,
     })
     return decrypted.toString(CryptoJS.enc.Utf8);

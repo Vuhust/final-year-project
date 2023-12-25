@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.service;
 
+import com.hust.backend_password_manager.config.AesUtil;
 import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.entity.password_manager_entity.SubAccount;
@@ -8,13 +9,16 @@ import com.hust.backend_password_manager.repository.password_manager_entity.Acco
 import com.hust.backend_password_manager.repository.password_manager_entity.SubAccountRepository;
 import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
 import com.hust.backend_password_manager.web.rest.err.MyError;
+import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +30,11 @@ public class SubAccountService {
     private final AccountService accountService;
     private final AccountBean accountBean;
 
+    private final AesUtil aesUtil;
     private final AccountRepository accountRepository;
     private final JwtService jwtService;
     private final SaltRepository saltRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     public void addSubAccount(SubAccountVM subAccount){
         Account account = new Account();
@@ -55,7 +60,7 @@ public class SubAccountService {
         subAccountRepository.save(subAcc);
     }
 
-    public void deleteSubAccount(Integer id , HttpServletRequest request){
+    public void deleteSubAccount(Integer id ){
         Account account = new Account();
         BeanUtils.copyProperties(accountBean,account);
         SubAccount subAcc = subAccountRepository.findById((long) id).orElse(null);
@@ -69,16 +74,14 @@ public class SubAccountService {
     }
     public List<SubAccount> getSubAccountList(HttpServletRequest request){
         String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);;
+        String token = authHeader.substring(7);
         String email = jwtService.extractEmail(token);
         Account account = accountRepository.findOneByEmail(email);
-        Salt salt = saltRepository.findByAccId(account.getId());
-        List<SubAccount> subAccountList = subAccountRepository.findSubAccountByAccId(account.getId());
-        return subAccountList;
+        return subAccountRepository.findSubAccountByAccId(account.getId());
     }
     public Object getSecret(HttpServletRequest request){
         String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);;
+        String token = authHeader.substring(7);
         String email = jwtService.extractEmail(token);
         Account account = accountRepository.findOneByEmail(email);
         Salt salt = saltRepository.findByAccId(account.getId());
@@ -89,6 +92,25 @@ public class SubAccountService {
         return Map.of("email", email, "secret", salt.getSecretKey());
 
     }
+
+    public void changeMasterKey(ChangeMasterKeyVM changeMasterKeyVM){
+        Salt salt = saltRepository.findByAccId(accountBean.getId());
+        if(!passwordEncoder.matches(changeMasterKeyVM.getCurrentMasterKey(),salt.getMasterPasword())){
+            throw new MyError("Master key không chính xác ");
+        }
+        List<SubAccount> subAccountList = subAccountRepository.findSubAccountByAccId(accountBean.getId());
+        Iterator<SubAccount> iterator = subAccountList.iterator();
+        while (iterator.hasNext()){
+            SubAccount subAccount = iterator.next();
+            String newPasswordEncrypt = aesUtil.changeNewMasterKey(subAccount.getSubUserPwdEncrypt(),salt.getSalt(), changeMasterKeyVM.getCurrentMasterKey(), changeMasterKeyVM.getNewMasterKey() );
+            subAccount.setSubUserPwdEncrypt(newPasswordEncrypt);
+        }
+        subAccountRepository.saveAll(subAccountList);
+        salt.setMasterPasword(passwordEncoder.encode(changeMasterKeyVM.getNewMasterKey()));
+        saltRepository.save(salt);
+
+    }
+
 
 
 

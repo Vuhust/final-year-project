@@ -24,8 +24,8 @@ public class SubAccount {
 
     private String subUserName;
 
-
-    private String subUserPwdEncrypt;
+    @Column(name = "`sub_user_pwd_encrypt`", length = 1024)
+    private String subUserPwdEncrypt ;
 
     private Date createDateTime;
     private Date lastUpdateDateTime;

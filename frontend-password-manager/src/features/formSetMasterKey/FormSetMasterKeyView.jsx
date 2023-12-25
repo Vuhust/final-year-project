@@ -6,7 +6,7 @@ import {setPage} from "../../appSlice";
 import {comopentShow} from "../common/common"
 import SweetAlert from "react-bootstrap-sweetalert";
 
-const FormMasterKey = () => {
+const FormSetMasterKey = () => {
     const app = useSelector(state => state.app)
 
   const validate = (values) => {
@@ -14,13 +14,7 @@ const FormMasterKey = () => {
         return errors;
     };
     const handleSubmit = (values) => {
-      console.log("masterkey", values);
-        if(app.setupMasterKey){
           doSetupMasterKey(values.masterkey);
-
-        } else  {
-          doCheckMasterKey(values.masterkey);
-        }
     };
     return (
         <SweetAlert showConfirm={false}>
@@ -61,4 +55,4 @@ const FormMasterKey = () => {
     );
 };
 
-export default FormMasterKey;
+export default FormSetMasterKey;

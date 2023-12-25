@@ -3,10 +3,7 @@ package com.hust.backend_password_manager.web.rest;
 import com.hust.backend_password_manager.service.AccountService;
 import com.hust.backend_password_manager.service.ResponseService;
 import com.hust.backend_password_manager.service.TwoFactorAuth;
-import com.hust.backend_password_manager.web.rest.vm.LoginFormVM;
-import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
-import com.hust.backend_password_manager.web.rest.vm.ValidateLoginVM;
-import com.hust.backend_password_manager.web.rest.vm.ValidateRegister;
+import com.hust.backend_password_manager.web.rest.vm.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -109,26 +106,23 @@ public class AccountController {
 
     @PostMapping("/changePassowrd")
     public ResponseEntity<Object> changePassword(
-            HttpServletRequest request,
-            @RequestParam String email,
-            @RequestParam String newPassword
-    ) throws Exception{
-
-        ResponseService.genarateResponse(  accountService.changePassword(email ,newPassword ),"JWT");
-        return ResponseEntity.ok("validate success");
+        @RequestBody ChangePasswordVM changePasswordVM
+        ) throws Exception{
+        accountService.changePassword(changePasswordVM.getCurrentPassword() , changePasswordVM.getNewPassword() );
+        return ResponseEntity.ok("Thay đổi mật khẩu thành công");
     }
 
-
-//    @PostMapping("/editAccount")
-//    public ResponseEntity<Object> editAccount(
-//
-//    ) throws Exception{
-//
-//        ResponseService.genarateResponse(  accountService.changePassword(email ,newPassword ),"JWT");
-//        return ResponseEntity.ok("validate success");
-//    }
-
-
-
+    @PutMapping("/editAccountSetting")
+    public ResponseEntity<Object> editAccount(
+        AccountSettingFormVM accountSettingFormVM
+    ) throws Exception{
+        accountService.editSetting(accountSettingFormVM);
+        return ResponseEntity.ok("Sửa thông tin thành công");
+    }
+    @GetMapping("/getAccountSetting")
+    public ResponseEntity<Object> editAccount(
+    ) throws Exception{
+        return ResponseEntity.ok().body(accountService.getAccountSetting());
+    }
 
 }

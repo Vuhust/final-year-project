@@ -9,6 +9,7 @@ import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
 import com.hust.backend_password_manager.until.ObjectAndMap;
 import com.hust.backend_password_manager.web.rest.err.LoginWithOutOtp;
 import com.hust.backend_password_manager.web.rest.err.MyError;
+import com.hust.backend_password_manager.web.rest.vm.AccountSettingFormVM;
 import com.hust.backend_password_manager.web.rest.vm.LoginFormVM;
 import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
 import lombok.RequiredArgsConstructor;
@@ -130,11 +131,18 @@ public class AccountService {
 
 
 
-    public Object changePassword(String email,String newPassword){
-        Account account = accountRepository.findOneByEmail(email);
-        account.setPassword(passwordEncoder.encode(newPassword));
-        accountRepository.save(account);
-        return true;
+    public Object changePassword(String currentPassword,String newPassword){
+        if(passwordEncoder.matches(currentPassword,accountBean.getPassword())){
+            Account account = new Account();
+            BeanUtils.copyProperties(accountBean, account);
+            account.setPassword(passwordEncoder.encode(newPassword));
+            accountRepository.save(account);
+            return true;
+
+        }else {
+            throw new MyError( "Mật khẩu cũ không chính xác ");
+        }
+
     }
     public Object getAccountInfo(){
        Salt salt = saltRepository.findByAccId(accountBean.getId());
@@ -181,6 +189,26 @@ public class AccountService {
             throw  new MyError("Chưa đặt master key");
         }
     }
+
+    public void editSetting(AccountSettingFormVM accountSettingFormVM){
+        Salt salt= saltRepository.findByAccId(accountBean.getId());
+        Account account = new Account();
+        BeanUtils.copyProperties(accountBean, account);
+        account.setEnableTowFactoryAuth(accountSettingFormVM.getEnable2FA());
+        account.setAllowRestoreMasterKey(accountSettingFormVM.getAllowRecoveryMasterKey());
+        accountRepository.save(account);
+
+    }
+
+    public AccountSettingFormVM getAccountSetting(){
+        AccountSettingFormVM accountSettingFormVM = new AccountSettingFormVM();
+        accountSettingFormVM.setEnable2FA(accountBean.getEnableTowFactoryAuth());
+        accountSettingFormVM.setAllowRecoveryMasterKey(accountBean.getAllowRestoreMasterKey());
+        return  accountSettingFormVM;
+
+    }
+
+
 
 
 

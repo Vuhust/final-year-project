@@ -18,9 +18,7 @@ const initialState = {
   appName: 'PasswordManager',
   email: 'abb@gmail.com',
   setupMasterKey: null,
-  twoFAState: false,
-  receiveNotificationEmail: false,
-  allowRecoveryMasterKey: false,
+  checkMasterKey : false,
 };
 
 
@@ -42,7 +40,7 @@ export const doGetUserInfo= async () => {
       console.log(respone.data)
       store.dispatch(setUserInfo(respone.data));
       if(respone.data.setupMasterKey === true ){
-        store.dispatch(setPage(comopentShow.FORM_MASTER_KEY));
+        store.dispatch(setPage(comopentShow.FORM_SET_MASTER_KEY));
       } else {
         store.dispatch(setPage(comopentShow.HOME));
       }

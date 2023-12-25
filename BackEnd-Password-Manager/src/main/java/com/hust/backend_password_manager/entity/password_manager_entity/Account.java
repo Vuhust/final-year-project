@@ -49,6 +49,7 @@ public class Account {
         this.lastUpdateDateTime = new Date();
         this.isActive = true;
         this.enableTowFactoryAuth = false;
+        this.allowRestoreMasterKey= false;
         this.isAdmin = false;
     }
     @PreUpdate

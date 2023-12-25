@@ -66,10 +66,8 @@ export const doCheckMasterKey = async (data) => {
         }}
     );
     if (respone.status === 200) {
-      toast("Key chinh xac");
-      store.dispatch(setPage(comopentShow.HOME));
-      store.dispatch(setMasterKey(data));
-
+      toast("Key chinh xac " );
+      store.dispatch(setMasterKey({masterKey: data}));
     }
   } catch (e) {
     if (e.response.status === 400) {

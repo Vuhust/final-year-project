@@ -15,14 +15,14 @@ import HomeView from "./features/home/HomeView";
 import Header from "./features/header/header";
 import React, {useEffect} from "react";
 import ListView from "./features/list/ListView";
-import MasterKey from "./features/masterkey/MasterKeyView";
+import CheckMasterKey from "./features/checkMasterkey/MasterKeyView";
 import Login from "./features/formLogin/FormloginView";
 import Register from "./features/formRegister/FormRegisterView";
 import {comopentShow, } from "./features/common/common";
 import FormOtp from "./features/formOtp/jormOtp";
 import Qr from "./features/qr/qrView"
-import formMasterKey from "./features/formSetMasterKey/FormMasterKeyView";
-import FormMasterKey from "./features/formSetMasterKey/FormMasterKeyView";
+import formMasterKey from "./features/formSetMasterKey/FormSetMasterKeyView";
+import FormSetMasterKey from "./features/formSetMasterKey/FormSetMasterKeyView";
 import FormSubAcc from "./features/formSubAcc/formSubAcc"
 import SweetAlert from "react-bootstrap-sweetalert";
 import QRCode from "react-qr-code";
@@ -46,9 +46,10 @@ function App() {
       {app.page !== comopentShow.LOGIN && <Header/>}
       <ConfirmView/>
 
-        {app.page === comopentShow.FORM_SETTING && <SettingFormView/>}
+        {/*{app.page === comopentShow.FORM_SETTING && <SettingFormView/>}*/}
+        {1 && <SettingFormView/>}
         <Qr/>
-        <MasterKey/>
+        <CheckMasterKey/>
       {app.page === 'HOME' && <HomeView /> }
       {formSubAcc.show && <FormSubAcc /> }
 
@@ -56,7 +57,7 @@ function App() {
         {app.page === comopentShow.REGISTER && <Register />}
         {app.page === comopentShow.LOGIN && <Login />}
         {app.page === comopentShow.OTP_FORM && <FormOtp/>}
-        {app.page === comopentShow.FORM_MASTER_KEY && <FormMasterKey/>}
+        {app.page === comopentShow.FORM_SET_MASTER_KEY && <FormSetMasterKey/>}
 
     {/*<OtpPopUp/>*/}
       {/*  <IcecreamView />*/}
