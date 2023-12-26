@@ -29,8 +29,6 @@ export const comopentShow = {
     FROM_CHANGE_MASTER_KEY : "FROM_CHANGE_MASTER_KEY"
 
 }
-export const serializeFunction = (func) => func.toString();
-export const deserializeFunction = (str) => new Function(`return (${str})`)();
 
 
 export function getSalt(length){

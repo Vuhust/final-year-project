@@ -2,13 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SweetAlert from "react-bootstrap-sweetalert";
 import { endConfirmation } from './confirmSlice';
-import {deserializeFunction} from "../common/common";
 
 const ConfirmView = () => {
   const dispatch = useDispatch();
   const confirm = useSelector(state => state.confirm);
   // const confirmCallback = useSelector((state) => state.confirm.confirmCallback);
-  const confirmCallbackFun =  deserializeFunction(confirm.confirmCallback);
 
   const handleCancelAction = () => {
     confirm.cancelCallback("111");

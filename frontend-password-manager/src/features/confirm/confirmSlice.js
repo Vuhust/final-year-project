@@ -2,7 +2,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import {actions} from "react-bootstrap-sweetalert/dist/styles/SweetAlertStyles";
-import {serializeFunction} from "../common/common";
 
 const defaultCallBack = (() => { console.log(1) }).toString() ;
 const initialState = {
@@ -23,8 +22,8 @@ const confirmSlice = createSlice({
     startConfirmation(state, action) {
       state.isConfirming = true;
       console.log(action.payload, "dsdsd")
-      state.confirmCallback = serializeFunction(action.payload.confirmCallback()) || defaultCallBack; // If no callback is passed, set default empty function
-      state.cancelCallback = serializeFunction(action.payload.cancelCallback) || defaultCallBack; // If no callback is passed, set default empty function
+      // state.confirmCallback = serializeFunction(action.payload.confirmCallback()) || defaultCallBack; // If no callback is passed, set default empty function
+      // state.cancelCallback = serializeFunction(action.payload.cancelCallback) || defaultCallBack; // If no callback is passed, set default empty function
       state.title=  action.payload.title;
       // state.text=  action.payload.text;
     },

@@ -36,10 +36,10 @@ function App() {
   const formSubAcc = useSelector(state => state.formSubAcc)
   console.log(app, "app")
 
-  useEffect(() => {
-    doGetUserInfo();
-
-  }, []);
+  // useEffect(() => {
+  //   doGetUserInfo();
+  //
+  // }, []);
 
 
     return (
