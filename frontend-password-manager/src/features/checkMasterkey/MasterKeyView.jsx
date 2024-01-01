@@ -34,7 +34,7 @@ const CheckMasterKey = () => {
       onConfirm={handleConfirm}
       onCancel={closePopup}
     >
-      <form className="input-wrapper">
+      <form className="input-wrapper" onSubmit={handleConfirm}>
         {/*<lable*/}
         {/*     className="col-sm-3 col-formLogin-lable">{app.masterKey ? "bạn đã nhập checkMasterkey rồi, nhập lại để thay đổi " : " Mời bạn nhập checkMasterkey"}</lable>*/}
         <input type="text" className="p-2  form-control"

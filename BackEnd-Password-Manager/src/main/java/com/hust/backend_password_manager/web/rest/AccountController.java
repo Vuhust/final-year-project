@@ -125,4 +125,19 @@ public class AccountController {
         return ResponseEntity.ok().body(accountService.getAccountSetting());
     }
 
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<Object> forgotPassword(
+            @RequestBody ForgotPasswordVM forgotPasswordVM
+    ) throws Exception{
+        accountService.forgotPassword(forgotPasswordVM);
+        return ResponseEntity.ok().body("Kiểm tra email");
+    }
+    @GetMapping("/forgotPassword/Validate")
+    public ResponseEntity<Object> forgotPasswordValidate(
+            @RequestParam String token
+    ) throws Exception{
+        accountService.forgotPasswordValidate(token);
+        return ResponseEntity.ok().body("Mật khẩu đã được thay đổi");
+    }
+
 }

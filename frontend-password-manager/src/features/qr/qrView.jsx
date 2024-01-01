@@ -3,7 +3,6 @@ import QRCode from 'react-qr-code';
 import SweetAlert from "react-bootstrap-sweetalert";
 import {useDispatch, useSelector} from "react-redux";
 import {setShow, fetchQr} from './qrSlice'
-import {fetchUsers} from "../user/userSlice";
 
 const qr = () => {
     const qr = useSelector(state => state.qr);

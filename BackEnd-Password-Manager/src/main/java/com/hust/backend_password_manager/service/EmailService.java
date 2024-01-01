@@ -28,6 +28,19 @@ public class EmailService {
         log.info(text);
     }
 
+    public void sendValidateForgotPasswordUrl(
+            String to, String token) {
+        String text = "http://localhost:8080/account/forgotPassword/Validate?token="+ URLEncoder.encode(token);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("passwordmanager@gmail.com");
+        message.setTo(to);
+        message.setSubject("Xác nhận khôi phục mật khẩu");
+        message.setText(text);
+        emailSender.send(message);
+        log.info(text);
+    }
+
+
 
     @Bean
     public SimpleMailMessage templateSimpleMessage() {

@@ -58,6 +58,8 @@ public class SecurityConfiguration {
             "/account/login/validate",
             "/account/login",
             "/account/changePassowrd",
+            "/account/forgotPassword/Validate",
+            "/account/forgotPassword",
 
 
     };

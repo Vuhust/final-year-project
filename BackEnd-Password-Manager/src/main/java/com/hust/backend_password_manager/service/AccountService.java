@@ -9,9 +9,7 @@ import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
 import com.hust.backend_password_manager.until.ObjectAndMap;
 import com.hust.backend_password_manager.web.rest.err.LoginWithOutOtp;
 import com.hust.backend_password_manager.web.rest.err.MyError;
-import com.hust.backend_password_manager.web.rest.vm.AccountSettingFormVM;
-import com.hust.backend_password_manager.web.rest.vm.LoginFormVM;
-import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
+import com.hust.backend_password_manager.web.rest.vm.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -156,6 +155,7 @@ public class AccountService {
        userInfoModel.setSetupMasterKey(  salt.getMasterPasword() == null || salt.getMasterPasword().isEmpty());
        userInfoModel.setEmail(accountBean.getEmail());
        userInfoModel.setSalt(salt.getSalt());
+       userInfoModel.setIsAdmin(accountBean.getIsAdmin());
         return userInfoModel;
     }
 
@@ -209,10 +209,56 @@ public class AccountService {
     }
 
 
+    public List<Account> getUserList(){
+        return accountRepository.findAll();
+    }
 
 
+    public void editUser(User user){
+        Account account =  accountRepository.findById(user.getId()).orElse(null);
+        if(account == null){
+            throw new MyError("Không tìm thấy tài khoản");
+        }
+        account.setIsActive(user.getIsActive());
+        accountRepository.save(account);
+        return;
+    }
+
+    public void removeCountdown(String email){
+
+        return;
+    }
+
+    public void forgotPassword(ForgotPasswordVM forgotPasswordVM){
+        Account account = accountRepository.findOneByEmail(forgotPasswordVM.getEmail());
+        if(account == null){
+            throw new MyError("Tài khoản không tồn tại ");
+        }
+        Map<String,Object> claim = Map.of("email",forgotPasswordVM.getEmail());
+
+        String  token = jwtService.generateToken(claim,JwtService.FORGOT_PASSWORD);
+        cacheService.put(forgotPasswordVM);
+        emailService.sendValidateForgotPasswordUrl(forgotPasswordVM.getEmail(),token );
 
 
+    }
+
+    public void forgotPasswordValidate(String token){
+        if(!jwtService.validateToken(token,JwtService.FORGOT_PASSWORD) ){
+            throw new MyError("token Không chính xác");
+
+        };
+        String email =  jwtService.extractEmail(token);
+        Account account = accountRepository.findOneByEmail(email);
+        if(account == null){
+            throw new MyError("Tài khoản không tồn tại ");
+        }
+
+        ForgotPasswordVM forgotPasswordVM =  cacheService.getForgotPasswordVM(email);
+        account.setPassword(passwordEncoder.encode(forgotPasswordVM.getPassword()));
+        accountRepository.save(account);
+        cacheService.evictForgotPasswordVM(email);
+    }
 
 
 }

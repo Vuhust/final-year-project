@@ -14,9 +14,14 @@ const config = {
   changeMasterKey : baseUrl +'/user/changeMasterKey',
   subAccountUrl : baseUrl + '/user/subAccount',
   subAccountListUrl : baseUrl + '/user/subAccountList',
+  userList : baseUrl + '/admin/userList',
+  userDetail : baseUrl + '/admin/userDetail',
+  removeCountdown : baseUrl + '/admin/userDetail/removeCountdown',
   page : "PAGE",
   editAccountSetting  : baseUrl + '/account/editAccountSetting',
-  getAccountSetting : baseUrl + '/account/getAccountSetting'
+  getAccountSetting : baseUrl + '/account/getAccountSetting',
+  backupMasterKey : baseUrl + '/user/backupMasterkey',
+  recoveryMasterkey : baseUrl + '/user/recoveryMasterkey',
 
   // Other configurations...
 };

@@ -80,7 +80,7 @@ export const ListView = () =>
     setSubAccountInfo({
       add : true,
       id : '',
-      url : '',
+      url : app.currentUrl,
       desc : '',
       username: '',
       password: '',
@@ -190,6 +190,11 @@ export const ListView = () =>
     setEditFromShow(false)
   }
 
+  const style = {
+    width: '70px',
+
+
+  };
 
   return(
     <div className="container"> Tổng {subAccount.data.length}
@@ -199,7 +204,7 @@ export const ListView = () =>
 
             {/*<button className="btn col-md-3 btn-danger p-2">Xóa </button>*/}
 
-            <button className="btn col-md-6 btn-success p-2 mr-2" onClick={addSubAccountClick}>Thêm</button>
+            <button className="btn col-md-6 btn-success p-2 mr-2" style={style} onClick={addSubAccountClick}>Thêm</button>
           </div>
 
         </div>

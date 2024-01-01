@@ -17,6 +17,7 @@
     "axios": "^0.26.0",
     "bootstrap": "^5.3.2",
     "crypto-js": "^4.2.0",
+    "file-saver": "^2.0.5",
     "formik": "^2.4.5",
     "pretty-checkbox-react": "^3.2.0",
     "qrcode": "^1.5.3",

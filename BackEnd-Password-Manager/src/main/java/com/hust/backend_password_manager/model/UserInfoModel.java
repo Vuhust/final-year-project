@@ -8,4 +8,5 @@ public class UserInfoModel {
 //    Boolean setup2FA;
     String salt;
     Boolean setupMasterKey;
+    Boolean isAdmin;
 }

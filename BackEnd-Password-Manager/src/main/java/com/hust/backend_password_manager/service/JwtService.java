@@ -29,6 +29,8 @@ public class JwtService {
 
     public static final  String LOGIN = "LOGIN";
     public static final  String REGISTER = "REGISTER";
+
+    public static final  String FORGOT_PASSWORD = "FORGOT_PASSWORD";
     public static final  String TOKEN = "TOKEN";
 
     private final AccountBean accountBean ;
@@ -118,9 +120,23 @@ public class JwtService {
 
     }
 
+    public String generate(
+            Map<String, Object> extraClaims, String subject
+    ) {
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationRegister))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+
+    }
 
 
-//
+
+
+    //
     public String getSubject (String token){
         Claims claims = extractAllClaims(token);
         return claims.getSubject();

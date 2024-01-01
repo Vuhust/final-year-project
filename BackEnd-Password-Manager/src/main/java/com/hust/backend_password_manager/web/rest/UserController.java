@@ -94,4 +94,20 @@ public class UserController {
         return ResponseEntity.ok("");
     }
 
+
+    @GetMapping("/backupMasterkey")
+    public ResponseEntity<Object> backupMasterkey(
+            @RequestParam String masterkey
+    ) {
+        return ResponseEntity.ok(subAccountService.backupMasterkey(masterkey));
+    }
+
+    @GetMapping("/recoveryMasterkey")
+    public ResponseEntity<Object> recoveryMasterkey(
+            @RequestParam String masterkeyEnc
+    ) {
+        return ResponseEntity.ok().body(subAccountService.recoveryMasterKey(masterkeyEnc));
+    }
+
+
 }

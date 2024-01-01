@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.entity.password_manager_entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,18 +28,24 @@ public class Account {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private Boolean isActive;
 
+    @JsonIgnore
     private Boolean enableTowFactoryAuth;
 
+    @JsonIgnore
     private Boolean allowRestoreMasterKey;
 
+    @JsonIgnore
     private Boolean isAdmin;
 
+    @JsonIgnore
     private Date createDateTime;
 
+    @JsonIgnore
     private Date lastUpdateDateTime;
 
 

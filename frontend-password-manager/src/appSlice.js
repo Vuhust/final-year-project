@@ -12,13 +12,14 @@ import {useCheckboxState} from "pretty-checkbox-react";
 const initialState = {
   token: window.localStorage.getItem('token'),
   page: window.localStorage.getItem('currentPage') ?  window.localStorage.getItem('currentPage') : comopentShow.LOGIN,
-  currentUrl : "asdasdas",
+  currentUrl : "",
   masterKey: null,
   secret: "IVQZEIOUMEPRZTREA",
   appName: 'PasswordManager',
   email: 'abb@gmail.com',
   setupMasterKey: null,
   checkMasterKey : false,
+  isAdmin : false,
 };
 
 
@@ -89,8 +90,7 @@ export const appSlice = createSlice({
     setCurrentUrl:(state, action ) => {
       // Simulating a logout action - resetting loggedIn and user to initial state
       console.log(action.payload)
-      state.currentUrl = action.payload.currentUrl;
-      state.currentUrl = action.payload.currentUrl;
+      state.currentUrl = action.payload;
     },
 
 
@@ -113,6 +113,7 @@ export const appSlice = createSlice({
       state.email = action.payload.email;
       state.salt = action.payload.salt;
       state.setupMasterKey = action.payload.setupMasterKey;
+      state.isAdmin = action.payload.isAdmin;
     },
 
   },

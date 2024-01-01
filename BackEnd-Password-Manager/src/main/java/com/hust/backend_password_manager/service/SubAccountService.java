@@ -112,7 +112,17 @@ public class SubAccountService {
     }
 
 
+    public String backupMasterkey(String masterkey){
+        Salt salt = saltRepository.findByAccId(accountBean.getId());
+        String masterKeyHash = salt.getMasterPasword();
+        String saltString = salt.getSalt();
+        return aesUtil.encrypt(saltString,saltString,masterKeyHash, masterkey);
+    }
 
-
-
+    public String recoveryMasterKey(String masterkeyEnc){
+        Salt salt = saltRepository.findByAccId(accountBean.getId());
+        String masterKeyHash = salt.getMasterPasword();
+        String saltString = salt.getSalt();
+        return aesUtil.decrypt(saltString,saltString,masterKeyHash, masterkeyEnc);
+    }
 }

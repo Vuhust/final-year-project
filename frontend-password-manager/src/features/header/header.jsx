@@ -22,10 +22,10 @@ function Header() {
     <>
       <Navbar style={style} bg="dark" variant="dark" >
         <Container>
-          <Navbar.Brand  onClick={(e) => dispatch(setPage({page: 'HOME'}))} > Giới thiệu  </Navbar.Brand>
+          <Navbar.Brand  onClick={(e) => dispatch(setPage(comopentShow.HOME))} > Giới thiệu  </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link  onClick={(e) => dispatch(setPage(comopentShow.SUB_ACCOUNT)) } >Tài khoản</Nav.Link>
-            <Nav.Link onClick={(e) => dispatch(setPage(comopentShow.ALL_SUB_ACCOUNT))} >Tất cả tài khoản</Nav.Link>
+            {/*<Nav.Link  onClick={(e) => dispatch(setPage(comopentShow.SUB_ACCOUNT)) } >Tài khoản </Nav.Link>*/}
+            <Nav.Link onClick={(e) => dispatch(setPage(comopentShow.ALL_SUB_ACCOUNT))} >Tất cả tài khoản đang quản lý</Nav.Link>
             {/*<Nav.Link >Pricing</Nav.Link>*/}
           </Nav>
         </Container>
