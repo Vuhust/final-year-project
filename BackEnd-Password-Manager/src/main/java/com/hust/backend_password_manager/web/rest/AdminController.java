@@ -23,7 +23,7 @@ public class AdminController {
 
     @PutMapping("/userDetail")
     public ResponseEntity<Object> editUserDetail(
-            User user
+            @RequestBody User user
     ) throws Exception{
 
         accountService.editUser(user);

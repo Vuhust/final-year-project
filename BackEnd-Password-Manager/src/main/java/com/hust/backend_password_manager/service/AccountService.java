@@ -42,7 +42,7 @@ public class AccountService {
             registerFormVM.setSecret("");
             Integer otp = random.nextInt(10000, 99999);
             Map<String,Object> claim = ObjectAndMap.objectToMap(registerFormVM);
-            token =  jwtService.generateToken(claim, jwtService.REGISTER);
+            token =  jwtService.generateToken(claim, JwtService.REGISTER);
             cacheService.putotp(token, otp);
             Thread thread = new Thread(() -> {
                 emailService.sendActiveUrl(registerFormVM.getEmail(), token, otp.toString());
@@ -79,27 +79,38 @@ public class AccountService {
 
     }
     public Object login(LoginFormVM loginFormVM) throws Exception{
+        if(!cacheService.canLogin(loginFormVM.getEmail())){
+            throw new MyError(" Tài khoản đang tạm bi khóa chờ chút ");
+        }
+
         Account account = accountRepository.findOneByEmail(loginFormVM.getEmail());
         if(account == null){
             throw new MyError("Không thấy tài khoản");
         }
 
+        if(!Boolean.TRUE.equals(account.getIsActive())){
+            throw new MyError("Tài khoản của bạn đã bị khóa vui lòng liên hệ với admin ");
+
+        }
         if(!passwordEncoder.matches(loginFormVM.getPassword(), account.getPassword())){
+            cacheService.loginFailed(loginFormVM.getEmail());
             throw new  MyError("Mật khẩu không đúng");
         }
+        cacheService.removeCountdown(loginFormVM.getEmail());
+
         Map<String,Object> claim = Map.of("email", loginFormVM.getEmail());
         if(Boolean.TRUE.equals(account.getEnableTowFactoryAuth())){
-            String token = jwtService.generateToken(claim,jwtService.LOGIN);
+            String token = jwtService.generateToken(claim, JwtService.LOGIN);
             throw new LoginWithOutOtp(token);
 
         }
-        String token = jwtService.generateToken(claim,jwtService.TOKEN);
+        String token = jwtService.generateToken(claim, JwtService.TOKEN);
         return Map.of("token", token);
 
     }
 
     public Object validateOtpLogin(String token, Integer otp) throws Exception{
-        if(jwtService.validateToken(token, jwtService.LOGIN)){
+        if(jwtService.validateToken(token, JwtService.LOGIN)){
             String email =  jwtService.extractEmail(token);
             Account account = accountRepository.findOneByEmail(email);
             Salt salt = saltRepository.findByAccId(account.getId());
@@ -108,7 +119,7 @@ public class AccountService {
             }
 
             Map<String,Object> claim = Map.of("email",account.getEmail());
-            return jwtService.generateToken(claim, jwtService.TOKEN);
+            return jwtService.generateToken(claim, JwtService.TOKEN);
         } else {
             throw new AccessDeniedException("");
         }
@@ -219,14 +230,17 @@ public class AccountService {
         if(account == null){
             throw new MyError("Không tìm thấy tài khoản");
         }
+
+        if(account.getIsAdmin()){
+            throw new MyError("Không chỉnh sửa tài khoản admin ");
+
+        }
         account.setIsActive(user.getIsActive());
         accountRepository.save(account);
-        return;
     }
 
     public void removeCountdown(String email){
-
-        return;
+        cacheService.removeCountdown(email);
     }
 
     public void forgotPassword(ForgotPasswordVM forgotPasswordVM){
@@ -247,7 +261,7 @@ public class AccountService {
         if(!jwtService.validateToken(token,JwtService.FORGOT_PASSWORD) ){
             throw new MyError("token Không chính xác");
 
-        };
+        }
         String email =  jwtService.extractEmail(token);
         Account account = accountRepository.findOneByEmail(email);
         if(account == null){

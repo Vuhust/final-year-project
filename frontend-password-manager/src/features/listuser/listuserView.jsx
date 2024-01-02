@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 
 import {useDispatch, useSelector} from "react-redux";
-import {fetchEditSubUser, fetchSubUser} from "./listuserSlice";
+import {fetchEditSubUser, fetchRemoveCountDown, fetchSubUser} from "./listuserSlice";
 import {setShow} from "../formSubAcc/formSubAccSlice";
 import SweetAlert from "react-bootstrap-sweetalert";
 import {decrypt} from "../common/common";
@@ -25,22 +25,28 @@ export const ListUserView = () =>
         {
             name:"Trạng thái",
             selector:(row)=>(
-                <div>{row.isActive ?" Đang hoạt động" : "Bị Khóa " }</div>)
+                <button className="btn"  onClick={() => {handleChangeStatus(row.id, row.isActive)}}>{row.isActive ?" Đang hoạt động" : "Bị Khóa " }</button>)
         },
         {
             name:"Hành động ",
             cell:(row)=>(
-                <div >
+                <button onClick={() => { handleClearCountdown(row.email)}} className="btn" >
                     Mở khóa thời gian login
-                </div>),
+                </button>),
         },
     ];
-    // const [id, setID] = useState(null); // Initialize with null
+
+
+
+    const [id, setID] = useState(null); // Initialize with null
+    const [email, setEmail] = useState(null); // Initialize with null
+    const [isActive, setIsActive] = useState(null); // Initialize with null
     const user = useSelector(state => state.user)
     const app = useSelector(state => state.app)
 
     const dispatch = useDispatch();
     const [search, SetSearch]= useState('');
+    const [action, setAction]= useState();
     const [title, SetTitle]= useState('');
     const [showConfirm, setShowConfirm]= useState(false);
 
@@ -48,7 +54,6 @@ export const ListUserView = () =>
     //
 
     useEffect(()=>{
-        window.alert("dcm react")
         fetchSubUser();
     }, []);
 
@@ -62,9 +67,38 @@ export const ListUserView = () =>
         setFilter(result);
     }, [search, user.data]);
 
+    const handleChangeStatus = (id, isActive) => {
+        setAction(1);
+        setIsActive(isActive);
+        SetTitle("Xác nhận thay đổi trạng thái ?")
+        setShowConfirm(true);
+        setID(id)
+    }
 
-    const confirmAction=(val)=>{
-        fetchDeleteSubAccount(deleteID);
+    const handleChangeStatusConfirm  = () => {
+        setShowConfirm(false);
+        if (true === isActive) {
+            fetchEditSubUser({id: id, isActive: false})
+        } else {
+            fetchEditSubUser({id: id, isActive: true})
+        }
+    }
+    const handleClearCountdown = (email) => {
+        setAction(2)
+        SetTitle("Xác nhận xóa bộ đếm thời gian login ?")
+        setEmail(email);
+        setShowConfirm(true);
+
+    }
+
+
+    const handleClearCountdownConfirm  = () => {
+        setShowConfirm(false);
+        fetchRemoveCountDown(email);
+    }
+    const confirmAction=(callback)=>{
+        callback();
+        // fetchDeleteSubAccount(deleteID);
         setShowConfirm(false);
     }
 
@@ -95,12 +129,7 @@ export const ListUserView = () =>
     return(
         <div className="container"> Tổng {user.data.length}
             <div className="row container">
-                {/*<div className="col-md-8 row text-start">*/}
-                {/*    <div className="col-md-8 row text-start">*/}
-                {/*        <button className="btn col-md-6 btn-success p-2 mr-2" style={style} onClick={addSubAccountClick}>Thêm</button>*/}
-                {/*    </div>*/}
 
-                {/*</div>*/}
                 <div className="col-md-4 text-end">
 
                     <input type="text"
@@ -115,16 +144,16 @@ export const ListUserView = () =>
                 show={showConfirm}
                 warning
                 showCancel
-                cancelBtnText="Để tôi xem xét "
+                cancelBtnText="Chờ đã  "
                 cancelBtnBsStyle="light"
-                confirmBtnText={title}
+                confirmBtnText="Đồng ý "
                 confirmBtnBsStyle="danger"
                 title={title}
-                onConfirm={confirmAction}
+                onConfirm={action === 1 ? handleChangeStatusConfirm : handleClearCountdownConfirm}
                 onCancel={cancelAction}
                 focusCancelBtn
             >
-                Sau khi xóa sẽ không thể hoàn tác
+                Bạn có chắc chắn ?
             </SweetAlert>
             <DataTable
                 onSelectedRowsChange={handleRowSelectedChange}

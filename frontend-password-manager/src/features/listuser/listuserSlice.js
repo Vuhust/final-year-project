@@ -7,6 +7,7 @@ import {encrypt, decrypt} from '../common/common'
 
 import {loginSlice} from "../login/loginSlice";
 import data from "bootstrap/js/src/dom/data";
+import {toast} from "react-toastify";
 const initialState = {
     data: [],
 }
@@ -36,7 +37,6 @@ export const fetchSubUser = async ()=>{
         }
     } catch (e) {
         console.log("err",e.response.status)
-        window.alert("error api")
     }
 
 }
@@ -45,17 +45,12 @@ export const fetchSubUser = async ()=>{
 export const fetchEditSubUser = async (data)=>{
 
     const token = store.getState().app.token;
-    console.log(token);
-
+    console.log(data);
     try {
         const authorization = "Bearer " + token;
         const requestBody = {
             "id" :data.id,
-            "url": data.url,
-            "desc": data.desc,
-            "subUserName": data.username,
-            "subUserPwdEncrypt":  encrypt(data.password)
-
+            "isActive": data.isActive,
         };
 
         const respone = await axios.put(config.userDetail ,requestBody,
@@ -70,11 +65,46 @@ export const fetchEditSubUser = async (data)=>{
         );
         if (respone.status === 200) {
             console.log(respone.data);
-            fetchSubAccount();
-            store.dispatch(setData(respone.data));
+            fetchSubUser();
+            toast("thành công ")
         }
     } catch (e) {
         console.log("err",e.response.status)
+        toast("Thất bại ")
+
+    }
+
+
+
+}
+
+export const fetchRemoveCountDown = async (email)=>{
+
+    const token = store.getState().app.token;
+
+    try {
+        const authorization = "Bearer " + token;
+
+        const respone = await axios.put(config.removeCountdown ,{},
+            {
+                headers : {
+                    'Authorization': authorization ,
+                    'Content-Type': 'application/json'
+                    // Add more headers if required
+                },
+                params :{ email : email}
+
+            },
+        );
+        if (respone.status === 200) {
+            console.log(respone.data);
+            fetchSubUser();
+            toast("Thành công ")
+        }
+    } catch (e) {
+        console.log("err",e.response.status)
+        toast("Thất bại ")
+
     }
 
 

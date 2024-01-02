@@ -17,6 +17,7 @@ public class CacheService {
 
     private Cache<String, ForgotPasswordVM> cacheForgotPassworf = Caffeine.newBuilder().expireAfterWrite(60*60*24*30, TimeUnit.SECONDS).build();
 
+    private Cache<String,Integer> loginCache = Caffeine.newBuilder().expireAfterWrite(60*5, TimeUnit.SECONDS).build();
 
     public Integer getOTP(String token) {
         return cacheOtp.getIfPresent(token);
@@ -56,6 +57,32 @@ public class CacheService {
     public void  evictForgotPasswordVM(String email){
          cacheForgotPassworf.invalidate(email);
     }
+
+
+    public void loginFailed(String email){
+        Integer times = loginCache.getIfPresent(email);
+        if(times == null){
+            times =1;
+        }else if(times <= 5){
+            times++;
+        }else {
+            return;
+        }
+        loginCache.put(email, times);
+    }
+
+
+    public boolean canLogin(String email){
+        Integer times = loginCache.getIfPresent(email);
+        if(times == null){
+            return true;
+        }else return times <= 5;
+    }
+
+    public void removeCountdown(String email){
+         loginCache.invalidate(email);
+    }
+
 
 
 }
