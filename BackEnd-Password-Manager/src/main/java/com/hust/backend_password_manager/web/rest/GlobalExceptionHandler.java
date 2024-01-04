@@ -38,10 +38,10 @@ public class GlobalExceptionHandler {
         MethodArgumentNotValidException ex) {
         log.info("hello");
         StringBuilder errorsMsg = new StringBuilder(); // Initialize errorsMsg before using it to concatenate values
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errorsMsg.append( fieldName + ": " + errorMessage ) ; // Concatenate with proper formatting
+            errorsMsg.append(fieldName).append(" : ").append(errorMessage); // Concatenate with proper formatting
         });
         return ResponseEntity.badRequest().body(Map.of("errors", errorsMsg));
     }

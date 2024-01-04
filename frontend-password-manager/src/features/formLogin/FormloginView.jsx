@@ -1,18 +1,23 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useDispatch, useSelector} from "react-redux";
 import  {doLogin} from "./formLogin";
 import {setPage} from "../../appSlice";
 import {comopentShow} from "../common/common";
-import {toast} from "react-toastify";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const FormLogin = () => {
     const dispatch = useDispatch();
+  const [recaptchaValue, setRecaptchaValue] = useState('');
 
     const handleSubmit=  (values) => {
         doLogin(values);
     };
-
+  const captchaRef = useRef()
+  const onChange = value => {
+    console.log("value", value)
+    setRecaptchaValue(value);
+  }
 
     const validate = (values) => {
         const errors = {};
@@ -37,40 +42,55 @@ const FormLogin = () => {
     return (
         <div className="container mt-5 rounded border border-3  p-3 ">
             <h1> Đăng nhập </h1>
+          <Formik
+            initialValues={{email: 'a@gmail.com', password: '1231AcasaA21'}}
+            validate={validate}
+            onSubmit={handleSubmit}
+          >
+            <Form>
 
-            <Formik
-                initialValues={{email: 'a@gmail.com', password: '1231AcasaA21'}}
-                validate={validate}
-                onSubmit={handleSubmit}
-            >
-                    <Form >
-                        <div className="row mb-3">
-                            <label htmlFor="email" className="col-auto col-form-label">Tài Khoản</label>
-                            <div className="col">
-                                <Field type="email" name="email" placeholder="Nhập email" className="form-control"/>
-                            </div>
-                            <ErrorMessage name="email" component="div" className="text-danger"/>
-                        </div>
-                        <div className="row mb-3">
-                            <label htmlFor="password" className="col-auto col-form-label">Mật khẩu</label>
-                            <div className="col">
-                                <Field type="password" name="password" placeholder="Nhập mật khẩu"
-                                       className="form-control"/>
-                            </div>
-                            <ErrorMessage name="password" component="div" className="text-danger"/>
-                        </div>
-                        <button type="submit"  className="btn btn-primary">
-                            Submit
-                        </button>
-                        <div/>
-                        <a className="nav-link text-decoration-underline text-primary " onClick={() => {
-                            dispatch(setPage(comopentShow.REGISTER))
-                        }}>Bạn chưa có tài khoản , đăng ký ngay ? </a>
-                    </Form>
+              <div className="row mb-3">
+                <label htmlFor="email" className="col-auto col-form-label">Tài Khoản</label>
+                <div className="col">
+                  <Field type="email" name="email" placeholder="Nhập email" className="form-control"/>
+                </div>
+                <ErrorMessage name="email" component="div" className="text-danger"/>
+              </div>
+              <div className="row mb-3">
+                <label htmlFor="password" className="col-auto col-form-label">Mật khẩu</label>
+                <div className="col">
+                  <Field type="password" name="password" placeholder="Nhập mật khẩu"
+                         className="form-control"/>
+                </div>
+                <ErrorMessage name="password" component="div" className="text-danger"/>
+              </div>
 
-            </Formik>
-        </div>
-    );
+              <div className="row justify-content-center">
+                <div className="col-md-3">
+                  <div className='form-group mt-2 text-center'>
+                    <ReCAPTCHA
+                      sitekey={"6LeGvkEpAAAAALaFGHwyBIMyrKauU8_Ywi5RoFHL"}
+                      onChange={onChange}
+                      ref={captchaRef}
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+            <div/>
+            <a className="nav-link text-decoration-underline text-primary " onClick={() => {
+              dispatch(setPage(comopentShow.REGISTER))
+            }}>Bạn chưa có tài khoản , đăng ký ngay ? </a>
+          </Form>
+
+        </Formik>
+</div>
+)
+  ;
 };
 
 export default FormLogin;

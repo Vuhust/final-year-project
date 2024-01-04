@@ -1,6 +1,15 @@
 package com.hust.backend_password_manager.config;
 
-import java.io.UnsupportedEncodingException;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -8,28 +17,11 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
-import org.springframework.stereotype.Component;
-
-// TODO: Implement 256-bit version like: http://securejava.wordpress.com/2012/10/25/aes-256/
 @Component
 public class AesUtil {
-    private final int keySize = 256;
-    private final int iterationCount = 100;
+    private static final int KEY_SIZE = 256;
+    private static final int ITERATION_COUNT = 100;
     private final Cipher cipher;
-
     public AesUtil() {
 
         try {
@@ -48,30 +40,22 @@ public class AesUtil {
     }
 
     public String encrypt(String salt, String iv, String passphrase, String plaintext) {
-        try {
             SecretKey key = generateKey(salt, passphrase);
-            byte[] encrypted = doFinal(Cipher.ENCRYPT_MODE, key, iv, plaintext.getBytes("UTF-8"));
+            byte[] encrypted = doFinal(Cipher.ENCRYPT_MODE, key, iv, plaintext.getBytes(StandardCharsets.UTF_8));
             return base64(encrypted);
-        }
-        catch (UnsupportedEncodingException e) {
-            throw fail(e);
-        }
+
     }
 
     public String decrypt(String salt, String iv, String passphrase, String ciphertext) {
-        try {
             SecretKey key = generateKey(salt, passphrase);
             byte[] decrypted = doFinal(Cipher.DECRYPT_MODE, key, iv, base64(ciphertext));
-            return new String(decrypted, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw fail(e);
-        }
+            return new String(decrypted, StandardCharsets.UTF_8);
+
     }
 
     private byte[] doFinal(int encryptMode, SecretKey key, String iv, byte[] bytes) {
         try {
-            cipher.init(encryptMode, key, new IvParameterSpec(hex(iv)));
+            cipher.init(encryptMode, key, new IvParameterSpec(hex(iv),0,hex(iv).length));
             return cipher.doFinal(bytes);
         }
         catch (InvalidKeyException
@@ -85,9 +69,8 @@ public class AesUtil {
     private SecretKey generateKey(String salt, String passphrase) {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(passphrase.toCharArray(), hex(salt), iterationCount, keySize);
-            SecretKey key = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
-            return key;
+            KeySpec spec = new PBEKeySpec(passphrase.toCharArray(), hex(salt), ITERATION_COUNT, KEY_SIZE);
+            return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
         }
         catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw fail(e);
@@ -127,18 +110,3 @@ public class AesUtil {
 }
 
 
-//public class test {
-//
-//    public static void main(String[] args) {
-//        String passWithIv = "7cd6001d6b4fde18858590b1cd227555Y/ep+gP7IUgSTmD5r4riwg==";
-//        String pass = passWithIv.substring(32);
-//        String iv = passWithIv.substring(0,32);
-//        AesUtil aesUtil =  new AesUtil();
-//        String passxxx = aesUtil.decrypt("cd1c9f9257d6298a58bce8f05d5f20ad",iv,"1234",pass);
-//        System.out.println(passxxx);
-//        String encrypt = aesUtil.encrypt("cd1c9f9257d6298a58bce8f05d5f20ad",iv,"1234",passxxx);
-//        System.out.println(encrypt);
-//
-//    }
-//
-//}

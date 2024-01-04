@@ -3,7 +3,6 @@ package com.hust.backend_password_manager.service;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.hust.backend_password_manager.web.rest.vm.ForgotPasswordVM;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -13,11 +12,11 @@ public class CacheService {
 
     private Cache<String,Integer> cacheOtp = Caffeine.newBuilder().expireAfterWrite(50, TimeUnit.SECONDS).build();
 
-    private Cache<String,Boolean> cacheToken = Caffeine.newBuilder().expireAfterWrite(60*60*24*30, TimeUnit.SECONDS).build();
+    private Cache<String,Boolean> cacheToken = Caffeine.newBuilder().expireAfterWrite(60*60*24*30L, TimeUnit.SECONDS).build();
 
-    private Cache<String, ForgotPasswordVM> cacheForgotPassworf = Caffeine.newBuilder().expireAfterWrite(60*60*24*30, TimeUnit.SECONDS).build();
+    private Cache<String, ForgotPasswordVM> cacheForgotPassworf = Caffeine.newBuilder().expireAfterWrite(60*60*24*30L , TimeUnit.SECONDS).build();
 
-    private Cache<String,Integer> loginCache = Caffeine.newBuilder().expireAfterWrite(60*5, TimeUnit.SECONDS).build();
+    private Cache<String,Integer> loginCache = Caffeine.newBuilder().expireAfterWrite(60*5L, TimeUnit.SECONDS).build();
 
     public Integer getOTP(String token) {
         return cacheOtp.getIfPresent(token);

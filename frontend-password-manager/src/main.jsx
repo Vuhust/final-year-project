@@ -4,11 +4,12 @@ import { Provider } from 'react-redux'
 import store from './app/store'
 import './index.css'
 import App from './App'
+import {GoogleReCaptchaProvider} from "react-google-recaptcha-v3";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+        <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

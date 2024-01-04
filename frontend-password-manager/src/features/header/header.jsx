@@ -33,6 +33,7 @@ function Header() {
           <NavDropdown drop="start" title={<FontAwesomeIcon icon={faAddressCard}/>} id="collapsible-nav-dropdown">
             <NavDropdown.Item  onClick={(e) => {
               localStorage.clear();
+              window.location.reload();
               dispatch(setPage(comopentShow.LOGIN))
             }}>
               <IoLogOut/> Thoát

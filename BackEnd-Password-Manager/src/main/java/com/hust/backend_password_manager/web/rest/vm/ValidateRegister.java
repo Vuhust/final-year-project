@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class ValidateRegister {
     String token;
-    Integer OTP;
+    Integer otp;
 }

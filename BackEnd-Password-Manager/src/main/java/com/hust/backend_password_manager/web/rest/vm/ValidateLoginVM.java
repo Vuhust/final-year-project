@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class ValidateLoginVM {
     String token;
-    Integer OTP;
+    Integer otp;
 }

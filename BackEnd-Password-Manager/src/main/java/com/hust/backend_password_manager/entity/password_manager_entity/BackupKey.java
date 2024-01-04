@@ -1,11 +1,13 @@
 package com.hust.backend_password_manager.entity.password_manager_entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "backup_key")
+@Data
 public class BackupKey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

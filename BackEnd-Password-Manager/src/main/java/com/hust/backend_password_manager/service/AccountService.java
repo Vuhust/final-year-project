@@ -35,7 +35,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final TwoFactorAuth twoFactorAuth;
     private final AccountBean accountBean;
-    public Map<String,Object> register(RegisterFormVM registerFormVM) throws Exception{
+    public Map<String,Object> register(RegisterFormVM registerFormVM) {
         String token;
         Account account = accountRepository.findOneByEmail(registerFormVM.getEmail());
         if(account == null){
@@ -44,20 +44,20 @@ public class AccountService {
             Map<String,Object> claim = ObjectAndMap.objectToMap(registerFormVM);
             token =  jwtService.generateToken(claim, JwtService.REGISTER);
             cacheService.putotp(token, otp);
-            Thread thread = new Thread(() -> {
-                emailService.sendActiveUrl(registerFormVM.getEmail(), token, otp.toString());
-            });
+            Thread thread = new Thread(() ->
+                emailService.sendActiveUrl(registerFormVM.getEmail(), token, otp.toString())
+            );
             thread.start();
 
 
-            return null;
+            return Map.of();
         } else {
             throw new MyError("Tài khoản đã tôn tại");
         }
     }
 
-    public void validateRegister(Integer otp, String token) throws Exception{
-        log.info("validateRegister" ,otp, token);
+    public void validateRegister(Integer otp, String token) throws MyError{
+        log.info("validateRegister otp {} token {}" ,otp, token);
         Integer otpServer =  cacheService.getOTP(token);
         if(otp.equals(otpServer) ){
             Account account = new Account();
@@ -78,7 +78,7 @@ public class AccountService {
         }
 
     }
-    public Object login(LoginFormVM loginFormVM) throws Exception{
+    public Object login(LoginFormVM loginFormVM) {
         if(!cacheService.canLogin(loginFormVM.getEmail())){
             throw new MyError(" Tài khoản đang tạm bi khóa chờ chút ");
         }
@@ -109,7 +109,7 @@ public class AccountService {
 
     }
 
-    public Object validateOtpLogin(String token, Integer otp) throws Exception{
+    public Object validateOtpLogin(String token, Integer otp)  throws AccessDeniedException {
         if(jwtService.validateToken(token, JwtService.LOGIN)){
             String email =  jwtService.extractEmail(token);
             Account account = accountRepository.findOneByEmail(email);
@@ -190,7 +190,7 @@ public class AccountService {
         }
 
         Salt salt= saltRepository.findByAccId(accountBean.getId());
-        if(  !(salt.getMasterPasword() == null) && !salt.getMasterPasword().isEmpty()){
+        if(  salt.getMasterPasword() != null && !salt.getMasterPasword().isEmpty()){
             if(passwordEncoder.matches(masterKey,salt.getMasterPasword())){
                 return true;
             }else {
@@ -202,7 +202,6 @@ public class AccountService {
     }
 
     public void editSetting(AccountSettingFormVM accountSettingFormVM){
-        Salt salt= saltRepository.findByAccId(accountBean.getId());
         Account account = new Account();
         BeanUtils.copyProperties(accountBean, account);
         account.setEnableTowFactoryAuth(accountSettingFormVM.getEnable2FA());
@@ -231,7 +230,7 @@ public class AccountService {
             throw new MyError("Không tìm thấy tài khoản");
         }
 
-        if(account.getIsAdmin()){
+        if(!Boolean.TRUE.equals(account.getIsAdmin())){
             throw new MyError("Không chỉnh sửa tài khoản admin ");
 
         }

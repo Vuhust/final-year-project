@@ -7,37 +7,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class ObjectAndMap {
-    public static Map<String, Object> objectToMap(Object object) throws IllegalAccessException {
+public  class ObjectAndMap {
+
+    private ObjectAndMap() {
+        throw new IllegalStateException("Utility class");
+    }
+    public static Map<String, Object> objectToMap(Object object)  {
         Map<String, Object> map = new HashMap<>();
         Field[] fields = object.getClass().getDeclaredFields();
-
-        for (Field field: fields) {
-            field.setAccessible(true);
-            map.put(field.getName(),  field.get(object));
+        try {
+            for (Field field: fields) {
+                map.put(field.getName(),  field.get(object));
+            }
+        }catch (IllegalArgumentException | IllegalAccessException e){
+            e.printStackTrace();
         }
 
         return map;
     }
 
-    public static Object mapToObject(Map<String,Object> map, Class<?> objectClass ) throws Exception {
-        Object obj = objectClass.getDeclaredConstructor().newInstance();
-
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String fieldName = entry.getKey();
-            Object value = entry.getValue();
-
-            try {
-                Field field = objectClass.getDeclaredField(fieldName);
-                field.setAccessible(true);
-                Object fieldType = field.getType();
-                field.set(obj , value);
-
-            } catch (NoSuchFieldException e) {
-                // Handle if the field does not exist in the objectClass
-                log.error("Field '" + fieldName + "' does not exist in class " + objectClass.getSimpleName());
-            }
-        }
-        return obj;
-    }
 }

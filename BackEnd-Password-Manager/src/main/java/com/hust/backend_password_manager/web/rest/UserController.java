@@ -1,7 +1,6 @@
 package com.hust.backend_password_manager.web.rest;
 
 import com.hust.backend_password_manager.service.AccountService;
-import com.hust.backend_password_manager.service.ResponseService;
 import com.hust.backend_password_manager.service.SubAccountService;
 import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;

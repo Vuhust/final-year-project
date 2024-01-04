@@ -1,6 +1,5 @@
 package com.hust.backend_password_manager.config;
 
-import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,9 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
         final String token;
+        logger.info(request.getRemoteAddr());
+        logger.info(request.getRemoteHost());
+        logger.info(request.getRemoteUser());
+        logger.info(request.getRemotePort());
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            if(!jwtService.validateToken(token) || !jwtService.getSubject(token).equals(jwtService.TOKEN)) {
+            if(!jwtService.validateToken(token) || !jwtService.getSubject(token).equals( JwtService.TOKEN)) {
                 filterChain.doFilter(request, response);
                 return;
             }

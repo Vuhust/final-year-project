@@ -1,11 +1,13 @@
 package com.hust.backend_password_manager.entity.password_manager_entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "history")
+@Data
 public class History {
 
     @Id

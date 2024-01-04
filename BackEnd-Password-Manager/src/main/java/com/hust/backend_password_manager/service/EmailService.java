@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +12,11 @@ import java.net.URLEncoder;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender emailSender;
+
+    private final JavaMailSender emailSender;
 
     public void sendActiveUrl(
             String to, String token, String otp) {

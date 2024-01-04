@@ -6,5 +6,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class LoginWithOutOtp extends RuntimeException{
-    String token;
+    final String token;
 }
