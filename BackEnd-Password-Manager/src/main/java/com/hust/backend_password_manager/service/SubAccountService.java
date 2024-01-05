@@ -4,10 +4,10 @@ import com.hust.backend_password_manager.config.AesUtil;
 import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.entity.password_manager_entity.SubAccount;
-import com.hust.backend_password_manager.entity.salt_entity.Salt;
-import com.hust.backend_password_manager.repository.password_manager_entity.AccountRepository;
-import com.hust.backend_password_manager.repository.password_manager_entity.SubAccountRepository;
-import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
+import com.hust.backend_password_manager.entity.secret_entity.Secret;
+import com.hust.backend_password_manager.repository.password_manager_repository.AccountRepository;
+import com.hust.backend_password_manager.repository.password_manager_repository.SubAccountRepository;
+import com.hust.backend_password_manager.repository.secret_repository.SecretRepository;
 import com.hust.backend_password_manager.web.rest.err.MyError;
 import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;
@@ -33,7 +33,7 @@ public class SubAccountService {
     private final AesUtil aesUtil;
     private final AccountRepository accountRepository;
     private final JwtService jwtService;
-    private final SaltRepository saltRepository;
+    private final SecretRepository secretRepository;
     private final PasswordEncoder passwordEncoder;
 
     public void addSubAccount(SubAccountVM subAccount){
@@ -84,45 +84,45 @@ public class SubAccountService {
         String token = authHeader.substring(7);
         String email = jwtService.extractEmail(token);
         Account account = accountRepository.findOneByEmail(email);
-        Salt salt = saltRepository.findByAccId(account.getId());
-        if(salt== null){
+        Secret secret = secretRepository.findByAccId(account.getId());
+        if(secret == null){
             throw new MyError("Them salt vo trc");
 
         }
-        return Map.of("email", email, "secret", salt.getSecretKey());
+        return Map.of("email", email, "secret", secret.getSecretKey());
 
     }
 
     public void changeMasterKey(ChangeMasterKeyVM changeMasterKeyVM){
-        Salt salt = saltRepository.findByAccId(accountBean.getId());
-        if(!passwordEncoder.matches(changeMasterKeyVM.getCurrentMasterKey(),salt.getMasterPasword())){
+        Secret secret = secretRepository.findByAccId(accountBean.getId());
+        if(!passwordEncoder.matches(changeMasterKeyVM.getCurrentMasterKey(), secret.getMasterPasword())){
             throw new MyError("Master key không chính xác ");
         }
         List<SubAccount> subAccountList = subAccountRepository.findSubAccountByAccId(accountBean.getId());
         Iterator<SubAccount> iterator = subAccountList.iterator();
         while (iterator.hasNext()){
             SubAccount subAccount = iterator.next();
-            String newPasswordEncrypt = aesUtil.changeNewMasterKey(subAccount.getSubUserPwdEncrypt(),salt.getSalt(), changeMasterKeyVM.getCurrentMasterKey(), changeMasterKeyVM.getNewMasterKey() );
+            String newPasswordEncrypt = aesUtil.changeNewMasterKey(subAccount.getSubUserPwdEncrypt(), secret.getSalt(), changeMasterKeyVM.getCurrentMasterKey(), changeMasterKeyVM.getNewMasterKey() );
             subAccount.setSubUserPwdEncrypt(newPasswordEncrypt);
         }
         subAccountRepository.saveAll(subAccountList);
-        salt.setMasterPasword(passwordEncoder.encode(changeMasterKeyVM.getNewMasterKey()));
-        saltRepository.save(salt);
+        secret.setMasterPasword(passwordEncoder.encode(changeMasterKeyVM.getNewMasterKey()));
+        secretRepository.save(secret);
 
     }
 
 
     public String backupMasterkey(String masterkey){
-        Salt salt = saltRepository.findByAccId(accountBean.getId());
-        String masterKeyHash = salt.getMasterPasword();
-        String saltString = salt.getSalt();
+        Secret secret = secretRepository.findByAccId(accountBean.getId());
+        String masterKeyHash = secret.getMasterPasword();
+        String saltString = secret.getSalt();
         return aesUtil.encrypt(saltString,saltString,masterKeyHash, masterkey);
     }
 
     public String recoveryMasterKey(String masterkeyEnc){
-        Salt salt = saltRepository.findByAccId(accountBean.getId());
-        String masterKeyHash = salt.getMasterPasword();
-        String saltString = salt.getSalt();
+        Secret secret = secretRepository.findByAccId(accountBean.getId());
+        String masterKeyHash = secret.getMasterPasword();
+        String saltString = secret.getSalt();
         return aesUtil.decrypt(saltString,saltString,masterKeyHash, masterkeyEnc);
     }
 }

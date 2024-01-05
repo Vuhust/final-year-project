@@ -1,10 +1,9 @@
 package com.hust.backend_password_manager.service;
 
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
-import com.hust.backend_password_manager.repository.password_manager_entity.AccountRepository;
+import com.hust.backend_password_manager.repository.password_manager_repository.AccountRepository;
 import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -16,7 +15,6 @@ import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +30,7 @@ public class JwtService {
 
     public static final  String FORGOT_PASSWORD = "FORGOT_PASSWORD";
     public static final  String TOKEN = "TOKEN";
+    public static final  String REMOVE_COUNTDOWN = "REMOVE_COUNTDOWN";
 
     private final AccountBean accountBean ;
 

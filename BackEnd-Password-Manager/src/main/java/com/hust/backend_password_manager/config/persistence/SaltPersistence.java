@@ -17,9 +17,9 @@ import java.util.HashMap;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.hust.backend_password_manager.repository.salt_entity",
-        entityManagerFactoryRef = "saltEntityManager",
-        transactionManagerRef = "saltTransactionManager"
+        basePackages = "com.hust.backend_password_manager.repository.secret_repository",
+        entityManagerFactoryRef = "secretEntityManager",
+        transactionManagerRef = "secretTransactionManager"
 )
 public class SaltPersistence {
 
@@ -30,22 +30,22 @@ public class SaltPersistence {
     @Value( "${spring.datasource.driver-class-name}" )
     String driverClassName;
 
-    @Value( "${spring.datasource.salt.url}" )
+    @Value( "${spring.datasource.secret.url}" )
     String url;
 
-    @Value( "${spring.datasource.salt.username}" )
+    @Value( "${spring.datasource.secret.username}" )
     String user;
 
-    @Value( "${spring.datasource.salt.password}" )
+    @Value( "${spring.datasource.secret.password}" )
     String pass;
 
     @Bean
     @Primary
-    public LocalContainerEntityManagerFactoryBean saltEntityManager() {
+    public LocalContainerEntityManagerFactoryBean secretEntityManager() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(saltDataSource());
-        em.setPackagesToScan("com.hust.backend_password_manager.entity.salt_entity");
+        em.setDataSource(secretDataSource());
+        em.setPackagesToScan("com.hust.backend_password_manager.entity.secret_entity");
         HibernateJpaVendorAdapter vendorAdapter
                 = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -59,7 +59,7 @@ public class SaltPersistence {
 
     @Primary
     @Bean
-    public DataSource saltDataSource() {
+    public DataSource secretDataSource() {
 
         DriverManagerDataSource dataSource
                 = new DriverManagerDataSource();
@@ -73,12 +73,12 @@ public class SaltPersistence {
 
     @Primary
     @Bean
-    public PlatformTransactionManager saltTransactionManager() {
+    public PlatformTransactionManager secretTransactionManager() {
 
         JpaTransactionManager transactionManager
                 = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(
-                saltEntityManager().getObject());
+                secretEntityManager().getObject());
         return transactionManager;
     }
 

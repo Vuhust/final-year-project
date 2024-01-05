@@ -3,14 +3,19 @@ package com.hust.backend_password_manager.service;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.hust.backend_password_manager.web.rest.vm.ForgotPasswordVM;
+import com.hust.backend_password_manager.web.rest.vm.RegisterFormVM;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 public class CacheService {
+    private final HttpServletRequest request;
 
-    private Cache<String,Integer> cacheOtp = Caffeine.newBuilder().expireAfterWrite(50, TimeUnit.SECONDS).build();
+    private Cache<String,RegisterFormVM> cacheOtp = Caffeine.newBuilder().expireAfterWrite(50, TimeUnit.SECONDS).build();
 
     private Cache<String,Boolean> cacheToken = Caffeine.newBuilder().expireAfterWrite(60*60*24*30L, TimeUnit.SECONDS).build();
 
@@ -18,15 +23,15 @@ public class CacheService {
 
     private Cache<String,Integer> loginCache = Caffeine.newBuilder().expireAfterWrite(60*5L, TimeUnit.SECONDS).build();
 
-    public Integer getOTP(String token) {
+    public RegisterFormVM getRegisterFormVM(String token) {
         return cacheOtp.getIfPresent(token);
     }
 
-    public void putotp(String token, Integer otp) {
-        cacheOtp.put(token,otp);
+    public void putRegisterFormVM(String token, RegisterFormVM registerFormVM) {
+        cacheOtp.put(token,registerFormVM);
     }
 
-    public void evictotp(String token) {
+    public void evictRegisterFormVM(String token) {
         cacheOtp.invalidate(token);
     }
 
@@ -59,7 +64,8 @@ public class CacheService {
 
 
     public void loginFailed(String email){
-        Integer times = loginCache.getIfPresent(email);
+        String host = request.getRemoteHost();
+        Integer times = loginCache.getIfPresent(email+ host);
         if(times == null){
             times =1;
         }else if(times <= 5){
@@ -67,21 +73,26 @@ public class CacheService {
         }else {
             return;
         }
-        loginCache.put(email, times);
+        loginCache.put(email+host, times);
     }
 
 
     public boolean canLogin(String email){
-        Integer times = loginCache.getIfPresent(email);
+        String host = request.getRemoteHost();
+        Integer times = loginCache.getIfPresent(email + host);
         if(times == null){
             return true;
         }else return times <= 5;
     }
 
     public void removeCountdown(String email){
-         loginCache.invalidate(email);
+        loginCache.asMap().keySet().removeIf(key-> key.contains(email));
     }
 
+    public void removeCountdownIp(String email){
+        String host = request.getRemoteHost();
+        loginCache.invalidate(email + host);
+    }
 
 
 }

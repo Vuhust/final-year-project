@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.hust.backend_password_manager.repository.password_manager_entity",
+        basePackages = "com.hust.backend_password_manager.repository.password_manager_repository",
         entityManagerFactoryRef = "passwordManagerEntityManager",
         transactionManagerRef = "passwordManagerTransactionManager"
 )

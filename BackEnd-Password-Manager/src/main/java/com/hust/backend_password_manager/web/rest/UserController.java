@@ -4,6 +4,7 @@ import com.hust.backend_password_manager.service.AccountService;
 import com.hust.backend_password_manager.service.SubAccountService;
 import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -109,4 +110,19 @@ public class UserController {
     }
 
 
+    @PostMapping("/removeCountdown")
+    public ResponseEntity<Object> removeCountDown(
+        @RequestBody String email
+    ) {
+        accountService.userRemoveCountdown(email);
+        return ResponseEntity.ok().body("Mời bạn check email ");
+    }
+
+    @GetMapping("/removeCountdown/validate")
+    public ResponseEntity<Object> removeCountDownValidate(
+        @Parameter String token
+    ) {
+        accountService.userRemoveCountdownValidate(token);
+        return ResponseEntity.ok().body("Xóa thời gian khóa thành công");
+    }
 }

@@ -1,4 +1,4 @@
-package com.hust.backend_password_manager.entity.salt_entity;
+package com.hust.backend_password_manager.entity.secret_entity;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

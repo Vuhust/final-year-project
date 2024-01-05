@@ -40,10 +40,9 @@ public class AccountController {
 
     @GetMapping("/register/validate")
     public ResponseEntity<Object> validateRegister(
-        @RequestParam Integer otp,
         @RequestParam String token
     ) throws Exception{
-        accountService.validateRegister(otp,token);
+        accountService.validateRegister(token);
         return ResponseEntity.ok("Tao tài khoản master massword thành công");
     }
 
@@ -101,5 +100,6 @@ public class AccountController {
         accountService.forgotPasswordValidate(token);
         return ResponseEntity.ok().body("Mật khẩu đã được thay đổi");
     }
+
 
 }

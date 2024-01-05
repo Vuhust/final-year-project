@@ -43,6 +43,8 @@ public class SecurityConfiguration {
             "/account/changePassowrd",
             "/account/forgotPassword/Validate",
             "/account/forgotPassword",
+            "/user/removeCountdown",
+            "/user/removeCountdown/validate",
 
 
     };

@@ -1,13 +1,13 @@
-package com.hust.backend_password_manager.entity.salt_entity;
+package com.hust.backend_password_manager.entity.secret_entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 
 @Entity
-@Table(name = "salt")
+@Table(name = "secret")
 @Data
-public class Salt {
+public class Secret {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,11 +2,10 @@ package com.hust.backend_password_manager.service;
 
 import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
-import com.hust.backend_password_manager.entity.salt_entity.Salt;
+import com.hust.backend_password_manager.entity.secret_entity.Secret;
 import com.hust.backend_password_manager.model.UserInfoModel;
-import com.hust.backend_password_manager.repository.password_manager_entity.AccountRepository;
-import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
-import com.hust.backend_password_manager.until.ObjectAndMap;
+import com.hust.backend_password_manager.repository.password_manager_repository.AccountRepository;
+import com.hust.backend_password_manager.repository.secret_repository.SecretRepository;
 import com.hust.backend_password_manager.web.rest.err.LoginWithOutOtp;
 import com.hust.backend_password_manager.web.rest.err.MyError;
 import com.hust.backend_password_manager.web.rest.vm.*;
@@ -27,7 +26,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
-    private final SaltRepository saltRepository;
+    private final SecretRepository secretRepository;
     private final JwtService jwtService;
     private final EmailService emailService;
     private final CacheService cacheService;
@@ -40,12 +39,11 @@ public class AccountService {
         Account account = accountRepository.findOneByEmail(registerFormVM.getEmail());
         if(account == null){
             registerFormVM.setSecret("");
-            Integer otp = random.nextInt(10000, 99999);
-            Map<String,Object> claim = ObjectAndMap.objectToMap(registerFormVM);
+            Map<String,Object> claim = Map.of("email" , registerFormVM.getEmail());
             token =  jwtService.generateToken(claim, JwtService.REGISTER);
-            cacheService.putotp(token, otp);
+            cacheService.putRegisterFormVM(token, registerFormVM);
             Thread thread = new Thread(() ->
-                emailService.sendActiveUrl(registerFormVM.getEmail(), token, otp.toString())
+                emailService.sendActiveUrl(registerFormVM.getEmail(), token)
             );
             thread.start();
 
@@ -56,27 +54,24 @@ public class AccountService {
         }
     }
 
-    public void validateRegister(Integer otp, String token) throws MyError{
-        log.info("validateRegister otp {} token {}" ,otp, token);
-        Integer otpServer =  cacheService.getOTP(token);
-        if(otp.equals(otpServer) ){
+    public void validateRegister(String token) throws MyError{
+        log.info("validateRegister otp {} token {}" , token);
+            if(!jwtService.validateToken(token,JwtService.REGISTER)){
+                throw new MyError("Token không chính xác ");
+            }
             Account account = new Account();
-            RegisterFormVM registerFormVM = jwtService.getRegisterForm(token);
+            RegisterFormVM registerFormVM = cacheService.getRegisterFormVM(token);
             account.setEmail(registerFormVM.getEmail());
             account.setPassword(passwordEncoder.encode(registerFormVM.getPassword()));
             account.setIsAdmin(false);
             account.setIsActive(true);
             accountRepository.save(account);
-            Salt salt = new Salt();
-            salt.setSalt(registerFormVM.getSalt());
-            salt.setSecretKey(twoFactorAuth.generateRandomSecret());
-            salt.setAccId(account.getId());
-            saltRepository.save(salt);
-            cacheService.evictotp(token);
-        } else {
-            throw new MyError("Otp không chính xac");
-        }
-
+            Secret secret = new Secret();
+            secret.setSalt(registerFormVM.getSalt());
+            secret.setSecretKey(twoFactorAuth.generateRandomSecret());
+            secret.setAccId(account.getId());
+            secretRepository.save(secret);
+            cacheService.evictRegisterFormVM(token);
     }
     public Object login(LoginFormVM loginFormVM) {
         if(!cacheService.canLogin(loginFormVM.getEmail())){
@@ -113,8 +108,8 @@ public class AccountService {
         if(jwtService.validateToken(token, JwtService.LOGIN)){
             String email =  jwtService.extractEmail(token);
             Account account = accountRepository.findOneByEmail(email);
-            Salt salt = saltRepository.findByAccId(account.getId());
-            if(Boolean.FALSE.equals( twoFactorAuth.validateOTP(salt.getSecretKey(),otp.toString()))){
+            Secret secret = secretRepository.findByAccId(account.getId());
+            if(Boolean.FALSE.equals( twoFactorAuth.validateOTP(secret.getSecretKey(),otp.toString()))){
                 throw new MyError("Email OTP không chính xác");
             }
 
@@ -127,19 +122,15 @@ public class AccountService {
 
     public Object getSalt(String token){
         Account account = accountRepository.findOneByEmail(jwtService.extractEmail(token));
-        return saltRepository.findSaltByAccId(account.getId()) ;
+        return secretRepository.findSaltByAccId(account.getId()) ;
     }
 
     public void setSalt(String token, String saltString){
         Account account = accountRepository.findOneByEmail(jwtService.extractEmail(token));
-        Salt salt = saltRepository.findByAccId(account.getId());
-        salt.setSalt(saltString);
-        saltRepository.save(salt);
+        Secret secret = secretRepository.findByAccId(account.getId());
+        secret.setSalt(saltString);
+        secretRepository.save(secret);
     }
-
-
-
-
 
     public Object changePassword(String currentPassword,String newPassword){
         if(passwordEncoder.matches(currentPassword,accountBean.getPassword())){
@@ -155,17 +146,17 @@ public class AccountService {
 
     }
     public Object getAccountInfo(){
-       Salt salt = saltRepository.findByAccId(accountBean.getId());
+       Secret secret = secretRepository.findByAccId(accountBean.getId());
        log.info(accountBean.toString());
-       if(salt == null){
-           salt = new Salt();
-           salt.setAccId(accountBean.getId());
-           saltRepository.save(salt);
+       if(secret == null){
+           secret = new Secret();
+           secret.setAccId(accountBean.getId());
+           secretRepository.save(secret);
        }
        UserInfoModel userInfoModel = new UserInfoModel();
-       userInfoModel.setSetupMasterKey(  salt.getMasterPasword() == null || salt.getMasterPasword().isEmpty());
+       userInfoModel.setSetupMasterKey(  secret.getMasterPasword() == null || secret.getMasterPasword().isEmpty());
        userInfoModel.setEmail(accountBean.getEmail());
-       userInfoModel.setSalt(salt.getSalt());
+       userInfoModel.setSalt(secret.getSalt());
        userInfoModel.setIsAdmin(accountBean.getIsAdmin());
         return userInfoModel;
     }
@@ -175,10 +166,10 @@ public class AccountService {
             throw  new MyError("tài khoản null");
         }
 
-        Salt salt= saltRepository.findByAccId(accountBean.getId());
-        if(salt.getMasterPasword() == null || salt.getMasterPasword().isEmpty()){
-            salt.setMasterPasword(passwordEncoder.encode(masterKey));
-            saltRepository.save(salt);
+        Secret secret = secretRepository.findByAccId(accountBean.getId());
+        if(secret.getMasterPasword() == null || secret.getMasterPasword().isEmpty()){
+            secret.setMasterPasword(passwordEncoder.encode(masterKey));
+            secretRepository.save(secret);
         } else {
             throw  new MyError("Master key đã được lưu rồi");
         }
@@ -189,9 +180,9 @@ public class AccountService {
             throw  new MyError("tài khoản null");
         }
 
-        Salt salt= saltRepository.findByAccId(accountBean.getId());
-        if(  salt.getMasterPasword() != null && !salt.getMasterPasword().isEmpty()){
-            if(passwordEncoder.matches(masterKey,salt.getMasterPasword())){
+        Secret secret = secretRepository.findByAccId(accountBean.getId());
+        if(  secret.getMasterPasword() != null && !secret.getMasterPasword().isEmpty()){
+            if(passwordEncoder.matches(masterKey, secret.getMasterPasword())){
                 return true;
             }else {
                 throw new MyError("Master key chưa chính xác");
@@ -215,7 +206,6 @@ public class AccountService {
         accountSettingFormVM.setEnable2FA(accountBean.getEnableTowFactoryAuth());
         accountSettingFormVM.setAllowRecoveryMasterKey(accountBean.getAllowRestoreMasterKey());
         return  accountSettingFormVM;
-
     }
 
 
@@ -271,6 +261,22 @@ public class AccountService {
         account.setPassword(passwordEncoder.encode(forgotPasswordVM.getPassword()));
         accountRepository.save(account);
         cacheService.evictForgotPasswordVM(email);
+    }
+
+    public void userRemoveCountdown(String email){
+        if(cacheService.canLogin(email)){
+            throw new MyError("Tai khoản chưa bị khóa mời bạn đăng nhập ");
+        }
+        Map<String,Object> claims = Map.of("email",email);
+        emailService.sendRemoveCountdownUrl(email,jwtService.generateToken(claims,JwtService.REMOVE_COUNTDOWN));
+
+    }
+    public void userRemoveCountdownValidate(String token ){
+        if(!jwtService.validateToken(token,JwtService.REMOVE_COUNTDOWN)){
+            throw new MyError("Token không chính xác ");
+        }
+        String email = jwtService.extractEmail(token);
+        cacheService.removeCountdownIp(email);
     }
 
 

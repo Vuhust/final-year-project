@@ -1,7 +1,7 @@
 package com.hust.backend_password_manager.service;
 
-import com.hust.backend_password_manager.repository.password_manager_entity.AccountRepository;
-import com.hust.backend_password_manager.repository.salt_entity.SaltRepository;
+import com.hust.backend_password_manager.repository.password_manager_repository.AccountRepository;
+import com.hust.backend_password_manager.repository.secret_repository.SecretRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.aerogear.security.otp.Totp;
@@ -21,7 +21,7 @@ public class TwoFactorAuth {
 
 
 
-    private final SaltRepository saltRepository;
+    private final SecretRepository secretRepository;
 
 
     public Boolean validateOTP(String secret,String otp){
