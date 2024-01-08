@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.entity.password_manager_entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,14 +23,17 @@ public class SubAccount {
     @Column(name = "`desc`")
     private String desc;
 
+    @Column(name = "`sub_user_name`")
     private String subUserName;
 
     @Column(name = "`sub_user_pwd_encrypt`", length = 1024)
     private String subUserPwdEncrypt ;
 
+    @Column(name = "`create_date_time`")
     private Date createDateTime;
-    private Date lastUpdateDateTime;
 
+    @Column(name = "`last-update_date_time`")
+    private Date lastUpdateDateTime;
 
     @PrePersist
     protected void onCreate() {

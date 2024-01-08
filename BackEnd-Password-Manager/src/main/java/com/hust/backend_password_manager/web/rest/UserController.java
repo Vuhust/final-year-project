@@ -4,6 +4,7 @@ import com.hust.backend_password_manager.service.AccountService;
 import com.hust.backend_password_manager.service.SubAccountService;
 import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;
+import com.hust.backend_password_manager.web.rest.vm.UserUnlockAccountVM;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -112,9 +113,9 @@ public class UserController {
 
     @PostMapping("/removeCountdown")
     public ResponseEntity<Object> removeCountDown(
-        @RequestBody String email
-    ) {
-        accountService.userRemoveCountdown(email);
+            @RequestBody UserUnlockAccountVM userUnlockAccountVM
+            ) {
+        accountService.userRemoveCountdown(userUnlockAccountVM.getEmail());
         return ResponseEntity.ok().body("Mời bạn check email ");
     }
 

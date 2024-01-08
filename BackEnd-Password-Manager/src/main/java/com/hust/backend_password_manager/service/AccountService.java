@@ -94,7 +94,7 @@ public class AccountService {
         cacheService.removeCountdown(loginFormVM.getEmail());
 
         Map<String,Object> claim = Map.of("email", loginFormVM.getEmail());
-        if(Boolean.TRUE.equals(account.getEnableTowFactoryAuth())){
+        if(Boolean.TRUE.equals(account.getEnableTwoFactoryAuth())){
             String token = jwtService.generateToken(claim, JwtService.LOGIN);
             throw new LoginWithOutOtp(token);
 
@@ -195,7 +195,7 @@ public class AccountService {
     public void editSetting(AccountSettingFormVM accountSettingFormVM){
         Account account = new Account();
         BeanUtils.copyProperties(accountBean, account);
-        account.setEnableTowFactoryAuth(accountSettingFormVM.getEnable2FA());
+        account.setEnableTwoFactoryAuth(accountSettingFormVM.getEnable2FA());
         account.setAllowRestoreMasterKey(accountSettingFormVM.getAllowRecoveryMasterKey());
         accountRepository.save(account);
 
@@ -258,7 +258,7 @@ public class AccountService {
         }
 
         ForgotPasswordVM forgotPasswordVM =  cacheService.getForgotPasswordVM(email);
-        account.setPassword(passwordEncoder.encode(forgotPasswordVM.getPassword()));
+        account.setPassword(passwordEncoder.encode(forgotPasswordVM.getNewPassword()));
         accountRepository.save(account);
         cacheService.evictForgotPasswordVM(email);
     }

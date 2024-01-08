@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js'
-import store from "../../app/store";
+import store from "../app/store";
 import {toast} from "react-toastify";
 
 
@@ -26,8 +26,10 @@ export const comopentShow = {
     EDIT_ACCOUNT : "EDIT_ACCOUNT",
     FORM_SET_MASTER_KEY : "MASTER_KEY",
     FORM_SETTING : "FROM_SETTING",
-    FROM_CHANGE_MASTER_KEY : "FROM_CHANGE_MASTER_KEY"
-
+    FROM_CHANGE_MASTER_KEY : "FROM_CHANGE_MASTER_KEY",
+    FROM_CHANGE_PASSWORD : "FROM_CHANGE_PASSWORD",
+    FROM_FORGOT_PASSWORD : "FROM_FORGOT_PASSWORD",
+    FROM_UNLOCK_COUNTDOWN : "FROM_UNLOCK_COUNTDOWN",
 }
 
 

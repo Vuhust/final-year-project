@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useDispatch, useSelector} from "react-redux";
 import  {doFetchOtp} from "./formOtp";
 import {setPage} from "../../appSlice";
-import {comopentShow} from "../common/common";
+import {comopentShow} from "../../common/common";
 import {toast} from "react-toastify";
 
 const  FormOtp = () => {

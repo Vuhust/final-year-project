@@ -8,28 +8,18 @@ import store from "../../app/store";
 
 
 
-export const changeMasterKey = async (data) => {
+export const unlockCountdown = async (data) => {
     console.log(data)
     const requestBody = {
-        "currentMasterKey": data.currentMasterKey,
-        "newMasterKey": data.newMasterKey
+        "currentPassword": data.currentPassword,
+        "newPassword": data.newPassword
     }
 
     try {
-        const authorization = "Bearer " + store.getState().app.token;
-
-        const respone = await axios.put(config.changeMasterKey ,requestBody ,
-            {
-                headers : {
-                    'Authorization': authorization ,
-                    'Content-Type': 'application/json'
-                    // Add more headers if required
-                },
-            },
-        );
+        const respone = await axios.post(config.unlock ,{email: data.email}  );
         if (respone.status === 200) {
             console.log(respone.data);
-            store.dispatch(setPage(comopentShow.HOME));
+            store.dispatch(setPage(comopentShow.LOGIN));
             store.dispatch(setMasterKey({masterKey: data.newMasterKey}))
         }
     } catch (e) {

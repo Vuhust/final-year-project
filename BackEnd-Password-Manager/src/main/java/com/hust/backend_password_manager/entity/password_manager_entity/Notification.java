@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.entity.password_manager_entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,10 +24,15 @@ public class Notification {
     private String desc;
 
 
+    @Column(name = "`is_readed`")
     private String isReaded;
 
+    @JsonIgnore
+    @Column(name = "`create_date_time`")
     private Date createDateTime;
 
+    @JsonIgnore
+    @Column(name = "`last-update_date_time`")
     private Date lastUpdateDateTime;
     @PrePersist
     protected void onCreate() {

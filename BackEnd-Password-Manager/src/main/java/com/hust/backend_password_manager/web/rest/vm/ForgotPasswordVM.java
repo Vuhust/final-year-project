@@ -9,6 +9,5 @@ import lombok.Setter;
 @Setter
 public class ForgotPasswordVM {
     String email;
-    String password;
-
+    String newPassword;
 }

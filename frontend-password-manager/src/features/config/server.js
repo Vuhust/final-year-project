@@ -22,6 +22,9 @@ const config = {
   getAccountSetting : baseUrl + '/account/getAccountSetting',
   backupMasterKey : baseUrl + '/user/backupMasterkey',
   recoveryMasterkey : baseUrl + '/user/recoveryMasterkey',
+  forgotPassword : baseUrl + '/account/forgotPassword',
+  unlock : baseUrl + '/user/removeCountdown',
+  changePassword : baseUrl + '/account/changePassowrd',
 
   // Other configurations...
 };

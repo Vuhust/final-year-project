@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {comopentShow} from "./features/common/common";
+import {comopentShow} from "./common/common";
 import store from "./app/store";
 import axios from "axios";
 import config from "./features/config/server";

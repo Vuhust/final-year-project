@@ -2,7 +2,7 @@
 import axios from "axios";
 import config from "../config/server";
 
-import {comopentShow, getSalt} from "../common/common"
+import {comopentShow, getSalt} from "../../common/common"
 import {setPage , setRegister} from "../../appSlice";
 import store from "../../app/store";
 import {toast} from "react-toastify";

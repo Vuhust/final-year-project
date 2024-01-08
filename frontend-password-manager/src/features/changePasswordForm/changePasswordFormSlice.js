@@ -8,17 +8,17 @@ import store from "../../app/store";
 
 
 
-export const changeMasterKey = async (data) => {
+export const changePassword = async (data) => {
     console.log(data)
     const requestBody = {
-        "currentMasterKey": data.currentMasterKey,
-        "newMasterKey": data.newMasterKey
+        "currentPassword": data.currentPassword,
+        "newPassword": data.newPassword
     }
 
     try {
         const authorization = "Bearer " + store.getState().app.token;
 
-        const respone = await axios.put(config.changeMasterKey ,requestBody ,
+        const respone = await axios.put(config.changePassword ,requestBody ,
             {
                 headers : {
                     'Authorization': authorization ,
@@ -28,7 +28,7 @@ export const changeMasterKey = async (data) => {
             },
         );
         if (respone.status === 200) {
-            console.log(respone.data);
+            toast("Đổi mật khaảu thành công ")
             store.dispatch(setPage(comopentShow.HOME));
             store.dispatch(setMasterKey({masterKey: data.newMasterKey}))
         }

@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchEditSubUser, fetchRemoveCountDown, fetchSubUser} from "./listuserSlice";
 import {setShow} from "../formSubAcc/formSubAccSlice";
 import SweetAlert from "react-bootstrap-sweetalert";
-import {decrypt} from "../common/common";
+import {decrypt} from "../../common/common";
 import {setShowCheckMasterKey} from "../checkMasterkey/masterKeySlice";
 import {fetchSubAccount} from "../list/listSlice";
 

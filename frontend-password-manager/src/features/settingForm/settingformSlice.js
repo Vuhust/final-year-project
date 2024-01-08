@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ordered as cakeOrdered } from '../cake/cakeSlice'
 import store from "../../app/store";
-import {comopentShow, encrypt} from "../common/common";
+import {comopentShow, encrypt} from "../../common/common";
 import axios from "axios";
 import config from "../config/server";
 import {fetchSubAccount} from "../list/listSlice";

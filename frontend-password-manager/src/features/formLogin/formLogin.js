@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../config/server";
 import { toast } from 'react-toastify';
-import {comopentShow, getSalt, status} from "../common/common";
+import {comopentShow, getSalt, status} from "../../common/common";
 import {doGetUserInfo, setPage, setToken} from "../../appSlice";
 import store from "../../app/store";
 

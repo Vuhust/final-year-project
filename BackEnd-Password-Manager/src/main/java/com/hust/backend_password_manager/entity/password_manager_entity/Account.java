@@ -31,21 +31,27 @@ public class Account {
     @JsonIgnore
     private String password;
 
+    @Column(name = "`is_active`")
     private Boolean isActive;
 
     @JsonIgnore
-    private Boolean enableTowFactoryAuth;
+    @Column(name = "`enable_two_factory_auth`")
+    private Boolean enableTwoFactoryAuth;
 
     @JsonIgnore
+    @Column(name = "`allow_restore_masterkey`")
     private Boolean allowRestoreMasterKey;
 
     @JsonIgnore
+    @Column(name = "`is_admin`")
     private Boolean isAdmin;
 
     @JsonIgnore
+    @Column(name = "`create_date_time`")
     private Date createDateTime;
 
     @JsonIgnore
+    @Column(name = "`last-update_date_time`")
     private Date lastUpdateDateTime;
 
 
@@ -55,7 +61,7 @@ public class Account {
         this.createDateTime = new Date();
         this.lastUpdateDateTime = new Date();
         this.isActive = true;
-        this.enableTowFactoryAuth = false;
+        this.enableTwoFactoryAuth = false;
         this.allowRestoreMasterKey= false;
         this.isAdmin = false;
     }

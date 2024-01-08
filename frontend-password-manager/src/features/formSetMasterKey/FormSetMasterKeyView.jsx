@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useDispatch, useSelector} from "react-redux";
 import  {doSetupMasterKey , doCheckMasterKey} from "./formMasterKey";
 import {setPage} from "../../appSlice";
-import {comopentShow} from "../common/common"
+import {comopentShow} from "../../common/common"
 import SweetAlert from "react-bootstrap-sweetalert";
 
 const FormSetMasterKey = () => {

@@ -3,8 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useDispatch, useSelector} from "react-redux";
 import  {doLogin} from "./formLogin";
 import {setPage} from "../../appSlice";
-import {comopentShow} from "../common/common";
-import ReCAPTCHA from "react-google-recaptcha";
+import {comopentShow} from "../../common/common";
 
 const FormLogin = () => {
     const dispatch = useDispatch();
@@ -47,50 +46,53 @@ const FormLogin = () => {
             validate={validate}
             onSubmit={handleSubmit}
           >
-            <Form>
+              <Form>
 
-              <div className="row mb-3">
-                <label htmlFor="email" className="col-auto col-form-label">Tài Khoản</label>
-                <div className="col">
-                  <Field type="email" name="email" placeholder="Nhập email" className="form-control"/>
-                </div>
-                <ErrorMessage name="email" component="div" className="text-danger"/>
-              </div>
-              <div className="row mb-3">
-                <label htmlFor="password" className="col-auto col-form-label">Mật khẩu</label>
-                <div className="col">
-                  <Field type="password" name="password" placeholder="Nhập mật khẩu"
-                         className="form-control"/>
-                </div>
-                <ErrorMessage name="password" component="div" className="text-danger"/>
-              </div>
-
-              <div className="row justify-content-center">
-                <div className="col-md-3">
-                  <div className='form-group mt-2 text-center'>
-                    <ReCAPTCHA
-                      sitekey={"6LeGvkEpAAAAALaFGHwyBIMyrKauU8_Ywi5RoFHL"}
-                      onChange={onChange}
-                      ref={captchaRef}
-                    />
+                  <div className="row mb-3">
+                      <label htmlFor="email" className="col-auto col-form-label">Tài Khoản</label>
+                      <div className="col">
+                          <Field type="email" name="email" placeholder="Nhập email" className="form-control"/>
+                      </div>
+                      <ErrorMessage name="email" component="div" className="text-danger"/>
                   </div>
-                </div>
-              </div>
+                  <div className="row mb-3">
+                      <label htmlFor="password" className="col-auto col-form-label">Mật khẩu</label>
+                      <div className="col">
+                          <Field type="password" name="password" placeholder="Nhập mật khẩu"
+                                 className="form-control"/>
+                      </div>
+                      <ErrorMessage name="password" component="div" className="text-danger"/>
+                  </div>
+
+                  <div className="row justify-content-center">
+                      <div className="col-md-3">
+                          <div className='form-group mt-2 text-center'>
+                          </div>
+                      </div>
+                  </div>
 
 
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-            <div/>
-            <a className="nav-link text-decoration-underline text-primary " onClick={() => {
-              dispatch(setPage(comopentShow.REGISTER))
-            }}>Bạn chưa có tài khoản , đăng ký ngay ? </a>
-          </Form>
+                  <button type="submit" className="btn btn-primary">
+                      Submit
+                  </button>
+                  <div/>
+                  <a className="nav-link text-decoration-underline text-primary " onClick={() => {
+                      dispatch(setPage(comopentShow.REGISTER))
+                  }}>Bạn chưa có tài khoản , đăng ký ngay ? </a>
 
-        </Formik>
-</div>
-)
-  ;
+                  <a className="nav-link text-decoration-underline text-primary " onClick={() => {
+                      dispatch(setPage(comopentShow.FROM_FORGOT_PASSWORD))
+                  }}>Quên mật khẩu ? </a>
+                  <a className="nav-link text-decoration-underline text-primary " onClick={() => {
+                      dispatch(setPage(comopentShow.FROM_UNLOCK_COUNTDOWN))
+                  }}>Tài khoản bị khóa ? </a>
+
+              </Form>
+
+          </Formik>
+        </div>
+    )
+        ;
 };
 
 export default FormLogin;

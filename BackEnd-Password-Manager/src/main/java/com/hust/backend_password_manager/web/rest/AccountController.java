@@ -65,7 +65,7 @@ public class AccountController {
 
 
 
-    @PostMapping("/changePassowrd")
+    @PutMapping("/changePassowrd")
     public ResponseEntity<Object> changePassword(
         @RequestBody ChangePasswordVM changePasswordVM
         ) {

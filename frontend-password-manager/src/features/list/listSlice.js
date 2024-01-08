@@ -2,7 +2,7 @@ import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import config from "../config/server";
 import store from "../../app/store";
-import {encrypt, decrypt} from '../common/common'
+import {encrypt, decrypt} from '../../common/common'
 
 import {loginSlice} from "../login/loginSlice";
 const initialState = {

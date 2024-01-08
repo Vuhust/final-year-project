@@ -15,7 +15,7 @@ import ListUserView  from "./features/listuser/listuserView";
 import CheckMasterKey from "./features/checkMasterkey/MasterKeyView";
 import Login from "./features/formLogin/FormloginView";
 import Register from "./features/formRegister/FormRegisterView";
-import {comopentShow, } from "./features/common/common";
+import {comopentShow, } from "./common/common";
 import FormOtp from "./features/formOtp/jormOtp";
 import Qr from "./features/qr/qrView"
 import formMasterKey from "./features/formSetMasterKey/FormSetMasterKeyView";
@@ -28,6 +28,10 @@ import SettingFormView from "./features/settingForm/SettingFormView";
 import {doGetUserInfo, setCurrentUrl} from "./appSlice";
 import changeMasterKeyView from "./features/changeMasterKeyForm/ChangeMasterKeyView";
 import ChangeMasterKeyVieW from "./features/changeMasterKeyForm/ChangeMasterKeyView";
+import ChangePasswordVieW from "./features/changePasswordForm/ChangePasswordForm";
+import ForgotPasswordView from "./features/forgotPasswordForm/forgotPasswordView";
+import UnlockCountdownView from "./features/unlockcountdown/UnlockCountDownView";
+
 function App() {
   const app = useSelector(state => state.app)
   const formSubAcc = useSelector(state => state.formSubAcc)
@@ -78,8 +82,12 @@ function App() {
         {app.page === comopentShow.OTP_FORM && <FormOtp/>}
         {app.page === comopentShow.FORM_SET_MASTER_KEY  && !app.isAdmin  && <FormSetMasterKey/>}
         {app.page === comopentShow.FROM_CHANGE_MASTER_KEY   && <ChangeMasterKeyVieW/>}
+        {app.page === comopentShow.FROM_CHANGE_PASSWORD   && <ChangePasswordVieW/>}
+        {app.page === comopentShow.FROM_FORGOT_PASSWORD   && <ForgotPasswordView/>}
+        {app.page === comopentShow.FROM_UNLOCK_COUNTDOWN  && <UnlockCountdownView/>}
 
-    {/*<OtpPopUp/>*/}
+
+      {/*<OtpPopUp/>*/}
       {/*  <IcecreamView />*/}
       {/*<UserView />*/}
       {/*/!*<LoginView/>*!/*/}

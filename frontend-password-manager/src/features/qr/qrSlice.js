@@ -1,6 +1,6 @@
 // store.js
 import { createSlice } from '@reduxjs/toolkit';
-import {comopentShow, getSalt} from "../common/common";
+import {comopentShow, getSalt} from "../../common/common";
 import axios from "axios";
 import config from "../config/server";
 import {toast} from "react-toastify";

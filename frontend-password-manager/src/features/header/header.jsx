@@ -6,7 +6,7 @@ import { IoLogOut , IoQrCodeSharp } from "react-icons/io5";
 import { CiEdit  } from "react-icons/ci";
 import {useDispatch} from "react-redux";
 import {setPage} from "../../appSlice";
-import {comopentShow} from "../common/common";
+import {comopentShow} from "../../common/common";
 import {fetchQr, setShow} from "../qr/qrSlice";
 import {fetchGetAccountSetting} from "../settingForm/settingformSlice";
 
@@ -47,6 +47,9 @@ function Header() {
 
             <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.FROM_CHANGE_MASTER_KEY))}>
               Đổi  masterKey
+            </NavDropdown.Item>
+            <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.FROM_CHANGE_PASSWORD))}>
+              Đổi  Mật khẩu
             </NavDropdown.Item>
 
 

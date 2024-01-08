@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useDispatch, useSelector} from "react-redux";
 import  {doRegister} from "./formRegisterSlice";
 import {setPage} from "../../appSlice";
-import {comopentShow} from "../common/common"
+import {comopentShow} from "../../common/common"
 
 const FormRegister = () => {
     const dispatch = useDispatch();

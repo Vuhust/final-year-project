@@ -12,7 +12,7 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import { RiDeleteBin6Line, RiEdit2Line, RiEyeLine } from 'react-icons/ri';
 import {CiEdit} from "react-icons/ci";
 import {log} from "qrcode/lib/core/galois-field";
-import {decrypt} from "../common/common";
+import {decrypt} from "../../common/common";
 import {setShowCheckMasterKey} from "../checkMasterkey/masterKeySlice";
 
 export const ListView = () =>
