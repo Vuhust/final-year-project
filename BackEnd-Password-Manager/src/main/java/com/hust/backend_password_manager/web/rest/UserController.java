@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.web.rest;
 
+import com.hust.backend_password_manager.aspect.annotation.LogInServer;
 import com.hust.backend_password_manager.service.AccountService;
 import com.hust.backend_password_manager.service.SubAccountService;
 import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
@@ -63,6 +64,7 @@ public class UserController {
         return ResponseEntity.ok( subAccountService.getSubAccountList(request));
     }
     @GetMapping("/secretKey")
+    @LogInServer
     public ResponseEntity<Object> getSecret(
             @NonNull HttpServletRequest request
     ) {
@@ -70,6 +72,7 @@ public class UserController {
         return ResponseEntity.ok( subAccountService.getSecret(request));
     }
     @PostMapping("/masterKey")
+    @LogInServer
     public ResponseEntity<Object> setMasterKey(
         @RequestParam String masterKey
     ){
@@ -88,6 +91,7 @@ public class UserController {
     }
 
     @PutMapping("/changeMasterKey")
+    @LogInServer
     public ResponseEntity<Object> changeMasterKey(
         @RequestBody ChangeMasterKeyVM changeMasterKeyVM
         ) {
@@ -112,6 +116,7 @@ public class UserController {
 
 
     @PostMapping("/removeCountdown")
+    @LogInServer
     public ResponseEntity<Object> removeCountDown(
             @RequestBody UserUnlockAccountVM userUnlockAccountVM
             ) {
@@ -120,6 +125,7 @@ public class UserController {
     }
 
     @GetMapping("/removeCountdown/validate")
+    @LogInServer
     public ResponseEntity<Object> removeCountDownValidate(
         @Parameter String token
     ) {

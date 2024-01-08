@@ -1,5 +1,7 @@
 package com.hust.backend_password_manager.aspect;
 
+import com.hust.backend_password_manager.aspect.annotation.LogHistory;
+import com.hust.backend_password_manager.aspect.annotation.LogInServer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,20 +17,12 @@ public class LogAspect {
     @Autowired
     HttpServletRequest request;
 
-    @Pointcut("execution(* com.hust.backend_password_manager.web.rest.*.*(..))")
+    @Pointcut("@annotation( com.hust.backend_password_manager.aspect.annotation.LogHistory)")
     public void loggingPointCut(){}
 
-    @Before("loggingPointCut()")
-    public void before(JoinPoint joinPoint){
-      log.info("check success");
-    }
-    @After("loggingPointCut()")
-    public void affter(JoinPoint joinPoint){
-        log.info("start ip {} ,{} , arg {}" ,request.getRemoteHost() ,joinPoint.getSignature() , joinPoint.getArgs().toString());
-    }
 
-    @AfterThrowing("loggingPointCut()")
-    public void beforeThrow(JoinPoint joinPoint){
+    @AfterThrowing(value = "loggingPointCut()", throwing = "ex")
+    public void beforeThrow(JoinPoint joinPoint ,Throwable ex){
         log.info("have error throw {} 1 {}",joinPoint.getTarget() ,joinPoint.toString() );
     }
 

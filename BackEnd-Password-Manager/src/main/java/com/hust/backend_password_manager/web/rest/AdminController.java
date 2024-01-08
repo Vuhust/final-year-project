@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.web.rest;
 
+import com.hust.backend_password_manager.aspect.annotation.LogInServer;
 import com.hust.backend_password_manager.service.AccountService;
 import com.hust.backend_password_manager.web.rest.vm.User;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@LogInServer
 public class AdminController {
 
     private final AccountService accountService;

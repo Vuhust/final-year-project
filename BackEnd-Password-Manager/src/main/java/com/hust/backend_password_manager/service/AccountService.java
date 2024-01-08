@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.service;
 
+import com.hust.backend_password_manager.aspect.annotation.LogInServer;
 import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.entity.secret_entity.Secret;
@@ -139,11 +140,9 @@ public class AccountService {
             account.setPassword(passwordEncoder.encode(newPassword));
             accountRepository.save(account);
             return true;
-
         }else {
             throw new MyError( "Mật khẩu cũ không chính xác ");
         }
-
     }
     public Object getAccountInfo(){
        Secret secret = secretRepository.findByAccId(accountBean.getId());

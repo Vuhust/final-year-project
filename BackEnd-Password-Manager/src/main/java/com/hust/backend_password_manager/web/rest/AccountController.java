@@ -1,5 +1,6 @@
 package com.hust.backend_password_manager.web.rest;
 
+import com.hust.backend_password_manager.aspect.annotation.LogInServer;
 import com.hust.backend_password_manager.service.AccountService;
 import com.hust.backend_password_manager.service.ResponseService;
 import com.hust.backend_password_manager.service.TwoFactorAuth;
@@ -48,6 +49,7 @@ public class AccountController {
 
 
     @PostMapping ("/login")
+    @LogInServer()
     public ResponseEntity<Object> login(
             @RequestBody LoginFormVM loginFormVM
             ) throws Exception{
@@ -55,6 +57,7 @@ public class AccountController {
     }
 
 
+    @LogInServer
     @PostMapping ("/login/validate")
     public ResponseEntity<Object> validateLogin(
             @RequestBody ValidateLoginVM validateLoginVM
@@ -66,6 +69,7 @@ public class AccountController {
 
 
     @PutMapping("/changePassowrd")
+    @LogInServer
     public ResponseEntity<Object> changePassword(
         @RequestBody ChangePasswordVM changePasswordVM
         ) {
@@ -87,6 +91,7 @@ public class AccountController {
     }
 
     @PostMapping("/forgotPassword")
+    @LogInServer
     public ResponseEntity<Object> forgotPassword(
             @RequestBody ForgotPasswordVM forgotPasswordVM
     ) {
