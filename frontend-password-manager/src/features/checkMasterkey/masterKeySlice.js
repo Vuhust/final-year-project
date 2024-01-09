@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import store from "../../app/store";
 import axios from "axios";
-import config from "../config/server";
+import config from "../../common/config/server";
 import {toast} from "react-toastify";
 import {setMasterKey} from "../../appSlice";
 

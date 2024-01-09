@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import config from "../config/server";
+import config from "../../common/config/server";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchSubAccount, fetchDeleteSubAccount, fetchAddSubAccount, fetchEditSubAccount} from "./listSlice";

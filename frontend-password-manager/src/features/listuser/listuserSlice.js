@@ -1,12 +1,8 @@
 
 import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import config from "../config/server";
+import config from "../../common/config/server";
 import store from "../../app/store";
-import {encrypt, decrypt} from '../../common/common'
-
-import {loginSlice} from "../login/loginSlice";
-import data from "bootstrap/js/src/dom/data";
 import {toast} from "react-toastify";
 const initialState = {
     data: [],

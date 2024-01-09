@@ -7,7 +7,7 @@ import {setShow} from "../formSubAcc/formSubAccSlice";
 import SweetAlert from "react-bootstrap-sweetalert";
 import {decrypt} from "../../common/common";
 import {setShowCheckMasterKey} from "../checkMasterkey/masterKeySlice";
-import {fetchSubAccount} from "../list/listSlice";
+import {fetchSubAccount} from "../listSubAcc/listSlice";
 
 export const ListUserView = () =>
 {
@@ -168,7 +168,7 @@ export const ListUserView = () =>
                 highlightOnHover
                 paginationPerPage={10}
             />
-            
+
         </div>
 
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "../config/server";
+import config from "../../common/config/server";
 import { toast } from 'react-toastify';
 import {comopentShow} from "../../common/common";
 import {setMasterKey, setPage,} from "../../appSlice";
