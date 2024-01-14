@@ -28,7 +28,7 @@ const CheckMasterKey = () => {
   <div>
     <SweetAlert
       show={checkMasterKey.show}
-      title="Nhập master Key"
+      title="Nhập master password"
       showCancel={false}
       confirmBtnText="Xác nhận"
       onConfirm={handleConfirm}
@@ -36,9 +36,9 @@ const CheckMasterKey = () => {
     >
       <form className="input-wrapper" onSubmit={handleConfirm}>
         {/*<lable*/}
-        {/*     className="col-sm-3 col-formLogin-lable">{app.masterKey ? "bạn đã nhập checkMasterkey rồi, nhập lại để thay đổi " : " Mời bạn nhập checkMasterkey"}</lable>*/}
+        {/*     className="col-sm-3 col-formLogin-lable">{app.masterKey ? "bạn đã nhập checkMasterPassword rồi, nhập lại để thay đổi " : " Mời bạn nhập checkMasterPassword"}</lable>*/}
         <input type="text" className="p-2  form-control"
-               placeholder={" Mời bạn nhập checkMasterkey"}
+               placeholder={" Mời bạn nhập MasterPassword"}
                value={inputValue.masterKey} onChange={handleInput}/>
       </form>
 

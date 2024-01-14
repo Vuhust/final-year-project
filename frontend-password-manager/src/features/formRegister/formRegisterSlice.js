@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import config from "../../common/config/server";
+import config from "../../common/server";
 
 import {comopentShow, getSalt} from "../../common/common"
 import {setPage , setRegister} from "../../appSlice";

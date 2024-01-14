@@ -111,3 +111,44 @@ export function decrypt (transitmessage) {
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
 
+export function generateSafePassword() {
+    const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const numbers = '0123456789';
+    const specialCharacters = '!@#$%^&*()_-+=<>?';
+
+    const allCharacters = uppercaseLetters + lowercaseLetters + numbers + specialCharacters;
+
+    const passwordLength = 12;
+    let password = '';
+
+    password += getRandomCharacter(uppercaseLetters);
+    password += getRandomCharacter(lowercaseLetters);
+    password += getRandomCharacter(numbers);
+    password += getRandomCharacter(specialCharacters);
+
+    for (let i = password.length; i < passwordLength; i++) {
+        password += getRandomCharacter(allCharacters);
+    }
+
+    password = shuffleString(password);
+
+    return password;
+}
+
+function getRandomCharacter(characters) {
+    const randomValues = new Uint32Array(1);
+    window.crypto.getRandomValues(randomValues);
+    const randomIndex = randomValues[0] % characters.length;
+    return characters.charAt(randomIndex);
+}
+
+function shuffleString(string) {
+    const array = string.split('');
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(window.crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array.join('');
+}
+

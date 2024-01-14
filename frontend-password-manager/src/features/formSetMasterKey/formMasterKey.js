@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import config from "../../common/config/server";
+import config from "../../common/server";
 
 import {comopentShow, getSalt} from "../../common/common"
 import {setMasterKey, setPage, setRegister, setToken} from "../../appSlice";
@@ -61,7 +61,7 @@ export const doCheckMasterKey = async (data) => {
         }}
     );
     if (respone.status === 200) {
-      toast("Key chinh xac " );
+      toast("MasterPassword chính xác " );
       store.dispatch(setMasterKey({masterKey: data}));
     }
   } catch (e) {

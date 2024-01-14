@@ -44,7 +44,7 @@ public class AccountController {
         @RequestParam String token
     ) throws Exception{
         accountService.validateRegister(token);
-        return ResponseEntity.ok("Tao tài khoản master massword thành công");
+        return ResponseEntity.ok("Tao tài khoản thành công");
     }
 
 

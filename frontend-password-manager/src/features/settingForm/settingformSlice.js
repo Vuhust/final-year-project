@@ -3,8 +3,8 @@ import { ordered as cakeOrdered } from '../cake/cakeSlice'
 import store from "../../app/store";
 import {comopentShow, encrypt} from "../../common/common";
 import axios from "axios";
-import config from "../../common/config/server";
-import {fetchSubAccount} from "../listSubAcc/listSlice";
+import config from "../../common/server";
+import {fetchSubAccount} from "../listSubAcc/listSubAccSlice";
 import {setPage} from "../../appSlice";
 
 const initialState = {

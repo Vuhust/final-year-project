@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import config from "../../common/config/server";
+import config from "../../common/server";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchSubAccount, fetchDeleteSubAccount, fetchAddSubAccount, fetchEditSubAccount} from "./listSlice";
+import {fetchSubAccount, fetchDeleteSubAccount, fetchAddSubAccount, fetchEditSubAccount} from "./listSubAccSlice";
 import data from "bootstrap/js/src/dom/data";
 import {setShow} from "../formSubAcc/formSubAccSlice";
 import {startConfirmation} from "../confirm/confirmSlice";
 import SweetAlert from "react-bootstrap-sweetalert";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import { RiDeleteBin6Line, RiEdit2Line, RiEyeLine } from 'react-icons/ri';
-import {CiEdit} from "react-icons/ci";
-import {log} from "qrcode/lib/core/galois-field";
-import {decrypt} from "../../common/common";
-import {setShowCheckMasterKey} from "../checkMasterkey/masterKeySlice";
 
-export const ListView = () =>
+import {decrypt, generateSafePassword} from "../../common/common";
+import {setShowCheckMasterKey} from "../checkMasterPassword/masterKeySlice";
+
+export const ListSubAccView = () =>
 {
   const columns= [
     {
@@ -83,7 +82,7 @@ export const ListView = () =>
       url : app.currentUrl,
       desc : '',
       username: '',
-      password: '',
+      password: generateSafePassword(),
       title: 'Thêm mới tài khoản !',
     })
     setEditFromShow(true);
@@ -315,4 +314,4 @@ export const ListView = () =>
   );
 }
 
-export default ListView;
+export default ListSubAccView;

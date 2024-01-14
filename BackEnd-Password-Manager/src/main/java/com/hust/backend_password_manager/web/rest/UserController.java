@@ -3,7 +3,7 @@ package com.hust.backend_password_manager.web.rest;
 import com.hust.backend_password_manager.aspect.annotation.LogInServer;
 import com.hust.backend_password_manager.service.AccountService;
 import com.hust.backend_password_manager.service.SubAccountService;
-import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
+import com.hust.backend_password_manager.web.rest.vm.ChangeMasterPasswordVM;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;
 import com.hust.backend_password_manager.web.rest.vm.UserUnlockAccountVM;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -93,9 +93,9 @@ public class UserController {
     @PutMapping("/changeMasterKey")
     @LogInServer
     public ResponseEntity<Object> changeMasterKey(
-        @RequestBody ChangeMasterKeyVM changeMasterKeyVM
+        @RequestBody ChangeMasterPasswordVM changeMasterPasswordVM
         ) {
-        subAccountService.changeMasterKey(changeMasterKeyVM);
+        subAccountService.changeMasterKey(changeMasterPasswordVM);
         return ResponseEntity.ok("");
     }
 

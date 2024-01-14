@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {comopentShow} from "./common/common";
 import store from "./app/store";
 import axios from "axios";
-import config from "./common/config/server";
+import config from "./common/server";
 import {toast} from "react-toastify";
 import data from "bootstrap/js/src/dom/data";
 import {act} from "react-dom/cjs/react-dom-test-utils.production.min";

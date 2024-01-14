@@ -1,18 +1,16 @@
 package com.hust.backend_password_manager.web.rest;
 
-import com.hust.backend_password_manager.web.rest.err.LoginWithOutOtp;
+import com.hust.backend_password_manager.web.rest.err.LoginWithOtp;
 import com.hust.backend_password_manager.web.rest.err.MyError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
@@ -25,8 +23,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    @ExceptionHandler({ LoginWithOutOtp.class})
-    public ResponseEntity<Object> handleLogin(LoginWithOutOtp e) {
+    @ExceptionHandler({ LoginWithOtp.class})
+    public ResponseEntity<Object> handleLogin(LoginWithOtp e) {
         log.info("vo handler");
         Map<String,Object> response = Map.of("msg" , "Thành công, Nhập otp" , "data" , Map.of("token", e.getToken()));
         return ResponseEntity.accepted().body(response);

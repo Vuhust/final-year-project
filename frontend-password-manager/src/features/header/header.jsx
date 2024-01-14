@@ -3,6 +3,7 @@ import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAddressCard, faQrcode} from '@fortawesome/free-solid-svg-icons';
 import { IoLogOut , IoQrCodeSharp } from "react-icons/io5";
+import { MdPublishedWithChanges } from "react-icons/md";
 import { CiEdit  } from "react-icons/ci";
 import {useDispatch} from "react-redux";
 import {setPage} from "../../appSlice";
@@ -46,9 +47,11 @@ function Header() {
             </NavDropdown.Item>
 
             <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.FROM_CHANGE_MASTER_KEY))}>
+              <MdPublishedWithChanges/>
               Đổi  masterKey
             </NavDropdown.Item>
             <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.FROM_CHANGE_PASSWORD))}>
+              <MdPublishedWithChanges/>
               Đổi  Mật khẩu
             </NavDropdown.Item>
 

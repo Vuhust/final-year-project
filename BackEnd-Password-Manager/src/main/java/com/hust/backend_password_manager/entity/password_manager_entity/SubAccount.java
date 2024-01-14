@@ -46,4 +46,15 @@ public class SubAccount {
         this.lastUpdateDateTime = new Date();
     }
 
+    @PostLoad
+    protected void onPostLoad() {
+       if(this.url == null){
+           this.url = "";
+       }
+        if(this.desc == null){
+            this.desc = "";
+        }
+
+    }
+
 }

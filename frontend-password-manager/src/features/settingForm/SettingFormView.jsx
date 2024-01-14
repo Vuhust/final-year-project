@@ -6,7 +6,7 @@ import {Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchBackupMasterKey, fetchRecoveryMasterkey, fetchSaveAccountSetting} from "./settingformSlice";
 import { saveAs } from 'file-saver';
-import {setShowCheckMasterKey} from "../checkMasterkey/masterKeySlice";
+import {setShowCheckMasterKey} from "../checkMasterPassword/masterKeySlice";
 import {toast} from "react-toastify";
 import axios from "axios";
 

@@ -10,9 +10,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import HomeView from "./features/home/HomeView";
 import Header from "./features/header/header";
 import React, {useEffect} from "react";
-import ListView from "./features/listSubAcc/ListView";
+import ListSubAccView from "./features/listSubAcc/ListSubAccView";
 import ListUserView  from "./features/listuser/listuserView";
-import CheckMasterKey from "./features/checkMasterkey/MasterKeyView";
+import CheckMasterKey from "./features/checkMasterPassword/MasterKeyView";
 import Login from "./features/formLogin/FormloginView";
 import Register from "./features/formRegister/FormRegisterView";
 import {comopentShow, } from "./common/common";
@@ -26,8 +26,8 @@ import QRCode from "react-qr-code";
 import ConfirmView from "./features/confirm/ConfirmView";
 import SettingFormView from "./features/settingForm/SettingFormView";
 import {doGetUserInfo, setCurrentUrl} from "./appSlice";
-import changeMasterKeyView from "./features/changeMasterKeyForm/ChangeMasterKeyView";
-import ChangeMasterKeyVieW from "./features/changeMasterKeyForm/ChangeMasterKeyView";
+import changeMasterKeyView from "./features/changeMasterPasswordForm/ChangeMasterKeyView";
+import ChangeMasterKeyVieW from "./features/changeMasterPasswordForm/ChangeMasterKeyView";
 import ChangePasswordVieW from "./features/changePasswordForm/ChangePasswordForm";
 import ForgotPasswordView from "./features/forgotPasswordForm/forgotPasswordView";
 import UnlockCountdownView from "./features/unlockcountdown/UnlockCountDownView";
@@ -58,8 +58,8 @@ function App() {
   }, []);
 
   const style = {
-    minWidth: '400px',
-    minHeight: '400px'
+    minWidth: '650px',
+    minHeight: '500px'
 
 
   };
@@ -95,7 +95,7 @@ function App() {
 
       {/*{ (app.page === 'SUB_ACCOUNT' ||  app.page === "ALL_SUB_ACCOUNT" ) && <Form/> }*/}
 
-      { (app.page === 'SUB_ACCOUNT' ||  app.page === "ALL_SUB_ACCOUNT"  && !app.isAdmin ) && <ListView/> }
+      { (app.page === 'SUB_ACCOUNT' ||  app.page === "ALL_SUB_ACCOUNT"  && !app.isAdmin ) && <ListSubAccView/> }
       { (app.page === 'SUB_ACCOUNT' ||  app.page === "ALL_SUB_ACCOUNT" && app.isAdmin  ) && <ListUserView/> }
       {/*<ListView></ListView>*/}
         {/*<Otp/>*/}

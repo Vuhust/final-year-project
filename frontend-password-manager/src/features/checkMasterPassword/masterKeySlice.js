@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import store from "../../app/store";
 import axios from "axios";
-import config from "../../common/config/server";
+import config from "../../common/server";
 import {toast} from "react-toastify";
 import {setMasterKey} from "../../appSlice";
 
@@ -38,7 +38,7 @@ export const doCheckMasterKey = async (data) => {
         }}
     );
     if (respone.status === 200) {
-      toast("Key chinh xac " );
+      toast("MasterPassword chính xác" );
       store.dispatch(setMasterKey({masterKey: data}));
     }
   } catch (e) {

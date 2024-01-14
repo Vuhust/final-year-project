@@ -9,7 +9,7 @@ import com.hust.backend_password_manager.repository.password_manager_repository.
 import com.hust.backend_password_manager.repository.password_manager_repository.SubAccountRepository;
 import com.hust.backend_password_manager.repository.secret_repository.SecretRepository;
 import com.hust.backend_password_manager.web.rest.err.MyError;
-import com.hust.backend_password_manager.web.rest.vm.ChangeMasterKeyVM;
+import com.hust.backend_password_manager.web.rest.vm.ChangeMasterPasswordVM;
 import com.hust.backend_password_manager.web.rest.vm.SubAccountVM;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -93,20 +93,20 @@ public class SubAccountService {
 
     }
 
-    public void changeMasterKey(ChangeMasterKeyVM changeMasterKeyVM){
+    public void changeMasterKey(ChangeMasterPasswordVM changeMasterPasswordVM){
         Secret secret = secretRepository.findByAccId(accountBean.getId());
-        if(!passwordEncoder.matches(changeMasterKeyVM.getCurrentMasterKey(), secret.getMasterPasword())){
+        if(!passwordEncoder.matches(changeMasterPasswordVM.getCurrentMasterPassword(), secret.getMasterPasword())){
             throw new MyError("Master key không chính xác ");
         }
         List<SubAccount> subAccountList = subAccountRepository.findSubAccountByAccId(accountBean.getId());
         Iterator<SubAccount> iterator = subAccountList.iterator();
         while (iterator.hasNext()){
             SubAccount subAccount = iterator.next();
-            String newPasswordEncrypt = aesUtil.changeNewMasterKey(subAccount.getSubUserPwdEncrypt(), secret.getSalt(), changeMasterKeyVM.getCurrentMasterKey(), changeMasterKeyVM.getNewMasterKey() );
+            String newPasswordEncrypt = aesUtil.changeNewMasterKey(subAccount.getSubUserPwdEncrypt(), secret.getSalt(), changeMasterPasswordVM.getCurrentMasterPassword(), changeMasterPasswordVM.getNewMasterPassword() );
             subAccount.setSubUserPwdEncrypt(newPasswordEncrypt);
         }
         subAccountRepository.saveAll(subAccountList);
-        secret.setMasterPasword(passwordEncoder.encode(changeMasterKeyVM.getNewMasterKey()));
+        secret.setMasterPasword(passwordEncoder.encode(changeMasterPasswordVM.getNewMasterPassword()));
         secretRepository.save(secret);
 
     }

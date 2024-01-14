@@ -1,13 +1,13 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useDispatch, useSelector} from "react-redux";
-import {changeMasterKey} from "./changeMasterKey";
+import {changeMasterPassword} from "./changeMasterPassword";
 
 const ChangeMasterKeyVieW = () => {
     const dispatch = useDispatch();
 
     const handleSubmit=  (values) => {
-        changeMasterKey(values);
+        changeMasterPassword(values);
     };
 
 
@@ -20,7 +20,7 @@ const ChangeMasterKeyVieW = () => {
 
     return (
         <div className="container mt-5 rounded border border-3  p-3 ">
-            <h1> Đổi master Key </h1>
+            <h1> Đổi master password </h1>
 
             <Formik
                 initialValues={{currentMasterKey: 'a@gmail.com', newMasterKey: '1231AcasaA21'}}
@@ -29,16 +29,16 @@ const ChangeMasterKeyVieW = () => {
             >
                 <Form >
                     <div className="row mb-3">
-                        <label htmlFor="currentMasterKey" className="col-auto col-form-label">MasterKey</label>
+                        <label htmlFor="currentMasterKey" className="col-auto col-form-label">MasterPassword</label>
                         <div className="col">
-                            <Field type="text" name="currentMasterKey" placeholder="Nhập masterKey hiện tại" className="form-control"/>
+                            <Field type="text" name="currentMasterKey" placeholder="Nhập masterpassword hiện tại" className="form-control"/>
                         </div>
                         <ErrorMessage name="currentMasterKey" component="div" className="text-danger"/>
                     </div>
                     <div className="row mb-3">
-                        <label htmlFor="newMasterKey" className="col-auto col-form-label">MasterKey mới</label>
+                        <label htmlFor="newMasterKey" className="col-auto col-form-label">MasterPassword mới</label>
                         <div className="col">
-                            <Field type="text" name="newMasterKey" placeholder="MasterKey moi"
+                            <Field type="text" name="newMasterKey" placeholder="MasterPassword moi"
                                    className="form-control"/>
                         </div>
                         <ErrorMessage name="password" component="div" className="text-danger"/>

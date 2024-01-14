@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import config from "../../common/config/server";
+import config from "../../common/server";
 import store from "../../app/store";
 import {encrypt, decrypt} from '../../common/common'
 

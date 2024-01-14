@@ -6,8 +6,8 @@ import {fetchEditSubUser, fetchRemoveCountDown, fetchSubUser} from "./listuserSl
 import {setShow} from "../formSubAcc/formSubAccSlice";
 import SweetAlert from "react-bootstrap-sweetalert";
 import {decrypt} from "../../common/common";
-import {setShowCheckMasterKey} from "../checkMasterkey/masterKeySlice";
-import {fetchSubAccount} from "../listSubAcc/listSlice";
+import {setShowCheckMasterKey} from "../checkMasterPassword/masterKeySlice";
+import {fetchSubAccount} from "../listSubAcc/listSubAccSlice";
 
 export const ListUserView = () =>
 {

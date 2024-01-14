@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "../../common/config/server";
+import config from "../../common/server";
 import { toast } from 'react-toastify';
 import {comopentShow} from "../../common/common";
 import {setMasterKey, setPage,} from "../../appSlice";
@@ -8,11 +8,11 @@ import store from "../../app/store";
 
 
 
-export const changeMasterKey = async (data) => {
+export const changeMasterPassword = async (data) => {
     console.log(data)
     const requestBody = {
-        "currentMasterKey": data.currentMasterKey,
-        "newMasterKey": data.newMasterKey
+        "currentMasterPassword": data.currentMasterKey,
+        "newMasterPassword": data.newMasterKey
     }
 
     try {

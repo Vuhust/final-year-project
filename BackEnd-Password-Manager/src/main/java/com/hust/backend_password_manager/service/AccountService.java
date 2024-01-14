@@ -1,13 +1,12 @@
 package com.hust.backend_password_manager.service;
 
-import com.hust.backend_password_manager.aspect.annotation.LogInServer;
 import com.hust.backend_password_manager.entity.AccountBean;
 import com.hust.backend_password_manager.entity.password_manager_entity.Account;
 import com.hust.backend_password_manager.entity.secret_entity.Secret;
 import com.hust.backend_password_manager.model.UserInfoModel;
 import com.hust.backend_password_manager.repository.password_manager_repository.AccountRepository;
 import com.hust.backend_password_manager.repository.secret_repository.SecretRepository;
-import com.hust.backend_password_manager.web.rest.err.LoginWithOutOtp;
+import com.hust.backend_password_manager.web.rest.err.LoginWithOtp;
 import com.hust.backend_password_manager.web.rest.err.MyError;
 import com.hust.backend_password_manager.web.rest.vm.*;
 import lombok.RequiredArgsConstructor;
@@ -97,7 +96,7 @@ public class AccountService {
         Map<String,Object> claim = Map.of("email", loginFormVM.getEmail());
         if(Boolean.TRUE.equals(account.getEnableTwoFactoryAuth())){
             String token = jwtService.generateToken(claim, JwtService.LOGIN);
-            throw new LoginWithOutOtp(token);
+            throw new LoginWithOtp(token);
 
         }
         String token = jwtService.generateToken(claim, JwtService.TOKEN);
