@@ -22,7 +22,7 @@ const FormSetMasterKey = () => {
                 <h1> Nhập master key </h1>
 
                 <Formik
-                    initialValues={{masterkey: 'aaaa'}}
+                    initialValues={{masterkey: ''}}
                     validate={validate}
                     onSubmit={handleSubmit}
                 >
