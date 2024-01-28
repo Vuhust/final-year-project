@@ -110,6 +110,7 @@ export const appSlice = createSlice({
     setUserInfo:(state, action ) => {
       // Simulating a logout action - resetting loggedIn and user to initial state
       console.log(action.payload,"1111")
+      // window.alert(action.payload.email);
       state.email = action.payload.email;
       state.salt = action.payload.salt;
       state.setupMasterKey = action.payload.setupMasterKey;

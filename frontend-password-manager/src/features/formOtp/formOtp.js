@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../../common/server";
 import { toast } from 'react-toastify';
 import {comopentShow, getSalt, status} from "../../common/common";
-import {setPage , setToken} from "../../appSlice";
+import {doGetUserInfo, setPage, setToken} from "../../appSlice";
 import store from "../../app/store";
 
 
@@ -19,8 +19,9 @@ export const doFetchOtp = async (data) => {
         const respone = await axios.post(config.loginValidateUrl, requestBody);
         if (respone.status === 200) {
             toast("đăng nhập thành công");
-            store.dispatch(setPage(comopentShow.HOME));
             store.dispatch(setToken(respone.data))
+            window.localStorage.setItem("token", respone.data);
+            doGetUserInfo();
         }
     } catch (e) {
         if (e.response.status === 400) {
