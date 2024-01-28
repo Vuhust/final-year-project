@@ -94,6 +94,10 @@ public class SubAccountService {
     }
 
     public void changeMasterKey(ChangeMasterPasswordVM changeMasterPasswordVM){
+        if(changeMasterPasswordVM.getCurrentMasterPassword().equals(changeMasterPasswordVM.getNewMasterPassword())){
+            throw new MyError("MasterPassword phải khác nhau");
+        }
+
         Secret secret = secretRepository.findByAccId(accountBean.getId());
         if(!passwordEncoder.matches(changeMasterPasswordVM.getCurrentMasterPassword(), secret.getMasterPasword())){
             throw new MyError("Master key không chính xác ");

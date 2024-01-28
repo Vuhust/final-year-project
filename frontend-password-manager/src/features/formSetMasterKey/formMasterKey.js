@@ -2,13 +2,19 @@
 import axios from "axios";
 import config from "../../common/server";
 
-import {comopentShow, getSalt} from "../../common/common"
+import {comopentShow, getSalt, validatePassword} from "../../common/common"
 import {setMasterKey, setPage, setRegister, setToken} from "../../appSlice";
 import store from "../../app/store";
 import {toast} from "react-toastify";
 
 
 export const doSetupMasterKey = async (data) => {
+
+  if(validatePassword(data) === false){
+    toast("MasterPassword không đúng định dạng")
+    return
+  }
+
   console.log(data,"data")
   const masterKey = encodeURIComponent(data);
   console.log(store.getState().app.token)
@@ -31,7 +37,7 @@ export const doSetupMasterKey = async (data) => {
       }
     );
     if (respone.status === 200) {
-      toast("Thêm key thành công");
+      toast("Thêm MasterPassword thành công ");
       store.dispatch(setMasterKey(data));
       store.dispatch(setPage(comopentShow.HOME));
     }

@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import config from "../../common/server";
 import store from "../../app/store";
 import {encrypt, decrypt} from '../../common/common'
+import {toast} from "react-toastify";
 
 const initialState = {
   data: [],
@@ -61,10 +62,13 @@ export const fetchDeleteSubAccount = async (data)=>{
     );
     if (respone.status === 200) {
       console.log(respone.data);
+      toast("Xóa thành công ")
       fetchSubAccount();
       // store.dispatch(setData(respone.data));
     }
   } catch (e) {
+    toast("Xóa thất bại công ")
+
     console.log("err",e.response.status)
   }
 
@@ -98,10 +102,13 @@ export const fetchAddSubAccount = async (data)=>{
     );
     if (respone.status === 200) {
       console.log(respone.data);
+      toast("Thêm thành công")
       fetchSubAccount();
       // store.dispatch(setData(respone.data));
     }
   } catch (e) {
+    toast("Thêm thất bại công")
+
     console.log("err",e.response.status)
   }
 }
@@ -135,10 +142,13 @@ export const fetchEditSubAccount = async (data)=>{
     );
     if (respone.status === 200) {
       console.log(respone.data);
+      toast("Sửa thành công ")
       fetchSubAccount();
       // store.dispatch(setData(respone.data));
     }
   } catch (e) {
+    toast("Sửa thất bại  công ")
+
     console.log("err",e.response.status)
   }
 }

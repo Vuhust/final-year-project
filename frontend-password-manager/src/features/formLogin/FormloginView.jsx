@@ -42,7 +42,7 @@ const FormLogin = () => {
         <div className="container mt-5 rounded border border-3  p-3 ">
             <h1> Đăng nhập </h1>
           <Formik
-            initialValues={{email: 'a@gmail.com', password: '1231AcasaA21'}}
+            initialValues={{email: '', password: ''}}
             validate={validate}
             onSubmit={handleSubmit}
           >

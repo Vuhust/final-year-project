@@ -44,7 +44,7 @@ function App() {
     try {
       chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         // tabs[0] will contain information about the active tab
-        const currentUrl = tabs[0].url;
+        const currentUrl = tabs[0].url.split("/")[2];
         console.log("Current URL:", currentUrl);
         dispatch(setCurrentUrl(currentUrl));
         // You can use the URL here or pass it to another function
@@ -66,7 +66,7 @@ function App() {
     return (
     <div className='App' style={style}>
       <ToastContainer/>
-      {app.page !== comopentShow.LOGIN && <Header/>}
+      {(app.page !== comopentShow.LOGIN &&  app.page!== comopentShow.REGISTER && app.page!== comopentShow.FROM_FORGOT_PASSWORD  &&  app.page!== comopentShow.FROM_UNLOCK_COUNTDOWN && app.page!== comopentShow.LOGIN            ) && <Header/>}
       <ConfirmView/>
 
         {/*{app.page === comopentShow.FORM_SETTING && <SettingFormView/>}*/}

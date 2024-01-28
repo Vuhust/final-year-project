@@ -4,6 +4,7 @@ import axios from "axios";
 import config from "../../common/server";
 import {toast} from "react-toastify";
 import {setMasterKey} from "../../appSlice";
+import {validatePassword} from "../../common/common";
 
 const initialState = {
   show : false
@@ -23,7 +24,14 @@ const checkMasterKeySlice = createSlice({
 
 
 export const doCheckMasterKey = async (data) => {
-  console.log(data,"data")
+
+    if(validatePassword(data) === false){
+        toast("MasterPassword không đúng định dạng")
+        return
+    }
+
+
+    console.log(data,"data")
   console.log(store.getState().app.token)
   const masterKey = encodeURIComponent(data);
 

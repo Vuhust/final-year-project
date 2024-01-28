@@ -2,7 +2,7 @@
 import axios from "axios";
 import config from "../../common/server";
 
-import {comopentShow, getSalt} from "../../common/common"
+import {comopentShow, getSalt, validatePassword} from "../../common/common"
 import {setPage , setRegister} from "../../appSlice";
 import store from "../../app/store";
 import {toast} from "react-toastify";
@@ -10,6 +10,11 @@ import CryptoJS from "crypto-js";
 
 
 export const doRegister = async (data) => {
+    if(validatePassword(data.password) === false){
+        toast("Mật khẩu không đúng định dạng")
+        return
+    }
+
     const requestBody = {
         email : data.email,
         password : data.password,

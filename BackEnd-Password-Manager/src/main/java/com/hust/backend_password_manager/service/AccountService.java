@@ -133,6 +133,10 @@ public class AccountService {
     }
 
     public Object changePassword(String currentPassword,String newPassword){
+        if(currentPassword.equals(newPassword)){
+            throw new MyError( "Mật khẩu phải thay đổi");
+        }
+
         if(passwordEncoder.matches(currentPassword,accountBean.getPassword())){
             Account account = new Account();
             BeanUtils.copyProperties(accountBean, account);

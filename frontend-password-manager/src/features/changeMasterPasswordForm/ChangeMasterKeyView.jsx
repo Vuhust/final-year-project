@@ -23,7 +23,7 @@ const ChangeMasterKeyVieW = () => {
             <h1> Đổi master password </h1>
 
             <Formik
-                initialValues={{currentMasterKey: 'a@gmail.com', newMasterKey: '1231AcasaA21'}}
+                initialValues={{currentMasterKey: '', newMasterKey: ''}}
                 validate={validate}
                 onSubmit={handleSubmit}
             >
@@ -31,7 +31,7 @@ const ChangeMasterKeyVieW = () => {
                     <div className="row mb-3">
                         <label htmlFor="currentMasterKey" className="col-auto col-form-label">MasterPassword</label>
                         <div className="col">
-                            <Field type="text" name="currentMasterKey" placeholder="Nhập masterpassword hiện tại" className="form-control"/>
+                            <Field type="text" name="currentMasterKey" placeholder="Masterpassword hiện tại" className="form-control"/>
                         </div>
                         <ErrorMessage name="currentMasterKey" component="div" className="text-danger"/>
                     </div>

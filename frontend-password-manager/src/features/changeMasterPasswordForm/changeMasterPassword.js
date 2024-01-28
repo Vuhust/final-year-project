@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../common/server";
 import { toast } from 'react-toastify';
-import {comopentShow} from "../../common/common";
+import {comopentShow, validatePassword} from "../../common/common";
 import {setMasterKey, setPage,} from "../../appSlice";
 import store from "../../app/store";
 
@@ -10,6 +10,13 @@ import store from "../../app/store";
 
 export const changeMasterPassword = async (data) => {
     console.log(data)
+
+
+    if(validatePassword(data.newMasterKey)  === false || validatePassword(data.currentMasterKey) ){
+        toast("MasterPassword không đúng định dạng")
+        return
+    }
+
     const requestBody = {
         "currentMasterPassword": data.currentMasterKey,
         "newMasterPassword": data.newMasterKey
@@ -29,11 +36,13 @@ export const changeMasterPassword = async (data) => {
         );
         if (respone.status === 200) {
             console.log(respone.data);
+            toast("Đổi thành công ")
             store.dispatch(setPage(comopentShow.HOME));
             store.dispatch(setMasterKey({masterKey: data.newMasterKey}))
         }
     } catch (e) {
         if (e.response.status === 400) {
+            toast("Đổi thất bại ")
             toast(e.response.data.errors)
         }
     }

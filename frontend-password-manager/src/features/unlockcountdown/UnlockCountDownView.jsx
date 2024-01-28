@@ -25,7 +25,7 @@ const UnlockCountdownView = () => {
             <h1> Mở khóa tài khoản </h1>
 
             <Formik
-                initialValues={{email: 'a@gmail.com'}}
+                initialValues={{email: ''}}
                 validate={validate}
                 onSubmit={handleSubmit}
             >

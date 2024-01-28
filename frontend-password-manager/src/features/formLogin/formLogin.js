@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../common/server";
 import { toast } from 'react-toastify';
-import {comopentShow, getSalt, status} from "../../common/common";
+import {comopentShow, getSalt, status, validatePassword} from "../../common/common";
 import {doGetUserInfo, setPage, setToken} from "../../appSlice";
 import store from "../../app/store";
 
@@ -9,6 +9,11 @@ import store from "../../app/store";
 
 
 export const doLogin = async (data) => {
+    if(validatePassword(data.password) === false){
+        toast("Mật khẩu không đúng định dạng")
+        return
+    }
+
     const requestBody = {
         email: data.email,
         password: data.password,

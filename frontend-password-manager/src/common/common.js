@@ -45,7 +45,7 @@ export function getSalt(length){
   return result;
 }
 
-
+const regexPasswpr = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{12,}$/;
 
 
 // Code goes here
@@ -152,3 +152,7 @@ function shuffleString(string) {
     return array.join('');
 }
 
+
+export const validatePassword =  (password) => {
+    return regexPasswpr.test(password);
+}

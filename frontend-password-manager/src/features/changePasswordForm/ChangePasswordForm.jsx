@@ -20,10 +20,10 @@ const ChangePasswordVieW = () => {
 
     return (
         <div className="container mt-5 rounded border border-3  p-3 ">
-            <h1> Đổi master Key </h1>
+            <h1> Đổi mật khẩu </h1>
 
             <Formik
-                initialValues={{currentPassword: 'a@gmail.com', newPassword: '1231AcasaA21'}}
+                initialValues={{currentPassword: '', newPassword: ''}}
                 validate={validate}
                 onSubmit={handleSubmit}
             >
@@ -31,14 +31,14 @@ const ChangePasswordVieW = () => {
                     <div className="row mb-3">
                         <label htmlFor="currentPassword" className="col-auto col-form-label">Mật khẩu hiện tại </label>
                         <div className="col">
-                            <Field type="text" name="currentPassword" placeholder="Nhập Password hiện tại" className="form-control"/>
+                            <Field type="text" name="currentPassword" placeholder="Password hiện tại" className="form-control"/>
                         </div>
                         <ErrorMessage name="currentPassword" component="div" className="text-danger"/>
                     </div>
                     <div className="row mb-3">
                         <label htmlFor="newPassword" className="col-auto col-form-label">Mật khẩu mới</label>
                         <div className="col">
-                            <Field type="text" name="newPassword" placeholder="Password moi"
+                            <Field type="text" name="newPassword" placeholder="Password mới "
                                    className="form-control"/>
                         </div>
                         <ErrorMessage name="password" component="div" className="text-danger"/>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../common/server";
 import { toast } from 'react-toastify';
-import {comopentShow} from "../../common/common";
+import {comopentShow, validatePassword} from "../../common/common";
 import {setMasterKey, setPage,} from "../../appSlice";
 import store from "../../app/store";
 
@@ -9,6 +9,13 @@ import store from "../../app/store";
 
 
 export const changePassword = async (data) => {
+
+    if(validatePassword(data.newPassword) === false){
+        toast("Mật khẩu không đúng định dạng")
+        return
+    }
+
+
     console.log(data)
     const requestBody = {
         "currentPassword": data.currentPassword,

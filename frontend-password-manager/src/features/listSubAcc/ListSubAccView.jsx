@@ -31,11 +31,11 @@ export const ListSubAccView = () =>
       selector: (row) => <div onClick={()  => editSubAccountClick(row.id)}>{row.desc}</div>,
     },
     {
-      name: "Tai Khoản",
+      name: "Tài Khoản",
       selector: (row) => <div onClick={()  => editSubAccountClick(row.id)}>{row.subUserName}</div>,
     },
     {
-      name:"mật Khẩu",
+      name:"Mật Khẩu",
       cell:(row)=>(
           <div>{row.password ? row.password : "*******"}</div>)
     },

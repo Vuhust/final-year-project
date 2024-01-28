@@ -48,7 +48,7 @@ function Header() {
 
             <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.FROM_CHANGE_MASTER_KEY))}>
               <MdPublishedWithChanges/>
-              Đổi  masterKey
+              Đổi  MasterPassword
             </NavDropdown.Item>
             <NavDropdown.Item  onClick={(e) => dispatch(setPage(comopentShow.FROM_CHANGE_PASSWORD))}>
               <MdPublishedWithChanges/>

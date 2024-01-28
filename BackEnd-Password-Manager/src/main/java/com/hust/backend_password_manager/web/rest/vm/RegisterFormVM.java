@@ -1,6 +1,7 @@
 package com.hust.backend_password_manager.web.rest.vm;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hust.backend_password_manager.web.rest.validate.Password;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class RegisterFormVM  implements Serializable {
         @NotNull
     String email;
 
+    @Password
     @Schema(example = "12345678")
     @NotNull
     String password;

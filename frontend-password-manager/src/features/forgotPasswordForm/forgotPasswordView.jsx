@@ -25,7 +25,7 @@ const ForgotPasswordView = () => {
             <h1> Quên mật khẩu </h1>
 
             <Formik
-                initialValues={{email: 'a@gmail.com', newPassword: '1231AcasaA21'}}
+                initialValues={{email: '', newPassword: ''}}
                 validate={validate}
                 onSubmit={handleSubmit}
             >
